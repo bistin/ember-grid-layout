@@ -1,10 +1,10 @@
 {{!-- {{yield (hash 
-        containerWidth=width
-        cols=cols
-        margin=margin
-        containerPadding=containerPadding
+        
+        
+        
+        
         maxRows=maxRows
-        rowHeight=rowHeight
+        
         cancel=draggableCancel
         handle=draggableHandle
         onDragStop=this.onDragStop
@@ -32,5 +32,11 @@
 
 <div class="react-grid-layout" style="position: relative;
     transition: height 200ms ease;">
-    {{yield}}
+    {{yield (hash
+        containerWidth=width
+        margin=margin
+        rowHeight=rowHeight
+        containerPadding=containerPadding
+        cols=cols
+    )}}
 </div>

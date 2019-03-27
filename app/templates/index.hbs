@@ -1,8 +1,8 @@
 Index test
 
-<GridLayout>
+<GridLayout as |grid|>
     {{#each this.layout as |l i|}}
-        <GridItem>
+        <GridItem @grid={{grid}} @pos={{l}}>
             <div key={{i}}>
                 <span class="text">{{i}}</span>
             </div>
