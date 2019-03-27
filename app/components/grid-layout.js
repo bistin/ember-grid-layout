@@ -13,7 +13,7 @@ export default Component.extend({
             draggableHandle: "",
             draggableCancel: "",
             containerPadding: [10, 10],
-            rowHeight: 150,
+            rowHeight: 30,
             maxRows: 500, // infinite vertical growth
             layoutModel: [],
             margin: [10, 10],

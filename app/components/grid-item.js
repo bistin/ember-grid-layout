@@ -1,6 +1,23 @@
 import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 export default Component.extend({
+    tagName: "",
+
+    // didInsertElement() {
+    //     const pos = this.calcPosition();
+    //     console.log(pos)
+    //     this.setProperties(pos);
+    // },
+
+
+    styleText: computed('pos.{x,y,w,h}', function() {
+        if(!this.pos){ return "";}
+        const {x, y, w, h} = this.pos;
+        const p = this.calcPosition(x, y, w, h, null)
+        return `height:${p.height}px;width:${p.width}px;left:${p.left}px;top:${p.top}px`;
+    }),
+
     calcPosition(x, y, w, h, state) {
         const { margin, containerPadding, rowHeight } = this.grid;
         const colWidth = this.calcColWidth();
@@ -30,9 +47,11 @@ export default Component.extend({
         //   out.top = Math.round(state.dragging.top);
         //   out.left = Math.round(state.dragging.left);
         // }
-    
         return out;
     },
+
+    
+
     calcColWidth() {
         const { margin, containerPadding, containerWidth, cols } = this.grid;
         return (
@@ -42,7 +61,7 @@ export default Component.extend({
     actions: {
         test() {
             const {x, y, w, h} = this.pos;
-            console.log(this.calcPosition(x, y, w, h, null))
+           this.calcPosition(x, y, w, h, null)
         }
     }
 
