@@ -86,14 +86,18 @@ export default Component.extend({
             const deltaX = e.originalEvent.pageX - x;
             const deltaY = e.originalEvent.pageY - y;
         
+            this.set('startPoint', {
+                x: e.originalEvent.pageX, 
+                y: e.originalEvent.pageY
+            });
 
             newPosition.left = this.dragging.left + deltaX;
             newPosition.top = this.dragging.top + deltaY;
             //const { x, y , w, h } = this.pos;
            
             //console.log(newPosition)
-            //this.set("dragging", newPosition);
-            const  pos = this.calcXY(newPosition.top, newPosition.left);
+            this.set("dragging", newPosition);
+            const pos = this.calcXY(newPosition.top, newPosition.left);
             //console.log(pos)
             this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
         },
