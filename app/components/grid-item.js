@@ -61,7 +61,8 @@ export default Component.extend({
     },
     actions: {
         test() {
-          console.log('drag')
+            const { x, y , w, h } = this.pos;
+            this.grid.onDrag(x, y, this.pos, this.index)
         },
 
     }

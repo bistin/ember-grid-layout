@@ -2,7 +2,7 @@ Index test
 
 <GridLayout @layoutModel={{this.layout}} as |grid layoutModel|>
     {{#each layoutModel as |l i|}}
-        <GridItem @grid={{grid}} @pos={{l}}>
+        <GridItem @grid={{grid}} @pos={{l}} @index={{i}}>
             <div key={{i}}>
                 <span class="text">{{i}}</span>
                 w={{l.w}}, h={{l.h}}

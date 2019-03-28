@@ -1,6 +1,6 @@
 import Component from '@ember/component';
-import { compact } from "../utils"; 
-
+import { compact, moveElement } from "../utils"; 
+import { setProperties } from "@ember/object"; 
 export default Component.extend({
     tagName: '',
     init() {
@@ -40,5 +40,29 @@ export default Component.extend({
             this.verticalCompact, 
             this.cols 
             ));
+    },
+
+
+    actions: {
+        onDrag(x , y, l, index) {
+            //console.log(x,y,l)
+            const isUserAction = true;
+            debugger
+            const layout = moveElement(
+            this.innerLayout,
+            l,
+            x,
+            y,
+            isUserAction,
+            this.preventCollision,
+            "vertical",  //this.compactType(),
+            this.cols
+            );
+            console.log(layout[index], l);
+            // this.innerLayout.forEach((d, i) => {
+            //     setProperties(d, layout[i]);
+            // });
+        }
     }
+
 });

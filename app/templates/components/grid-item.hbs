@@ -1,4 +1,4 @@
-{{#draggable-object content=this}}
+{{#draggable-object content=this dragMoveAction=(action 'test')}}
     <div class="react-grid-item" style={{styleText}}>
         <button {{action "test"}}> T</button>
         {{yield}}
