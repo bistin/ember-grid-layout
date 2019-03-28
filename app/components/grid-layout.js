@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { compact } from "../utils"; 
 
 export default Component.extend({
     tagName: '',
@@ -15,7 +16,7 @@ export default Component.extend({
             containerPadding: [10, 10],
             rowHeight: 30,
             maxRows: 500, // infinite vertical growth
-            layoutModel: [],
+            // layoutModel: [],
             margin: [10, 10],
             isDraggable: true,
             isResizable: true,
@@ -31,5 +32,13 @@ export default Component.extend({
             // onResize: noop,
             // onResizeStop: noop
         });
+        //console.log(this.attrs.layoutModel)
+        //this.set("innerLayout", this.layoutModel);
+        this.set("innerLayout", 
+        compact(
+            this.layoutModel, 
+            this.verticalCompact, 
+            this.cols 
+            ));
     }
 });

@@ -1,6 +1,6 @@
 // @flow
-import isEqual from "lodash.isequal";
-import React from "react";
+//import isEqual from "lodash.isequal";
+//import React from "react";
 // import type {
 //   ChildrenArray as ReactChildrenArray,
 //   Element as ReactElement
@@ -60,7 +60,7 @@ import React from "react";
 // ) => void;
 // export type CompactType = ?("horizontal" | "vertical");
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = false;
 const DEBUG = false;
 
 /**
@@ -111,12 +111,12 @@ export function cloneLayoutItem(layoutItem) {
  * Comparing React `children` is a bit difficult. This is a good way to compare them.
  * This will catch differences in keys, order, and length.
  */
-export function childrenEqual(a, b) {
-  return isEqual(
-    React.Children.map(a, c => c.key),
-    React.Children.map(b, c => c.key)
-  );
-}
+// export function childrenEqual(a, b) {
+//   return isEqual(
+//     React.Children.map(a, c => c.key),
+//     React.Children.map(b, c => c.key)
+//   );
+// }
 
 /**
  * Given two layoutitems, check if they collide.
@@ -576,55 +576,55 @@ export function sortLayoutItemsByColRow(layout) {
  * @param  {?String} compact      Compaction option.
  * @return {Array}                Working layout.
  */
-export function synchronizeLayoutWithChildren(
-  initialLayout,
-  children,
-  cols,
-  compactType
-) {
-  initialLayout = initialLayout || [];
+// export function synchronizeLayoutWithChildren(
+//   initialLayout,
+//   children,
+//   cols,
+//   compactType
+// ) {
+//   initialLayout = initialLayout || [];
 
-  // Generate one layout item per child.
-  let layout = [];
-  React.Children.forEach(children, (child, i) => {
-    // Don't overwrite if it already exists.
-    const exists = getLayoutItem(initialLayout, String(child.key));
-    if (exists) {
-      layout[i] = cloneLayoutItem(exists);
-    } else {
-      if (!isProduction && child.props._grid) {
-        console.warn(
-          "`_grid` properties on children have been deprecated as of React 15.2. " + // eslint-disable-line
-            "Please use `data-grid` or add your properties directly to the `layout`."
-        );
-      }
-      const g = child.props["data-grid"] || child.props._grid;
+//   // Generate one layout item per child.
+//   let layout = [];
+//   React.Children.forEach(children, (child, i) => {
+//     // Don't overwrite if it already exists.
+//     const exists = getLayoutItem(initialLayout, String(child.key));
+//     if (exists) {
+//       layout[i] = cloneLayoutItem(exists);
+//     } else {
+//       if (!isProduction && child.props._grid) {
+//         console.warn(
+//           "`_grid` properties on children have been deprecated as of React 15.2. " + // eslint-disable-line
+//             "Please use `data-grid` or add your properties directly to the `layout`."
+//         );
+//       }
+//       const g = child.props["data-grid"] || child.props._grid;
 
-      // Hey, this item has a data-grid property, use it.
-      if (g) {
-        if (!isProduction) {
-          validateLayout([g], "ReactGridLayout.children");
-        }
-        layout[i] = cloneLayoutItem({ ...g, i: child.key });
-      } else {
-        // Nothing provided: ensure this is added to the bottom
-        layout[i] = cloneLayoutItem({
-          w: 1,
-          h: 1,
-          x: 0,
-          y: bottom(layout),
-          i: String(child.key)
-        });
-      }
-    }
-  });
+//       // Hey, this item has a data-grid property, use it.
+//       if (g) {
+//         if (!isProduction) {
+//           validateLayout([g], "ReactGridLayout.children");
+//         }
+//         layout[i] = cloneLayoutItem({ ...g, i: child.key });
+//       } else {
+//         // Nothing provided: ensure this is added to the bottom
+//         layout[i] = cloneLayoutItem({
+//           w: 1,
+//           h: 1,
+//           x: 0,
+//           y: bottom(layout),
+//           i: String(child.key)
+//         });
+//       }
+//     }
+//   });
 
-  // Correct the layout.
-  layout = correctBounds(layout, { cols: cols });
-  layout = compact(layout, compactType, cols);
+//   // Correct the layout.
+//   layout = correctBounds(layout, { cols: cols });
+//   layout = compact(layout, compactType, cols);
 
-  return layout;
-}
+//   return layout;
+// }
 
 /**
  * Validate a layout. Throws errors.

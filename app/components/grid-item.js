@@ -61,9 +61,9 @@ export default Component.extend({
     },
     actions: {
         test() {
-            const {x, y, w, h} = this.pos;
-           this.calcPosition(x, y, w, h, null)
-        }
+          console.log('drag')
+        },
+
     }
 
 

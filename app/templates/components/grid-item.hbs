@@ -1,4 +1,6 @@
-<div class="react-grid-item" style={{styleText}}>
-     <button {{action "test"}}> T</button>
-    {{yield}}
-</div>
+{{#draggable-object content=this}}
+    <div class="react-grid-item" style={{styleText}}>
+        <button {{action "test"}}> T</button>
+        {{yield}}
+    </div>
+{{/draggable-object}}
