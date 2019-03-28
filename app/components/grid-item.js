@@ -50,7 +50,27 @@ export default Component.extend({
         // }
         return out;
     },
-
+    calcXY(top, left) {
+        const { margin, cols, rowHeight, maxRows } = this.grid;
+        const { w, h } = this.pos;
+        const colWidth = this.calcColWidth();
+    
+        // left = colWidth * x + margin * (x + 1)
+        // l = cx + m(x+1)
+        // l = cx + mx + m
+        // l - m = cx + mx
+        // l - m = x(c + m)
+        // (l - m) / (c + m) = x
+        // x = (left - margin) / (coldWidth + margin)
+        let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
+        let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
+    
+        // Capping
+        x = Math.max(Math.min(x, cols - w), 0);
+        y = Math.max(Math.min(y, maxRows - h), 0);
+    
+        return { x, y };
+    },
     
 
     calcColWidth() {
@@ -60,11 +80,43 @@ export default Component.extend({
         );
     },
     actions: {
-        test() {
-            const { x, y , w, h } = this.pos;
-            this.grid.onDrag(x, y, this.pos, this.index)
-        },
+        dragMoveAction(e) {
+            const newPosition = { top: 0, left: 0 };
+            const {x, y} = this.startPoint;
+            const deltaX = e.originalEvent.pageX - x;
+            const deltaY = e.originalEvent.pageY - y;
+        
 
+            newPosition.left = this.dragging.left + deltaX;
+            newPosition.top = this.dragging.top + deltaY;
+            //const { x, y , w, h } = this.pos;
+           
+            //console.log(newPosition)
+            //this.set("dragging", newPosition);
+            const  pos = this.calcXY(newPosition.top, newPosition.left);
+            //console.log(pos)
+            this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
+        },
+        dragStartAction(e) {
+            //console.log(e)
+            const newPosition = { top: 0, left: 0 };
+            this.set('startPoint', {
+                x: e.originalEvent.pageX, 
+                y: e.originalEvent.pageY
+            });
+            let node = e.originalEvent.target
+            const { offsetParent } = node;
+            node = node.children[0];
+            if (!offsetParent) return;
+            const parentRect = offsetParent.getBoundingClientRect();
+            const clientRect = node.getBoundingClientRect();
+            newPosition.left =
+                clientRect.left - parentRect.left + offsetParent.scrollLeft;
+            newPosition.top =
+                clientRect.top - parentRect.top + offsetParent.scrollTop;
+                //debugger
+           this.set("dragging", newPosition);
+        }
     }
 
 

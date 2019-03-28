@@ -1,4 +1,5 @@
 // @flow
+import { set } from "@ember/object"
 //import isEqual from "lodash.isequal";
 //import React from "react";
 // import type {
@@ -366,9 +367,10 @@ export function moveElement(
   const oldY = l.y;
 
   // This is quite a bit faster than extending the object
-  if (typeof x === 'number') l.x = x;
-  if (typeof y === 'number') l.y = y;
-  l.moved = true;
+  if (typeof x === 'number') set(l, 'x', x);
+  if (typeof y === 'number') set(l, 'y', y);
+  set(l, 'moved', true);
+  //l.moved = true;
 
   // If this collides with anything, move it.
   // When doing this comparison, we have to sort the items we compare with

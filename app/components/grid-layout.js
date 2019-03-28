@@ -47,12 +47,11 @@ export default Component.extend({
         onDrag(x , y, l, index) {
             //console.log(x,y,l)
             const isUserAction = true;
-            debugger
             const layout = moveElement(
             this.innerLayout,
             l,
-            x,
-            y,
+            x+1,
+            y+1,
             isUserAction,
             this.preventCollision,
             "vertical",  //this.compactType(),
