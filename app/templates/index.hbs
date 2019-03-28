@@ -1,7 +1,7 @@
 Index test
 
-<GridLayout as |grid|>
-    {{#each this.layout as |l i|}}
+<GridLayout @layoutModel={{this.layout}} as |grid layoutModel|>
+    {{#each layoutModel as |l i|}}
         <GridItem @grid={{grid}} @pos={{l}}>
             <div key={{i}}>
                 <span class="text">{{i}}</span>

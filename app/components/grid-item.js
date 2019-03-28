@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
+import { htmlSafe } from '@ember/string';
 
 export default Component.extend({
     tagName: "",
@@ -15,7 +16,7 @@ export default Component.extend({
         if(!this.pos){ return "";}
         const {x, y, w, h} = this.pos;
         const p = this.calcPosition(x, y, w, h, null)
-        return `height:${p.height}px;width:${p.width}px;left:${p.left}px;top:${p.top}px`;
+        return htmlSafe(`height:${p.height}px;width:${p.width}px;left:${p.left}px;top:${p.top}px`);
     }),
 
     calcPosition(x, y, w, h, state) {
