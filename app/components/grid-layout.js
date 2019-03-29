@@ -37,7 +37,7 @@ export default Component.extend({
         this.set("innerLayout", 
                  compact(
                      this.layoutModel, 
-                     this.verticalCompact, 
+                     this.compactType, 
                      this.cols 
                  ));
     },
@@ -64,16 +64,14 @@ export default Component.extend({
                 y,
                 isUserAction,
                 this.preventCollision,
-                "vertical",  //this.compactType(),
+                this.compactType,
                 this.cols
             );
 
             let layout2 = compact(
                 layout,
-                this.verticalCompact,
+                'vertical',
                 this.cols );
-
-
             // this.tmpLayout = layout2;
             this.innerLayout.forEach((d, i) => {
                 setProperties(d, layout2[i]);

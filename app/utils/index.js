@@ -1,5 +1,4 @@
 // @flow
-import { set } from "@ember/object"
 //import isEqual from "lodash.isequal";
 //import React from "react";
 // import type {
@@ -361,9 +360,7 @@ export function moveElement(
 
     // Short-circuit if nothing to do.
     if (l.y === y && l.x === x) return layout;
-    // if(!x) {
-    //     debugger
-    // }
+
     log(`Moving element ${l.i} to [${String(x)},${String(y)}] from [${l.x},${l.y}]`);
     const oldX = l.x;
     const oldY = l.y;
@@ -407,16 +404,16 @@ export function moveElement(
         if (collision.moved) continue;
 
         // Don't move static items - we have to move *this* element away
-        // if (collision.static) {
-        //     layout = moveElementAwayFromCollision(
-        //         layout,
-        //         collision,
-        //         l,
-        //         isUserAction,
-        //         compactType,
-        //         cols
-        //     );
-        // } else {
+        if (collision.static) {
+            layout = moveElementAwayFromCollision(
+                layout,
+                collision,
+                l,
+                isUserAction,
+                compactType,
+                cols
+            );
+        } else {
             layout = moveElementAwayFromCollision(
                 layout,
                 l,
@@ -425,7 +422,7 @@ export function moveElement(
                 compactType,
                 cols
             );
-        //}
+        }
     }
 
     return layout;
@@ -681,7 +678,7 @@ export function autoBindHandlers(el, fns) {
 }
 
 function log(...args) {
-    //if (!DEBUG) return;
+    if (!DEBUG) return;
     // eslint-disable-next-line no-console
     console.log(...args);
 }
