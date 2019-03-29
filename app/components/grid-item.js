@@ -5,21 +5,14 @@ import { htmlSafe } from '@ember/string';
 export default Component.extend({
     tagName: "",
 
-    // didInsertElement() {
-    //     const pos = this.calcPosition();
-    //     console.log(pos)
-    //     this.setProperties(pos);
-    // },
-
-
     styleText: computed('pos.{x,y,w,h}', function() {
         if(!this.pos){ return "";}
         const {x, y, w, h} = this.pos;
-        const p = this.calcPosition(x, y, w, h, null)
+        const p = this.calcPosition(x, y, w, h)
         return htmlSafe(`height:${p.height}px;width:${p.width}px;left:${p.left}px;top:${p.top}px`);
     }),
 
-    calcPosition(x, y, w, h, state) {
+    calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this.grid;
         const colWidth = this.calcColWidth();
 
@@ -39,39 +32,21 @@ export default Component.extend({
               : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
         };
 
-        // if (state && state.resizing) {
-        //   out.width = Math.round(state.resizing.width);
-        //   out.height = Math.round(state.resizing.height);
-        // }
-
-        // if (state && state.dragging) {
-        //   out.top = Math.round(state.dragging.top);
-        //   out.left = Math.round(state.dragging.left);
-        // }
         return out;
     },
     calcXY(top, left) {
         const { margin, cols, rowHeight, maxRows } = this.grid;
         const { w, h } = this.pos;
         const colWidth = this.calcColWidth();
-    
-        // left = colWidth * x + margin * (x + 1)
-        // l = cx + m(x+1)
-        // l = cx + mx + m
-        // l - m = cx + mx
-        // l - m = x(c + m)
-        // (l - m) / (c + m) = x
-        // x = (left - margin) / (coldWidth + margin)
+
         let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
         let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
-    
+
         // Capping
         x = Math.max(Math.min(x, cols - w), 0);
         y = Math.max(Math.min(y, maxRows - h), 0);
-    
         return { x, y };
     },
-    
 
     calcColWidth() {
         const { margin, containerPadding, containerWidth, cols } = this.grid;
@@ -83,33 +58,30 @@ export default Component.extend({
         dragMoveAction(e) {
             const newPosition = { top: 0, left: 0 };
             const {x, y} = this.startPoint;
-            const deltaX = e.originalEvent.pageX - x;
-            const deltaY = e.originalEvent.pageY - y;
+            const deltaX = e.pageX - x;
+            const deltaY = e.pageY - y;
 
             this.set('startPoint', {
-                x: e.originalEvent.pageX, 
-                y: e.originalEvent.pageY
+                x: e.pageX, 
+                y: e.pageY
             });
 
             newPosition.left = this.dragging.left + deltaX;
             newPosition.top = this.dragging.top + deltaY;
-            //const { x, y , w, h } = this.pos;
 
             this.set("dragging", newPosition);
             const pos = this.calcXY(newPosition.top, newPosition.left);
-            console.log(pos)
             if(pos.x !== 0 || pos.y !== 0){
                 this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
             }
         },
         dragStartAction(e) {
-            //console.log(e)
             const newPosition = { top: 0, left: 0 };
             this.set('startPoint', {
-                x: e.originalEvent.pageX, 
-                y: e.originalEvent.pageY
+                x: e.pageX,
+                y: e.pageY
             });
-            let node = e.originalEvent.target
+            let node = e.target
             const { offsetParent } = node;
             node = node.children[0];
             if (!offsetParent) return;
@@ -124,7 +96,7 @@ export default Component.extend({
             this.grid.onDragStart();
         },
 
-        dragEndAction(e) {
+        dragEndAction() {
             const newPosition = { top: 0, left: 0 };
             newPosition.left = this.dragging.left;
             newPosition.top = this.dragging.top;
@@ -133,6 +105,8 @@ export default Component.extend({
             if(pos.x !== 0 || pos.y !== 0){
                 this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
             }
+            this.set("dragging", null);
+            this.grid.onDragStop();
         }
     }
 
