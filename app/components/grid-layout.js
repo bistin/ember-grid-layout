@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { compact, moveElement } from "../utils"; 
-import { setProperties } from "@ember/object"; 
+import { setProperties } from "@ember/object";
+
 export default Component.extend({
     tagName: '',
     init() {
@@ -32,13 +33,12 @@ export default Component.extend({
             // onResize: noop,
             // onResizeStop: noop
         });
-        //console.log(this.attrs.layoutModel)
-        //this.set("innerLayout", this.layoutModel);
-        this.set("innerLayout", 
+
+        this.set("innerLayout",
                  compact(
-                     this.layoutModel, 
-                     this.compactType, 
-                     this.cols 
+                     this.layoutModel,
+                     this.compactType,
+                     this.cols
                  ));
     },
 
