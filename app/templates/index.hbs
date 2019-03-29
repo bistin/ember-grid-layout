@@ -1,17 +1,13 @@
 Index test
 
 <GridLayout @layoutModel={{this.layout}} as |grid layoutModel|>
-    {{#each layoutModel as |l i|}}
-        <GridItem @grid={{grid}} @pos={{l}} @index={{i}}>
-            <div key={{i}}>
-                <span class="text">{{i}}</span>
+    {{#each layoutModel as |l index|}}
+        <GridItem @grid={{grid}} @pos={{l}} @index={{index}}>
+            <div key={{index}}>
+                <span class="text">{{index}}</span>
                 w={{l.w}}, h={{l.h}}
                 x={{l.x}}, y={{l.y}}
             </div>
         </GridItem>
     {{/each}}
 </GridLayout>
-
-
-
-<button {{action "test"}}>ff</button>

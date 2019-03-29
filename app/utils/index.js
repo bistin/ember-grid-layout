@@ -1,66 +1,6 @@
 // @flow
-//import isEqual from "lodash.isequal";
-//import React from "react";
-// import type {
-//   ChildrenArray as ReactChildrenArray,
-//   Element as ReactElement
-// } from "react";
-// export type LayoutItem = {
-//   w: number,
-//   h: number,
-//   x: number,
-//   y: number,
-//   i: string,
-//   minW?: number,
-//   minH?: number,
-//   maxW?: number,
-//   maxH?: number,
-//   moved?: boolean,
-//   static?: boolean,
-//   isDraggable?: ?boolean,
-//   isResizable?: ?boolean
-// };
-// export type Layout = Array<LayoutItem>;
-// export type Position = {
-//   left: number,
-//   top: number,
-//   width: number,
-//   height: number
-// };
-// export type ReactDraggableCallbackData = {
-//   node: HTMLElement,
-//   x: number,
-//   y: number,
-//   deltaX: number,
-//   deltaY: number,
-//   lastX: number,
-//   lastY: number
-// };
 
-// export type PartialPosition = { left: number, top: number };
-// export type Size = { width: number, height: number };
-// export type GridDragEvent = {
-//   e: Event,
-//   node: HTMLElement,
-//   newPosition: PartialPosition
-// };
-// export type GridResizeEvent = { e: Event, node: HTMLElement, size: Size };
-
-// type REl = ReactElement<any>;
-// export type ReactChildren = ReactChildrenArray<REl>;
-
-// // All callbacks are of the signature (layout, oldItem, newItem, placeholder, e).
-// export type EventCallback = (
-//   Layout,
-//   oldItem: ?LayoutItem,
-//   newItem: ?LayoutItem,
-//   placeholder: ?LayoutItem,
-//   Event,
-//   ?HTMLElement
-// ) => void;
-// export type CompactType = ?("horizontal" | "vertical");
-
-const isProduction = false;
+// const isProduction = false;
 const DEBUG = false;
 
 /**

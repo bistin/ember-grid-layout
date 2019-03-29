@@ -49,6 +49,7 @@ export default Component.extend({
         },
 
         onDragStop() {
+            this.tmpLayout = null;
         },
 
         onDrag(x, y, l, index) {
