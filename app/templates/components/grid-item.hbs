@@ -1,8 +1,9 @@
 {{#draggable-object 
-    content=this 
-    dragMoveAction=(action 'dragMoveAction')
-    dragStartHook=(action 'dragStartAction')
-    }}
+   content=this 
+   dragMoveAction=(action 'dragMoveAction')
+   dragStartHook=(action 'dragStartAction')
+   dragEndAction=(action 'dragEndAction')
+}}
     <div class="react-grid-item" style={{styleText}}>
         <button {{action "test"}}> T</button>
         {{yield}}

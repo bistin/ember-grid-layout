@@ -14,7 +14,7 @@ export default Component.extend({
             draggableHandle: "",
             draggableCancel: "",
             containerPadding: [10, 10],
-            rowHeight: 30,
+            rowHeight: 35,
             maxRows: 500, // infinite vertical growth
             // layoutModel: [],
             margin: [10, 10],
@@ -35,32 +35,50 @@ export default Component.extend({
         //console.log(this.attrs.layoutModel)
         //this.set("innerLayout", this.layoutModel);
         this.set("innerLayout", 
-        compact(
-            this.layoutModel, 
-            this.verticalCompact, 
-            this.cols 
-            ));
+                 compact(
+                     this.layoutModel, 
+                     this.verticalCompact, 
+                     this.cols 
+                 ));
     },
 
 
     actions: {
-        onDrag(x , y, l, index) {
+        onDragStart() {
+            this.tmpLayout = this.innerLayout.toArray().map(d => ({ ...d }));
+        },
+
+        onDragStop() {
+        },
+
+        onDrag(x, y, l, index) {
             //console.log(x,y,l)
+            const tmpArr = [...this.tmpLayout].map(d => ({ ...d }));
+            const newL = tmpArr[index];
             const isUserAction = true;
+
             const layout = moveElement(
-            this.innerLayout,
-            l,
-            x+1,
-            y+1,
-            isUserAction,
-            this.preventCollision,
-            "vertical",  //this.compactType(),
-            this.cols
+                tmpArr,
+                newL,
+                x,
+                y,
+                isUserAction,
+                this.preventCollision,
+                "vertical",  //this.compactType(),
+                this.cols
             );
-            console.log(layout[index], l);
-            // this.innerLayout.forEach((d, i) => {
-            //     setProperties(d, layout[i]);
-            // });
+
+            let layout2 = compact(
+                layout,
+                this.verticalCompact,
+                this.cols );
+
+
+            // this.tmpLayout = layout2;
+            this.innerLayout.forEach((d, i) => {
+                setProperties(d, layout2[i]);
+            });
+
         }
     }
 

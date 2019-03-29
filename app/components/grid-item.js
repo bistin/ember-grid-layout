@@ -22,7 +22,7 @@ export default Component.extend({
     calcPosition(x, y, w, h, state) {
         const { margin, containerPadding, rowHeight } = this.grid;
         const colWidth = this.calcColWidth();
-    
+
         const out = {
           left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
           top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
@@ -38,12 +38,12 @@ export default Component.extend({
               ? h
               : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
         };
-    
+
         // if (state && state.resizing) {
         //   out.width = Math.round(state.resizing.width);
         //   out.height = Math.round(state.resizing.height);
         // }
-    
+
         // if (state && state.dragging) {
         //   out.top = Math.round(state.dragging.top);
         //   out.left = Math.round(state.dragging.left);
@@ -85,7 +85,7 @@ export default Component.extend({
             const {x, y} = this.startPoint;
             const deltaX = e.originalEvent.pageX - x;
             const deltaY = e.originalEvent.pageY - y;
-        
+
             this.set('startPoint', {
                 x: e.originalEvent.pageX, 
                 y: e.originalEvent.pageY
@@ -94,12 +94,13 @@ export default Component.extend({
             newPosition.left = this.dragging.left + deltaX;
             newPosition.top = this.dragging.top + deltaY;
             //const { x, y , w, h } = this.pos;
-           
-            //console.log(newPosition)
+
             this.set("dragging", newPosition);
             const pos = this.calcXY(newPosition.top, newPosition.left);
-            //console.log(pos)
-            this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
+            console.log(pos)
+            if(pos.x !== 0 || pos.y !== 0){
+                this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
+            }
         },
         dragStartAction(e) {
             //console.log(e)
@@ -119,7 +120,19 @@ export default Component.extend({
             newPosition.top =
                 clientRect.top - parentRect.top + offsetParent.scrollTop;
                 //debugger
-           this.set("dragging", newPosition);
+            this.set("dragging", newPosition);
+            this.grid.onDragStart();
+        },
+
+        dragEndAction(e) {
+            const newPosition = { top: 0, left: 0 };
+            newPosition.left = this.dragging.left;
+            newPosition.top = this.dragging.top;
+            this.set("dragging", null);
+            const pos = this.calcXY(newPosition.top, newPosition.left);
+            if(pos.x !== 0 || pos.y !== 0){
+                this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
+            }
         }
     }
 
