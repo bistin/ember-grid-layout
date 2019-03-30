@@ -1,10 +1,5 @@
 {{!-- {{yield (hash 
-      
-      
-      
-      
       maxRows=maxRows
-      
       cancel=draggableCancel
       handle=draggableHandle
       onDragStop=this.onDragStop
@@ -16,11 +11,6 @@
       isDraggable=draggable
       isResizable=resizable
       useCSSTransforms=useCSSTransforms
-      w=l.w
-      h=l.h
-      x=l.x
-      y=l.y
-      i=l.i
       minH=l.minH
       minW=l.minW
       maxH=l.maxH
@@ -30,8 +20,7 @@
       }} 
       --}}
 
-<div class="react-grid-layout" style="position: relative;
-            transition: height 200ms ease;">
+<div class="grid-layout">
     {{yield (hash
       containerWidth=width
       margin=margin
