@@ -17,19 +17,19 @@ export default Component.extend({
         const colWidth = this.calcColWidth();
 
         const out = {
-          left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
-          top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
-          // 0 * Infinity === NaN, which causes problems with resize constraints;
-          // Fix this if it occurs.
-          // Note we do it here rather than later because Math.round(Infinity) causes deopt
-          width:
+            left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
+            top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
+            // 0 * Infinity === NaN, which causes problems with resize constraints;
+            // Fix this if it occurs.
+            // Note we do it here rather than later because Math.round(Infinity) causes deopt
+            width:
             w === Infinity
-              ? w
-              : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
-          height:
+                ? w
+                : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
+            height:
             h === Infinity
-              ? h
-              : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
+                ? h
+                : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
         };
 
         return out;
@@ -51,7 +51,7 @@ export default Component.extend({
     calcColWidth() {
         const { margin, containerPadding, containerWidth, cols } = this.grid;
         return (
-          (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
+            (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
         );
     },
     actions: {
@@ -71,9 +71,9 @@ export default Component.extend({
 
             this.set("dragging", newPosition);
             const pos = this.calcXY(newPosition.top, newPosition.left);
-            if(pos.x !== 0 || pos.y !== 0){
-                this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
-            }
+            //if(pos.x !== 0 || pos.y !== 0){
+            this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
+            //}
         },
         dragStartAction(e) {
             const newPosition = { top: 0, left: 0 };
@@ -91,7 +91,7 @@ export default Component.extend({
                 clientRect.left - parentRect.left + offsetParent.scrollLeft;
             newPosition.top =
                 clientRect.top - parentRect.top + offsetParent.scrollTop;
-                //debugger
+            //debugger
             this.set("dragging", newPosition);
             this.grid.onDragStart();
         },
@@ -102,9 +102,9 @@ export default Component.extend({
             newPosition.top = this.dragging.top;
             this.set("dragging", null);
             const pos = this.calcXY(newPosition.top, newPosition.left);
-            if(pos.x !== 0 || pos.y !== 0){
-                this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
-            }
+            //if(pos.x !== 0 || pos.y !== 0){
+            this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
+            //}
             this.set("dragging", null);
             this.grid.onDragStop();
         }
