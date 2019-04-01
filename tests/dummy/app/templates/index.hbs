@@ -1,10 +1,10 @@
 Index test
 
-<button {{action 'add'}}>add</button>
+<button {{action "add"}}>add</button>
 
 <GridLayout @layoutModel={{this.layout}} as |grid layoutModel|>
     {{#each layoutModel as |l index|}}
-        <GridItem @grid={{grid}} @pos={{l}} @index={{index}}>
+        <GridItem @grid={{grid}} @pos={{l}} @index={{index}} @layoutModel={{layoutModel}}>
             <div key={{index}}>
                 <span class="text">{{l.i}}</span>
                 w={{l.w}}, h={{l.h}}

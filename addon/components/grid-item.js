@@ -2,6 +2,8 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 import layout from '../templates/components/grid-item';
+import { compact } from "ember-grid/utils";
+import { setProperties } from "@ember/object";
 
 export default Component.extend({
     layout,
@@ -57,6 +59,20 @@ export default Component.extend({
         );
     },
     actions: {
+        remove() {
+            this.layoutModel.removeObject(this.pos);
+
+            const tmpArr = [...this.layoutModel].map(d => ({ ...d }));
+            let layout2 = compact(
+                tmpArr,
+                'vertical',
+                12 );
+
+            this.layoutModel.forEach((d, i) => {
+                setProperties(d, layout2[i]);
+            });
+        },
+
         dragMoveAction(e) {
             const newPosition = { top: 0, left: 0 };
             const {x, y} = this.startPoint;
