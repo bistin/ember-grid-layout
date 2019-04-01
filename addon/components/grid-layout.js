@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { compact, moveElement } from "../utils"; 
 import { setProperties } from "@ember/object";
+import { alias } from "@ember/object/computed";
 import layout from '../templates/components/grid-layout';
 
 export default Component.extend({
@@ -36,15 +37,17 @@ export default Component.extend({
             // onResizeStop: noop
         });
 
-        this.set("innerLayout",
-                 compact(
-                     this.layoutModel,
-                     this.compactType,
-                     this.cols
-                 ));
+        // this.set("innerLayout",
+        //          compact(
+        //              this.layoutModel,
+        //              this.compactType,
+        //              this.cols
+        //          ));
     },
 
+    innerLayout: alias("layoutModel"),
 
+    
     actions: {
         onDragStart() {
             this.tmpLayout = this.innerLayout.toArray().map(d => ({ ...d }));
@@ -75,7 +78,7 @@ export default Component.extend({
                 layout,
                 'vertical',
                 this.cols );
-            // this.tmpLayout = layout2;
+            
             this.innerLayout.forEach((d, i) => {
                 setProperties(d, layout2[i]);
             });
