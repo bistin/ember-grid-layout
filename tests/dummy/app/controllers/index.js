@@ -5,7 +5,15 @@ import { setProperties } from "@ember/object";
 let i = 3;
 const layout = [
     {"x":0,"y":0,"w":2,"h":2,"i":"0","static":false},
-    {"x":2,"y":0,"w":2,"h":4,"i":"1","static":false}
+    {"x":2,"y":0,"w":2,"h":2,"i":"1","static":false},
+    {"x":0,"y":0,"w":2,"h":2,"i":"2","static":false},
+    {"x":2,"y":0,"w":2,"h":2,"i":"3","static":false},
+    {"x":0,"y":0,"w":2,"h":2,"i":"4","static":false},
+    {"x":2,"y":0,"w":2,"h":2,"i":"5","static":false},
+    {"x":0,"y":0,"w":2,"h":2,"i":"6","static":false},
+    {"x":2,"y":0,"w":2,"h":2,"i":"7","static":false},
+    {"x":0,"y":0,"w":2,"h":2,"i":"8","static":false},
+    {"x":2,"y":0,"w":2,"h":2,"i":"9","static":false}
 ];
 
 export default Controller.extend({

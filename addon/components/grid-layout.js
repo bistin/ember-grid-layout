@@ -58,7 +58,7 @@ export default Component.extend({
         },
 
         onDrag(x, y, l, index) {
-            //console.log(x,y,l)
+            //const tmpArr = this.tmpLayout
             const tmpArr = [...this.tmpLayout].map(d => ({ ...d }));
             const newL = tmpArr[index];
             const isUserAction = true;
@@ -79,6 +79,7 @@ export default Component.extend({
                 'vertical',
                 this.cols );
             
+            this.tmpLayout = layout2;
             this.innerLayout.forEach((d, i) => {
                 setProperties(d, layout2[i]);
             });
