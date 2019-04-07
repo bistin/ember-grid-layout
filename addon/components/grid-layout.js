@@ -47,7 +47,6 @@ export default Component.extend({
 
     innerLayout: alias("layoutModel"),
 
-    
     actions: {
         onDragStart() {
             this.tmpLayout = this.innerLayout.toArray().map(d => ({ ...d }));
