@@ -74,13 +74,16 @@ export default Component.extend({
         },
 
         dragMoveAction(e) {
+            if(e.pageX === 0 && e.pageY === 0) {
+                return;
+            }
             const newPosition = { top: 0, left: 0 };
             const {x, y} = this.startPoint;
             const deltaX = e.pageX - x;
             const deltaY = e.pageY - y;
 
             this.set('startPoint', {
-                x: e.pageX, 
+                x: e.pageX,
                 y: e.pageY
             });
 
