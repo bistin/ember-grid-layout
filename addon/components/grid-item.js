@@ -115,15 +115,15 @@ export default Component.extend({
         },
 
         dragEndAction() {
-            const newPosition = { top: 0, left: 0 };
-            newPosition.left = this.dragging.left;
-            newPosition.top = this.dragging.top;
-            this.set("dragging", null);
-            const pos = this.calcXY(newPosition.top, newPosition.left);
-            //if(pos.x !== 0 || pos.y !== 0){
-            this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
-            //}
-            this.set("dragging", null);
+            // const newPosition = { top: 0, left: 0 };
+            // newPosition.left = this.dragging.left;
+            // newPosition.top = this.dragging.top;
+            // this.set("dragging", null);
+            // const pos = this.calcXY(newPosition.top, newPosition.left);
+            // //if(pos.x !== 0 || pos.y !== 0){
+            // this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
+            // //}
+            // this.set("dragging", null);
             this.grid.onDragStop();
         }
     }
