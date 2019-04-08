@@ -4,6 +4,7 @@ import { htmlSafe } from '@ember/string';
 import layout from '../templates/components/grid-item';
 import { compact } from "ember-grid/utils";
 import { setProperties } from "@ember/object";
+import { task, timeout } from 'ember-concurrency';
 
 export default Component.extend({
     layout,
@@ -58,6 +59,30 @@ export default Component.extend({
             (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
         );
     },
+
+    _dragMove: task(function* (e) {
+        if(e.pageX === 0 && e.pageY === 0) {
+            return;
+        }
+        const newPosition = { top: 0, left: 0 };
+        const {x, y} = this.startPoint;
+        const deltaX = e.pageX - x;
+        const deltaY = e.pageY - y;
+
+        this.set('startPoint', {
+            x: e.pageX,
+            y: e.pageY
+        });
+
+        newPosition.left = this.dragging.left + deltaX;
+        newPosition.top = this.dragging.top + deltaY;
+
+        this.set("dragging", newPosition);
+        const pos = this.calcXY(newPosition.top, newPosition.left);
+        this.grid.onDrag(pos.x, pos.y, this.pos, this.index);
+        yield timeout(80);
+    }).drop(),
+
     actions: {
         remove() {
             this.layoutModel.removeObject(this.pos);
@@ -74,27 +99,8 @@ export default Component.extend({
         },
 
         dragMoveAction(e) {
-            if(e.pageX === 0 && e.pageY === 0) {
-                return;
-            }
-            const newPosition = { top: 0, left: 0 };
-            const {x, y} = this.startPoint;
-            const deltaX = e.pageX - x;
-            const deltaY = e.pageY - y;
-
-            this.set('startPoint', {
-                x: e.pageX,
-                y: e.pageY
-            });
-
-            newPosition.left = this.dragging.left + deltaX;
-            newPosition.top = this.dragging.top + deltaY;
-
-            this.set("dragging", newPosition);
-            const pos = this.calcXY(newPosition.top, newPosition.left);
-            //if(pos.x !== 0 || pos.y !== 0){
-            this.grid.onDrag(pos.x, pos.y, this.pos, this.index)
-            //}
+            // add throttle
+            this._dragMove.perform(e);
         },
         dragStartAction(e) {
             const newPosition = { top: 0, left: 0 };
