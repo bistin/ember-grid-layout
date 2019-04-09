@@ -4,11 +4,16 @@ import { htmlSafe } from '@ember/string';
 import layout from '../templates/components/grid-item';
 import { compact } from "ember-grid/utils";
 import { setProperties } from "@ember/object";
-import { task, timeout } from 'ember-concurrency';
+import { throttle } from '@ember/runloop';
 
 export default Component.extend({
     layout,
     tagName: "",
+
+    init() {
+        this._super();
+        this.dragMove = e => throttle(this, this._dragMove, e, 80, false)
+    },
 
     styleText: computed('pos.{x,y,w,h}', function() {
         if(!this.pos){ return "";}
@@ -60,7 +65,7 @@ export default Component.extend({
         );
     },
 
-    _dragMove: task(function* (e) {
+    _dragMove (e) {
         if(e.pageX === 0 && e.pageY === 0) {
             return;
         }
@@ -80,8 +85,8 @@ export default Component.extend({
         this.set("dragging", newPosition);
         const pos = this.calcXY(newPosition.top, newPosition.left);
         this.grid.onDrag(pos.x, pos.y, this.pos, this.index);
-        yield timeout(80);
-    }).drop(),
+        //yield timeout(80);
+    },
 
     actions: {
         remove() {
@@ -100,7 +105,7 @@ export default Component.extend({
 
         dragMoveAction(e) {
             // add throttle
-            this._dragMove.perform(e);
+            this.dragMove(e);
         },
         dragStartAction(e) {
             const newPosition = { top: 0, left: 0 };
