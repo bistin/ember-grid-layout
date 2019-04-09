@@ -2,24 +2,23 @@ import Controller from '@ember/controller';
 import { compact, moveElement } from "ember-grid/utils";
 import { setProperties } from "@ember/object";
 
-let i = 3;
+let i = 10;
 const layout = [
-    {"x":0,"y":0,"w":4,"h":2,"i":"0","static":false},
-    {"x":2,"y":0,"w":2,"h":2,"i":"1","static":false},
-    {"x":0,"y":0,"w":2,"h":2,"i":"2","static":false},
-    {"x":2,"y":0,"w":2,"h":2,"i":"3","static":false},
-    {"x":0,"y":0,"w":2,"h":2,"i":"4","static":false},
-    {"x":2,"y":0,"w":2,"h":2,"i":"5","static":false},
-    {"x":0,"y":0,"w":2,"h":2,"i":"6","static":false},
-    {"x":2,"y":0,"w":2,"h":2,"i":"7","static":false},
-    {"x":0,"y":0,"w":2,"h":2,"i":"8","static":false},
-    {"x":2,"y":0,"w":2,"h":2,"i":"9","static":false}
+    {"x":0,"y":0,"w":2,"h":2,"i":"0","static":false},
+    {"x":1,"y":0,"w":1,"h":2,"i":"1","static":false},
+    {"x":0,"y":0,"w":1,"h":2,"i":"2","static":false},
+    {"x":1,"y":0,"w":1,"h":2,"i":"3","static":false},
+    {"x":0,"y":0,"w":1,"h":2,"i":"4","static":false},
+    {"x":1,"y":0,"w":1,"h":2,"i":"5","static":false},
+    {"x":0,"y":0,"w":1,"h":2,"i":"6","static":false},
+    {"x":1,"y":0,"w":1,"h":2,"i":"7","static":false},
+    {"x":0,"y":0,"w":1,"h":2,"i":"8","static":false},
+    {"x":1,"y":0,"w":1,"h":2,"i":"9","static":false}
 ];
 
 export default Controller.extend({
     init() {
         this._super();
-
         this.set("layout",
                  compact(
                      layout,
@@ -32,12 +31,12 @@ export default Controller.extend({
     actions : {
         add() {
             i = i + 1;
-            let newX = i % 2 * 2;
+            let newX = i % 2 ;
             let newY = 0;
             const newL = {
                 "x":newX,
                 "y":newY,
-                "w":2,
+                "w":1,
                 "h":2,
                 "i":i.toString(),
                 "static":false

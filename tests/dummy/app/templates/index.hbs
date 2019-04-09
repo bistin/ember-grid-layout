@@ -4,7 +4,8 @@ Index test
 
 <GridLayout @layoutModel={{this.layout}} as |grid layoutModel|>
     {{#each layoutModel as |l index|}}
-        <GridItem @grid={{grid}} @pos={{l}} @index={{index}} @layoutModel={{layoutModel}}>
+        <GridItem @grid={{grid}} @pos={{l}} @index={{index}} @layoutModel={{layoutModel}} @handle=".dragHandle">
+            <a class="dragHandle">handle</a>
             <div key={{index}}>
                 <span class="text">{{l.i}}</span>
                 w={{l.w}}, h={{l.h}}

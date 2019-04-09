@@ -11,10 +11,10 @@ export default Component.extend({
         this._super();
         this.setProperties({
             autoSize: true,
-            cols: 12,
+            cols: 2,
             className: "",
             style: {},
-            width: 900,
+            width: 400,
             draggableHandle: "",
             draggableCancel: "",
             containerPadding: [10, 10],
@@ -58,6 +58,7 @@ export default Component.extend({
 
         onDrag(x, y, l, index) {
             //const tmpArr = this.tmpLayout
+            if(!this.tmpLayout) { return;}
             const tmpArr = [...this.tmpLayout].map(d => ({ ...d }));
             const newL = tmpArr[index];
             const isUserAction = true;
@@ -77,7 +78,7 @@ export default Component.extend({
                 layout,
                 'vertical',
                 this.cols );
-            
+
             this.tmpLayout = layout2;
             this.innerLayout.forEach((d, i) => {
                 setProperties(d, layout2[i]);
