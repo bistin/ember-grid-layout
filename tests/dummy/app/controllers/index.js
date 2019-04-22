@@ -25,14 +25,19 @@ export default Controller.extend({
                      "vertical",
                      12
                  ));
+        this.setProperties({
+            compactType: "vertical",
+            preventCollision: true,
+            cols: 2,
+        });
     },
     layout,
 
     actions : {
         add() {
             i = i + 1;
-            let newX = i % 2 ;
-            let newY = 0;
+            let newX = i % 2;
+            let newY = -0.1;
             const newL = {
                 "x":newX,
                 "y":newY,
@@ -41,9 +46,11 @@ export default Controller.extend({
                 "i":i.toString(),
                 "static":false
             };
-            const tmpArr = [newL,...this.layout].map(d => ({ ...d }));
+            console.log(JSON.stringify(newL))
+            const tmpArr = [...this.layout, newL].map(d => ({ ...d }));
             const isUserAction = true;
-
+            
+            
             const layout = moveElement(
                 tmpArr,
                 newL,
@@ -59,8 +66,10 @@ export default Controller.extend({
                 layout,
                 'vertical',
                 this.cols );
+            //let layout2 = layout;
 
-            this.layout.unshiftObject(layout2[0]);
+
+            this.layout.pushObject(layout2[layout2.length -1]);
             this.layout.forEach((d, i) => {
                 setProperties(d, layout2[i]);
             });
