@@ -1,0 +1,9 @@
+.grid-item {   
+    background: #DDD;
+    border: 1px solid black; width:100px;
+}
+
+
+.grid-item.grid-placeholder {
+    background: red;
+}

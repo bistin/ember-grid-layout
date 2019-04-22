@@ -5,8 +5,6 @@
 .grid-item {
   transition: all 200ms ease;
   transition-property: left, top;
-  background: #ccc;
-  border: 1px solid black; width:100px;
   position: absolute;
 }
 .grid-item.cssTransforms {
@@ -24,7 +22,6 @@
 }
 
 .grid-item.grid-placeholder {
-  background: red;
   opacity: 0.2;
   transition-duration: 100ms;
   z-index: 2;
