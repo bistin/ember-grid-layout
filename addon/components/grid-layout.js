@@ -1,11 +1,11 @@
 import Component from '@ember/component';
-import { compact, moveElement } from "../utils"; 
+import { compact, moveElement, LayoutItem, Layout} from "../utils"; 
 import { setProperties } from "@ember/object";
 import { alias } from "@ember/object/computed";
-import layout from '../templates/components/grid-layout';
+//import layout from '../templates/components/grid-layout';
 
 export default Component.extend({
-    layout,
+    //layout,
     tagName: '',
     init() {
         this._super();
@@ -56,7 +56,7 @@ export default Component.extend({
             this.tmpLayout = null;
         },
 
-        onDrag(x, y, l, index) {
+        onDrag(x: number, y: number, l: LayoutItem, index: number) {
             //const tmpArr = this.tmpLayout
             if(!this.tmpLayout) { return;}
             const tmpArr = [...this.tmpLayout].map(d => ({ ...d }));

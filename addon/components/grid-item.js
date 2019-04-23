@@ -1,13 +1,13 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
-import layout from '../templates/components/grid-item';
+//import layout from '../templates/components/grid-item';
 import { compact } from "ember-grid/utils";
 import { setProperties } from "@ember/object";
 import { throttle } from '@ember/runloop';
 
 export default Component.extend({
-    layout,
+    //layout,
     tagName: "",
 
     init() {
