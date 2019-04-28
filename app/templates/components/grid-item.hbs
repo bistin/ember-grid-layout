@@ -7,8 +7,7 @@
 >
 
     <div class="grid-item" style={{styleText}}>
-        <button {{action "remove"}}> X</button>
-        {{yield}}
+        {{yield (hash remove=(action "remove"))}}
     </div>
 </DraggableObject>
 
