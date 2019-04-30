@@ -18,7 +18,8 @@ export type LayoutItem = {
     moved?: boolean,
     static?: boolean,
     isDraggable?: boolean,
-    isResizable?: boolean
+    isResizable?: boolean,
+
   };
 export type Layout = LayoutItem[];
 
@@ -139,7 +140,7 @@ export function compact(
     return out;
 }
 
-const heightWidth = { x: "w", y: "h" };
+const heightWidth: {[index: string]: "w"|"h"} = { x: "w", y: "h" };
 /**
  * Before moving item down, it will check if the movement will cause collisions and move those items down before.
  */
@@ -641,9 +642,9 @@ export function validateLayout(
 }
 
 // Flow can't really figure this out, so we just use Object
-export function autoBindHandlers(el, fns) {
-    fns.forEach(key => (el[key] = el[key].bind(el)));
-}
+// export function autoBindHandlers(el, fns) {
+//     fns.forEach(key => (el[key] = el[key].bind(el)));
+// }
 
 function log(...args: any) {
     if (!DEBUG) return;
