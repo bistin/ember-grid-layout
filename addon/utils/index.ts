@@ -653,3 +653,15 @@ function log(...args: any) {
 }
 
 export const noop = () => {};
+
+export function addItemToLayout(layout: Layout, newItem: LayoutItem, compactType: CompactType,cols: number): Layout {
+    const tmpArr = [...layout].map(d => ({ ...d }));
+    tmpArr.forEach( d=> {
+        if(d.y === newItem.y && d.x === newItem.x) {
+            d.y = 0.1;
+        }
+    });
+    tmpArr.push(newItem);
+    const layout2 = compact(tmpArr, compactType, cols);
+    return layout2.map( (d, i) => ({...tmpArr[i], ...d}));
+}
