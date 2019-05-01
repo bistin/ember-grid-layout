@@ -46,32 +46,18 @@ export function bottom(layout: Layout) {
     return max;
 }
 
-export function cloneLayout(layout: Layout) {
-    const newLayout = Array(layout.length);
-    for (let i = 0, len = layout.length; i < len; i++) {
-        newLayout[i] = cloneLayoutItem(layout[i]);
-    }
-    return newLayout;
+export function cloneLayout(layout: Layout): Layout {
+    return layout.map(layoutItem => ({...layoutItem }));
+    // const newLayout = Array(layout.length);
+    // for (let i = 0, len = layout.length; i < len; i++) {
+    //     newLayout[i] = cloneLayoutItem(layout[i]);
+    // }
+    // return newLayout;
 }
 
 // Fast path to cloning, since this is monomorphic
 export function cloneLayoutItem(layoutItem: LayoutItem): LayoutItem {
-    return {
-        w: layoutItem.w,
-        h: layoutItem.h,
-        x: layoutItem.x,
-        y: layoutItem.y,
-        i: layoutItem.i,
-        minW: layoutItem.minW,
-        maxW: layoutItem.maxW,
-        minH: layoutItem.minH,
-        maxH: layoutItem.maxH,
-        moved: Boolean(layoutItem.moved),
-        static: Boolean(layoutItem.static),
-        // These can be null
-        isDraggable: layoutItem.isDraggable,
-        isResizable: layoutItem.isResizable
-    };
+    return { ...layoutItem };
 }
 
 /**

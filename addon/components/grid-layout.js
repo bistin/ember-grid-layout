@@ -56,7 +56,7 @@ export default Component.extend({
             this.tmpLayout = null;
         },
 
-        onDrag(x: number, y: number, l: LayoutItem, index: number) {
+        onDrag(x, y, l, index) {
             //const tmpArr = this.tmpLayout
             if(!this.tmpLayout) { return;}
             const tmpArr = [...this.tmpLayout].map(d => ({ ...d }));
