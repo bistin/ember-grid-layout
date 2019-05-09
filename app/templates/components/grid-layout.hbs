@@ -1,4 +1,4 @@
-<div class="grid-layout">
+<div class="grid-layout" style={{containerStyle}} {{on "dragover" (action this.dragoveraction)}}>
     {{yield (hash
       containerWidth=width
       margin=margin
@@ -6,8 +6,8 @@
       containerPadding=containerPadding
       cols=cols
       maxRows=maxRows
-      onDrag=(action "onDrag")
       onDragStart=(action "onDragStart")
       onDragStop=(action "onDragStop")
+      remove=(action "remove")
       ) this.innerLayout}}
 </div>
