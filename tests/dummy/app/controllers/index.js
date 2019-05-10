@@ -36,7 +36,7 @@ export default Controller.extend({
 
     actions : {
         changeWidth() {
-            this.set('width', this.width * 1.2);
+            this.set('width', this.width * 0.8);
         },
 
         add() {

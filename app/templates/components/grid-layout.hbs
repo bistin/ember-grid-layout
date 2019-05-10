@@ -1,3 +1,4 @@
+{{update-width width (action this.widthObserver)}}
 <div class="grid-layout" style={{containerStyle}} {{on "dragover" (action this.dragoveraction)}}>
     {{yield (hash
       containerWidth=width

@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { compact, moveElement, bottom } from "ember-grid/utils"; 
+import { compact, moveElement, bottom, correctBounds } from "ember-grid/utils"; 
 import { setProperties, computed } from "@ember/object";
 import { alias } from "@ember/object/computed";
 import { htmlSafe } from '@ember/string';
@@ -49,6 +49,19 @@ export default Component.extend({
         );
     },
 
+    widthObserver(width) {
+        if(width < 300) {
+            this.set('cols', 1);
+            const tmpArr = [...this.innerLayout].map(d => ({ ...d }));
+
+            const layout2 = compact(correctBounds(tmpArr, { cols: this.cols }), this.compactType, this.cols);
+            this.innerLayout.forEach((d, i) => {
+                setProperties(d, layout2[i]);
+            });
+        }
+    },
+
+    
     calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this;
         const colWidth = this.calcColWidth();
