@@ -12,7 +12,7 @@ export default Component.extend({
         this.dragMove = e => throttle(this, this._dragMove, e, 80, false)
     },
 
-    styleText: computed('pos.{x,y,w,h}', function() {
+    styleText: computed('pos.{x,y,w,h}', 'grid.containerWidth', function() {
         if(!this.pos){ return "";}
         const { x, y, w, h } = this.pos;
         const p = this.calcPosition(x, y, w, h)

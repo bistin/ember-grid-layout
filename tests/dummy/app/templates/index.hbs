@@ -1,8 +1,8 @@
 Index test
 
-<button {{action "add"}}>add</button>
+<button {{action "add"}}>add</button> <button {{action "changeWidth"}}>width</button>
 
-<GridLayout @layoutModel={{this.layout}} as |grid layoutModel|>
+<GridLayout @layoutModel={{this.layout}} @width={{this.width}} as |grid layoutModel|>
     {{#each layoutModel as |l index|}}
         <GridItem @grid={{grid}} @pos={{l}} @index={{index}} @handle=".dragHandle" as |gd|>
             <a class="dragHandle">handle</a>

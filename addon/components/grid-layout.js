@@ -13,13 +13,12 @@ export default Component.extend({
             cols: 2,
             className: "",
             style: {},
-            width: 400,
+            width: this.width || 800,
             draggableHandle: "",
             draggableCancel: "",
             containerPadding: [10, 10],
             rowHeight: 35,
             maxRows: 500, // infinite vertical growth
-            // layoutModel: [],
             margin: [10, 10],
             isDraggable: true,
             isResizable: true,
@@ -27,13 +26,6 @@ export default Component.extend({
             verticalCompact: true,
             compactType: "vertical",
             preventCollision: false,
-            // onLayoutChange: noop,
-            // onDragStart: noop,
-            // onDrag: noop,
-            // onDragStop: noop,
-            // onResizeStart: noop,
-            // onResize: noop,
-            // onResizeStop: noop
         });
     },
 
@@ -146,3 +138,12 @@ export default Component.extend({
     }
 
 });
+
+
+// onLayoutChange: noop,
+// onDragStart: noop,
+// onDrag: noop,
+// onDragStop: noop,
+// onResizeStart: noop,
+// onResize: noop,
+// onResizeStop: noop
