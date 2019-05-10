@@ -29,11 +29,16 @@ export default Controller.extend({
             compactType: "vertical",
             preventCollision: true,
             cols: 2,
+            width: 500
         });
     },
     layout,
 
     actions : {
+        changeWidth() {
+            this.set('width', this.width * 1.2);
+        },
+
         add() {
             i = i + 1;
             let newX = i % 2;
@@ -46,11 +51,9 @@ export default Controller.extend({
                 "i":i.toString(),
                 "static":false
             };
-            console.log(JSON.stringify(newL))
+            
             const tmpArr = [...this.layout, newL].map(d => ({ ...d }));
             const isUserAction = true;
-            
-            
             const layout = moveElement(
                 tmpArr,
                 newL,
