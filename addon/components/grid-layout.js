@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { compact, moveElement, bottom } from "ember-grid/utils"; 
+import { compact, moveElement, bottom, correctBounds } from "ember-grid/utils"; 
 import { setProperties, computed } from "@ember/object";
 import { alias } from "@ember/object/computed";
 import { htmlSafe } from '@ember/string';
@@ -24,8 +24,9 @@ export default Component.extend({
             isResizable: true,
             useCSSTransforms: true,
             verticalCompact: true,
-            compactType: "vertical",
             preventCollision: false,
+            compactType: "vertical",
+            breakpointWidth: this.breakpointWidth || 300
         });
     },
 
@@ -47,6 +48,18 @@ export default Component.extend({
         return (
             (width - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
         );
+    },
+
+    widthObserver(width) {
+        if(width < this.breakpointWidth) {
+            this.set('cols', 1);
+            const tmpArr = [...this.innerLayout].map(d => ({ ...d }));
+
+            const layout2 = compact(correctBounds(tmpArr, { cols: this.cols }), this.compactType, this.cols);
+            this.innerLayout.forEach((d, i) => {
+                setProperties(d, layout2[i]);
+            });
+        }
     },
 
     calcPosition(x, y, w, h) {
