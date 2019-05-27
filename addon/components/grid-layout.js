@@ -24,8 +24,9 @@ export default Component.extend({
             isResizable: true,
             useCSSTransforms: true,
             verticalCompact: true,
-            compactType: "vertical",
             preventCollision: false,
+            compactType: "vertical",
+            breakpointWidth: this.breakpointWidth || 300
         });
     },
 
@@ -50,7 +51,7 @@ export default Component.extend({
     },
 
     widthObserver(width) {
-        if(width < 300) {
+        if(width < this.breakpointWidth) {
             this.set('cols', 1);
             const tmpArr = [...this.innerLayout].map(d => ({ ...d }));
 
@@ -61,7 +62,6 @@ export default Component.extend({
         }
     },
 
-    
     calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this;
         const colWidth = this.calcColWidth();
