@@ -98,7 +98,10 @@ export default Component.extend({
                 }
                 // move widget y by amount scrolled
                 // el.top += scrollEl.scrollTop - prevScroll;
-                console.log(scrollEl.scrollTop - prevScroll)
+                const deltaY = scrollEl.scrollTop - prevScroll;
+                if(deltaY != 0) {
+                    this.grid.updateReferencePoint(deltaY);
+                }
             }
         }
     },

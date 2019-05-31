@@ -139,6 +139,10 @@ export default Component.extend({
             this.tmpLayout = null;
         },
 
+        updateReferencePoint(deltaY) {
+            this.set('startPoint.y', this.startPoint.y + deltaY)
+        },
+
         remove(item) {
             this.innerLayout.removeObject(item);
 
