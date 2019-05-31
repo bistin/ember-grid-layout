@@ -96,8 +96,10 @@ export default Component.extend({
         const deltaY = e.clientY - this.startPoint.y;
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
-        const pos = this.calcXY(top, left);
-
+        // console.log(deltaY, top,  document.getElementsByTagName('html')[0].scrollTop - this.tmp)
+        const deltaTop = document.getElementsByTagName('html')[0].scrollTop - this.tmp;
+        const pos = this.calcXY(top + deltaTop, left);
+        // console.log(pos)
         this.onDrag(pos.x, pos.y, this.dragIndex);
     },
 
@@ -133,6 +135,7 @@ export default Component.extend({
             this.set('startPosition', startPosition);
             this.set('startPoint',{ x, y });
             this.set('dragIndex', dragIndex);
+            this.tmp = document.getElementsByTagName('html')[0].scrollTop;
         },
 
         onDragStop() {
@@ -140,8 +143,9 @@ export default Component.extend({
         },
 
         updateReferencePoint(deltaY) {
+            // this.tmp += deltaY;
             // console.log(deltaY)
-            this.set('startPoint.y', this.startPoint.y - deltaY)
+            // this.set('startPoint.y', this.startPoint.y - deltaY)
             // console.log(this.startPoint.y)
         },
 

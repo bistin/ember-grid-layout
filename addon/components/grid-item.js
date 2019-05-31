@@ -80,8 +80,8 @@ export default Component.extend({
             var scrollEl = getScrollParent(el);
 
             if (scrollEl != null) {
-                var prevScroll = scrollEl.scrollTop;
-                if (rect.top < 0 && distance < 0) {
+                // var prevScroll = scrollEl.scrollTop;
+                if ((rect.bottom < rect.height) && distance < 0) {
                     // moving up
                     if (el.offsetHeight > innerHeightOrClientHeight) {
                         scrollEl.scrollTop += distance;
@@ -98,10 +98,10 @@ export default Component.extend({
                 }
                 // move widget y by amount scrolled
                 // el.top += scrollEl.scrollTop - prevScroll;
-                const deltaY = scrollEl.scrollTop - prevScroll;
-                if(deltaY != 0) {
-                    this.grid.updateReferencePoint(deltaY);
-                }
+                // const deltaY = scrollEl.scrollTop - prevScroll;
+                // if(deltaY != 0) {
+                //     this.grid.updateReferencePoint(deltaY);
+                // }
             }
         }
     },
