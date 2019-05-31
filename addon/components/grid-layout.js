@@ -27,7 +27,6 @@ export default Component.extend({
             preventCollision: false,
             compactType: "vertical",
             breakpointWidth: this.breakpointWidth || 300,
-            
         });
     },
 
@@ -96,10 +95,9 @@ export default Component.extend({
         const deltaY = e.clientY - this.startPoint.y;
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
-        // console.log(deltaY, top,  document.getElementsByTagName('html')[0].scrollTop - this.tmp)
         const deltaTop = document.getElementsByTagName('html')[0].scrollTop - this.tmp;
+
         const pos = this.calcXY(top + deltaTop, left);
-        // console.log(pos)
         this.onDrag(pos.x, pos.y, this.dragIndex);
     },
 
@@ -140,13 +138,7 @@ export default Component.extend({
 
         onDragStop() {
             this.tmpLayout = null;
-        },
-
-        updateReferencePoint(deltaY) {
-            // this.tmp += deltaY;
-            // console.log(deltaY)
-            // this.set('startPoint.y', this.startPoint.y - deltaY)
-            // console.log(this.startPoint.y)
+            this.tmp = null;
         },
 
         remove(item) {

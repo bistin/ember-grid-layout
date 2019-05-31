@@ -65,23 +65,19 @@ export default Component.extend({
 
     updateScrollPosition(el, distance) {
         // is widget in view?
-        // console.log(el)
-        var rect = el.getBoundingClientRect();
-        //var scrollEl = getScrollParent(el);
-        var innerHeightOrClientHeight = (window.innerHeight || document.documentElement.clientHeight);
-        if ((rect.bottom < rect.height) ||
-            rect.bottom + rect.height / 2 > innerHeightOrClientHeight
-           ) {
+        const rect = el.getBoundingClientRect();
+        const innerHeightOrClientHeight = (window.innerHeight || document.documentElement.clientHeight);
+        if ((rect.top < 30) || rect.bottom > innerHeightOrClientHeight) {
             // set scrollTop of first parent that scrolls
             // if parent is larger than el, set as low as possible
             // to get entire widget on screen
-            var offsetDiffDown = rect.bottom - innerHeightOrClientHeight;
-            var offsetDiffUp = rect.top;
-            var scrollEl = getScrollParent(el);
+            const offsetDiffDown = rect.bottom - innerHeightOrClientHeight;
+            const offsetDiffUp = rect.top;
+            const scrollEl = getScrollParent(el);
 
             if (scrollEl != null) {
                 // var prevScroll = scrollEl.scrollTop;
-                if ((rect.bottom < rect.height) && distance < 0) {
+                if ((rect.top < 30) && distance < 0) {
                     // moving up
                     if (el.offsetHeight > innerHeightOrClientHeight) {
                         scrollEl.scrollTop += distance;
@@ -96,12 +92,6 @@ export default Component.extend({
                         scrollEl.scrollTop += offsetDiffDown > distance ? distance : offsetDiffDown;
                     }
                 }
-                // move widget y by amount scrolled
-                // el.top += scrollEl.scrollTop - prevScroll;
-                // const deltaY = scrollEl.scrollTop - prevScroll;
-                // if(deltaY != 0) {
-                //     this.grid.updateReferencePoint(deltaY);
-                // }
             }
         }
     },
