@@ -140,7 +140,9 @@ export default Component.extend({
         },
 
         updateReferencePoint(deltaY) {
-            this.set('startPoint.y', this.startPoint.y + deltaY)
+            // console.log(deltaY)
+            this.set('startPoint.y', this.startPoint.y - deltaY)
+            // console.log(this.startPoint.y)
         },
 
         remove(item) {
