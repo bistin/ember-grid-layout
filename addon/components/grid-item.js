@@ -3,12 +3,25 @@ import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 import { throttle } from '@ember/runloop';
 
+function getScrollParent(el) {
+    let returnEl;
+    if (el == null) {
+        returnEl = null;
+    } else if (el.scrollHeight > el.clientHeight) {
+        returnEl = el;
+    } else {
+        returnEl = getScrollParent(el.parentNode);
+    }
+    return returnEl;
+}
+
 export default Component.extend({
     //layout,
     tagName: "",
 
     init() {
         this._super();
+        this.set('tmpY', null);
         this.dragMove = e => throttle(this, this._dragMove, e, 80, false)
     },
 
@@ -50,6 +63,47 @@ export default Component.extend({
         );
     },
 
+    updateScrollPosition(el, distance) {
+        // is widget in view?
+        // console.log(el)
+        var rect = el.getBoundingClientRect();
+        //var scrollEl = getScrollParent(el);
+        var innerHeightOrClientHeight = (window.innerHeight || document.documentElement.clientHeight);
+        if ((rect.bottom < rect.height) ||
+            rect.bottom + rect.height / 2 > innerHeightOrClientHeight
+           ) {
+            // set scrollTop of first parent that scrolls
+            // if parent is larger than el, set as low as possible
+            // to get entire widget on screen
+            var offsetDiffDown = rect.bottom - innerHeightOrClientHeight;
+            var offsetDiffUp = rect.top;
+            var scrollEl = getScrollParent(el);
+
+            if (scrollEl != null) {
+                var prevScroll = scrollEl.scrollTop;
+                if (rect.top < 0 && distance < 0) {
+                    // moving up
+                    if (el.offsetHeight > innerHeightOrClientHeight) {
+                        scrollEl.scrollTop += distance;
+                    } else {
+                        scrollEl.scrollTop += Math.abs(offsetDiffUp) > Math.abs(distance) ? distance : offsetDiffUp;
+                    }
+                } else if (distance > 0) {
+                    // moving down
+                    if (el.offsetHeight > innerHeightOrClientHeight) {
+                        scrollEl.scrollTop += distance;
+                    } else {
+                        scrollEl.scrollTop += offsetDiffDown > distance ? distance : offsetDiffDown;
+                    }
+                }
+                // move widget y by amount scrolled
+                // el.top += scrollEl.scrollTop - prevScroll;
+                console.log(scrollEl.scrollTop - prevScroll)
+            }
+        }
+    },
+
+
     actions: {
         remove() {
             this.grid.remove(this.pos);
@@ -58,8 +112,8 @@ export default Component.extend({
         dragStartAction(e) {
             const newPosition = { top: 0, left: 0 };
             this.set('startPoint', {
-                x: e.pageX,
-                y: e.pageY
+                x: e.clientX,
+                y: e.clientY
             });
 
             let node = e.target
@@ -77,8 +131,18 @@ export default Component.extend({
             this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index);
         },
 
+        dragMoveAction(e) {
+            if(!this.tmpY) {
+                this.tmpY = e.clientY;
+            }
+            const distance = e.clientY - this.tmpY;
+            this.updateScrollPosition(e.target.children[0], distance);
+            this.tmpY = e.clientY;
+        },
+
         dragEndAction() {
             this.grid.onDragStop();
+            this.tmpY = null;
         }
     }
 

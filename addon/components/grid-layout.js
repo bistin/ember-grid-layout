@@ -1,8 +1,8 @@
 import Component from '@ember/component';
-import { compact, moveElement, bottom, correctBounds } from "ember-grid/utils"; 
 import { setProperties, computed } from "@ember/object";
 import { alias } from "@ember/object/computed";
 import { htmlSafe } from '@ember/string';
+import { compact, moveElement, bottom, correctBounds } from "ember-grid/utils"; 
 
 export default Component.extend({
     tagName: '',
@@ -26,7 +26,8 @@ export default Component.extend({
             verticalCompact: true,
             preventCollision: false,
             compactType: "vertical",
-            breakpointWidth: this.breakpointWidth || 300
+            breakpointWidth: this.breakpointWidth || 300,
+            
         });
     },
 
@@ -96,6 +97,7 @@ export default Component.extend({
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
         const pos = this.calcXY(top, left);
+
         this.onDrag(pos.x, pos.y, this.dragIndex);
     },
 
