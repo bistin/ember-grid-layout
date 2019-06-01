@@ -22,7 +22,8 @@ export default Component.extend({
     init() {
         this._super();
         this.set('tmpY', null);
-        this.dragMove = e => throttle(this, this._dragMove, e, 80, false)
+        this.dragMove = e => throttle(this, this._dragMove, e, 80, false);
+        this.scrollParent = null;
     },
 
     styleText: computed('pos.{x,y,w,h}', 'grid.containerWidth', function() {
@@ -119,7 +120,8 @@ export default Component.extend({
                 clientRect.top - parentRect.top + offsetParent.scrollTop;
 
             this.set("dragging", newPosition);
-            this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index);
+            this.scrollParent = getScrollParent(e.target.children[0]);
+            this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollParent);
         },
 
         dragMoveAction(e) {

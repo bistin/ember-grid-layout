@@ -6,6 +6,7 @@ import { compact, moveElement, bottom, correctBounds } from "ember-grid/utils";
 
 export default Component.extend({
     tagName: '',
+    scrollElement: null,
     init() {
         this._super();
         this.setProperties({
@@ -27,12 +28,7 @@ export default Component.extend({
             preventCollision: false,
             compactType: "vertical",
             breakpointWidth: this.breakpointWidth || 300,
-        });
-
-        // for fastboot?
-        if(document && document.getElementsByTagName) {
-            this.scorllElememt = document.getElementsByTagName('html')[0];
-        }
+        })
     },
 
     innerLayout: alias("layoutModel"),
@@ -133,12 +129,13 @@ export default Component.extend({
     },
 
     actions: {
-        onDragStart(startPosition, x, y, dragIndex) {
+        onDragStart(startPosition, x, y, dragIndex, scrollElement) {
             this.tmpLayout = this.innerLayout.toArray().map(d => ({ ...d }));
             this.set('startPosition', startPosition);
             this.set('startPoint',{ x, y });
             this.set('dragIndex', dragIndex);
-            this.tmp = this.scorllElememt.scrollTop;
+            this.scorllElememt = scrollElement;
+            this.tmp = scrollElement.scrollTop;
         },
 
         onDragStop() {
