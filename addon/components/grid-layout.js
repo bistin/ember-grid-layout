@@ -1,11 +1,12 @@
 import Component from '@ember/component';
-import { compact, moveElement, bottom, correctBounds } from "ember-grid/utils"; 
 import { setProperties, computed } from "@ember/object";
 import { alias } from "@ember/object/computed";
 import { htmlSafe } from '@ember/string';
+import { compact, moveElement, bottom, correctBounds } from "ember-grid/utils"; 
 
 export default Component.extend({
     tagName: '',
+    scrollElement: null,
     init() {
         this._super();
         this.setProperties({
@@ -26,8 +27,8 @@ export default Component.extend({
             verticalCompact: true,
             preventCollision: false,
             compactType: "vertical",
-            breakpointWidth: this.breakpointWidth || 300
-        });
+            breakpointWidth: this.breakpointWidth || 300,
+        })
     },
 
     innerLayout: alias("layoutModel"),
@@ -95,7 +96,9 @@ export default Component.extend({
         const deltaY = e.clientY - this.startPoint.y;
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
-        const pos = this.calcXY(top, left);
+        const deltaTop = this.scorllElememt.scrollTop - this.tmp;
+
+        const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
     },
 
@@ -126,15 +129,18 @@ export default Component.extend({
     },
 
     actions: {
-        onDragStart(startPosition, x, y, dragIndex) {
+        onDragStart(startPosition, x, y, dragIndex, scrollElement) {
             this.tmpLayout = this.innerLayout.toArray().map(d => ({ ...d }));
             this.set('startPosition', startPosition);
             this.set('startPoint',{ x, y });
             this.set('dragIndex', dragIndex);
+            this.scorllElememt = scrollElement;
+            this.tmp = scrollElement.scrollTop;
         },
 
         onDragStop() {
             this.tmpLayout = null;
+            this.tmp = null;
         },
 
         remove(item) {

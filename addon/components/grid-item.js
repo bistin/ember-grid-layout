@@ -3,13 +3,27 @@ import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 import { throttle } from '@ember/runloop';
 
+function getScrollParent(el) {
+    let returnEl;
+    if (el == null) {
+        returnEl = null;
+    } else if (el.scrollHeight > el.clientHeight) {
+        returnEl = el;
+    } else {
+        returnEl = getScrollParent(el.parentNode);
+    }
+    return returnEl;
+}
+
 export default Component.extend({
     //layout,
     tagName: "",
 
     init() {
         this._super();
-        this.dragMove = e => throttle(this, this._dragMove, e, 80, false)
+        this.set('tmpY', null);
+        this.dragMove = e => throttle(this, this._dragMove, e, 80, false);
+        this.scrollParent = null;
     },
 
     styleText: computed('pos.{x,y,w,h}', 'grid.containerWidth', function() {
@@ -42,13 +56,45 @@ export default Component.extend({
         return out;
     },
 
-
     calcColWidth() {
         const { margin, containerPadding, containerWidth, cols } = this.grid;
         return (
             (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
         );
     },
+
+    updateScrollPosition(el, distance) {
+        // is widget in view?
+        const rect = el.getBoundingClientRect();
+        const innerHeightOrClientHeight = (window.innerHeight || document.documentElement.clientHeight);
+        if ((rect.top < 30) || rect.bottom > innerHeightOrClientHeight) {
+            // set scrollTop of first parent that scrolls
+            // if parent is larger than el, set as low as possible
+            // to get entire widget on screen
+            const offsetDiffDown = rect.bottom - innerHeightOrClientHeight;
+            const offsetDiffUp = rect.top;
+            const scrollEl = getScrollParent(el);
+
+            if (scrollEl != null) {
+                if ((rect.top < 30) && distance < 0) {
+                    // moving up
+                    if (el.offsetHeight > innerHeightOrClientHeight) {
+                        scrollEl.scrollTop += distance;
+                    } else {
+                        scrollEl.scrollTop += Math.abs(offsetDiffUp) > Math.abs(distance) ? distance : offsetDiffUp;
+                    }
+                } else if (distance > 0) {
+                    // moving down
+                    if (el.offsetHeight > innerHeightOrClientHeight) {
+                        scrollEl.scrollTop += distance;
+                    } else {
+                        scrollEl.scrollTop += offsetDiffDown > distance ? distance : offsetDiffDown;
+                    }
+                }
+            }
+        }
+    },
+
 
     actions: {
         remove() {
@@ -58,8 +104,8 @@ export default Component.extend({
         dragStartAction(e) {
             const newPosition = { top: 0, left: 0 };
             this.set('startPoint', {
-                x: e.pageX,
-                y: e.pageY
+                x: e.clientX,
+                y: e.clientY
             });
 
             let node = e.target
@@ -74,11 +120,22 @@ export default Component.extend({
                 clientRect.top - parentRect.top + offsetParent.scrollTop;
 
             this.set("dragging", newPosition);
-            this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index);
+            this.scrollParent = getScrollParent(e.target.children[0]);
+            this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollParent);
+        },
+
+        dragMoveAction(e) {
+            if(!this.tmpY) {
+                this.tmpY = e.clientY;
+            }
+            const distance = e.clientY - this.tmpY;
+            this.updateScrollPosition(e.target.children[0], distance);
+            this.tmpY = e.clientY;
         },
 
         dragEndAction() {
             this.grid.onDragStop();
+            this.tmpY = null;
         }
     }
 
