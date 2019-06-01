@@ -28,6 +28,11 @@ export default Component.extend({
             compactType: "vertical",
             breakpointWidth: this.breakpointWidth || 300,
         });
+
+        // for fastboot?
+        if(document && document.getElementsByTagName) {
+            this.scorllElememt = document.getElementsByTagName('html')[0];
+        }
     },
 
     innerLayout: alias("layoutModel"),
@@ -95,7 +100,7 @@ export default Component.extend({
         const deltaY = e.clientY - this.startPoint.y;
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
-        const deltaTop = document.getElementsByTagName('html')[0].scrollTop - this.tmp;
+        const deltaTop = this.scorllElememt.scrollTop - this.tmp;
 
         const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
@@ -133,7 +138,7 @@ export default Component.extend({
             this.set('startPosition', startPosition);
             this.set('startPoint',{ x, y });
             this.set('dragIndex', dragIndex);
-            this.tmp = document.getElementsByTagName('html')[0].scrollTop;
+            this.tmp = this.scorllElememt.scrollTop;
         },
 
         onDragStop() {

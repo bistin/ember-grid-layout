@@ -55,7 +55,6 @@ export default Component.extend({
         return out;
     },
 
-
     calcColWidth() {
         const { margin, containerPadding, containerWidth, cols } = this.grid;
         return (
@@ -76,7 +75,6 @@ export default Component.extend({
             const scrollEl = getScrollParent(el);
 
             if (scrollEl != null) {
-                // var prevScroll = scrollEl.scrollTop;
                 if ((rect.top < 30) && distance < 0) {
                     // moving up
                     if (el.offsetHeight > innerHeightOrClientHeight) {
