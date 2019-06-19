@@ -1,8 +1,8 @@
 {
-  "name": "ember-grid",
+  "name": "ember-grid-layout",
   "version": "0.0.0",
   "private": true,
-  "description": "Small description for ember-grid goes here",
+  "description": "Small description for ember-grid-layout goes here",
   "keywords": [
     "ember-addon"
   ],
