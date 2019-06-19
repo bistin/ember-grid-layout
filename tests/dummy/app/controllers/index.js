@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { compact, moveElement } from "ember-grid/utils";
+import { compact, moveElement } from "ember-grid-layout/utils";
 import { setProperties } from "@ember/object";
 
 let i = 10;

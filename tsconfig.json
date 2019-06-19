@@ -27,16 +27,16 @@
         "tests/dummy/app/*",
         "app/*"
       ],
-      "ember-grid": [
+      "ember-grid-layout": [
         "addon"
       ],
-      "ember-grid/*": [
+      "ember-grid-layout/*": [
         "addon/*"
       ],
-      "ember-grid/test-support": [
+      "ember-grid-layout/test-support": [
         "addon-test-support"
       ],
-      "ember-grid/test-support/*": [
+      "ember-grid-layout/test-support/*": [
         "addon-test-support/*"
       ],
       "*": [

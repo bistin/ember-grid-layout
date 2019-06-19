@@ -1,1 +1,1 @@
-export { default } from 'ember-grid/components/grid-item';
+export { default } from 'ember-grid-layout/components/grid-item';

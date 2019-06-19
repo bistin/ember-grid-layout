@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { setProperties, computed } from "@ember/object";
 import { alias } from "@ember/object/computed";
 import { htmlSafe } from '@ember/string';
-import { compact, moveElement, bottom, correctBounds } from "ember-grid/utils"; 
+import { compact, moveElement, bottom, correctBounds } from "ember-grid-layout/utils"; 
 
 export default Component.extend({
     tagName: '',
