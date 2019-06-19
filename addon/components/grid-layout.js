@@ -7,6 +7,9 @@ import { compact, moveElement, bottom, correctBounds } from "ember-grid-layout/u
 export default Component.extend({
     tagName: '',
     scrollElement: null,
+
+    // in case the input array is not pure position array, we provide an item key
+    positionKey: null,
     init() {
         this._super();
         this.setProperties({
@@ -31,7 +34,13 @@ export default Component.extend({
         })
     },
 
-    innerLayout: alias("layoutModel"),
+    innerLayout: computed("layoutModel.[]", "positionKey", function() {
+        if(this.positionKey) {
+            return this.layoutModel.map(d => d[this.positionKey])
+        }
+        return this.layoutModel;
+    }),
+
     calcXY(top, left) {
         const { margin, cols, rowHeight, maxRows } = this;
         const { w, h } = this.innerLayout[this.dragIndex];

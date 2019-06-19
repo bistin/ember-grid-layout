@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { compact, moveElement } from "ember-grid-layout/utils";
-import { setProperties } from "@ember/object";
+import { setProperties, computed } from "@ember/object";
 
 let i = 10;
 const layout = [
@@ -42,7 +42,12 @@ export default Controller.extend({
             width: 500
         });
     },
-    layout,
+
+    wrappedLayout: computed('layout', function() {
+        return layout.map(d => ({
+            position: d
+        }));
+    }),
 
     actions : {
         changeWidth() {
