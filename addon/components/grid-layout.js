@@ -36,7 +36,7 @@ export default Component.extend({
 
     cloneToLayoutObj() {
         if(this.positionKey) {
-            return this.layoutModel.map(d => ({...d[this.positionKey] }));
+            return this.layoutModel.map(d => ({...d[this.positionKey] })).toArray();
         }
         return this.layoutModel.map(d => ({ ...d }));
     },
