@@ -8,22 +8,22 @@ const layout = [
     {"x":1,"y":0,"w":1,"h":4,"i":"1","static":false},
     {"x":0,"y":0,"w":1,"h":4,"i":"2","static":false},
     {"x":1,"y":0,"w":1,"h":4,"i":"3","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"4","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"5","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"6","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"7","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"8","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"9","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"10","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"11","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"12","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"13","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"14","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"15","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"16","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"17","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"18","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"19","static":false}
+    // {"x":0,"y":0,"w":1,"h":4,"i":"4","static":false},
+    // {"x":1,"y":0,"w":1,"h":4,"i":"5","static":false},
+    // {"x":0,"y":0,"w":1,"h":4,"i":"6","static":false},
+    // {"x":1,"y":0,"w":1,"h":4,"i":"7","static":false},
+    // {"x":0,"y":0,"w":1,"h":4,"i":"8","static":false},
+    // {"x":1,"y":0,"w":1,"h":4,"i":"9","static":false},
+    // {"x":0,"y":0,"w":1,"h":4,"i":"10","static":false},
+    // {"x":1,"y":0,"w":1,"h":4,"i":"11","static":false},
+    // {"x":0,"y":0,"w":1,"h":4,"i":"12","static":false},
+    // {"x":1,"y":0,"w":1,"h":4,"i":"13","static":false},
+    // {"x":0,"y":0,"w":1,"h":4,"i":"14","static":false},
+    // {"x":1,"y":0,"w":1,"h":4,"i":"15","static":false},
+    // {"x":0,"y":0,"w":1,"h":4,"i":"16","static":false},
+    // {"x":1,"y":0,"w":1,"h":4,"i":"17","static":false},
+    // {"x":0,"y":0,"w":1,"h":4,"i":"18","static":false},
+    // {"x":1,"y":0,"w":1,"h":4,"i":"19","static":false}
 ];
 
 export default Controller.extend({
@@ -44,7 +44,7 @@ export default Controller.extend({
     },
 
     wrappedLayout: computed('layout', function() {
-        return layout.map(d => ({
+        return this.layout.map(d => ({
             position: d
         }));
     }),

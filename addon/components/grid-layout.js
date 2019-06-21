@@ -105,7 +105,7 @@ export default Component.extend({
         const deltaY = e.clientY - this.startPoint.y;
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
-        const deltaTop = this.scorllElememt.scrollTop - this.tmp;
+        const deltaTop = (this.scorllElememt) ? this.scorllElememt.scrollTop - this.tmp : 0;
 
         const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
@@ -143,8 +143,10 @@ export default Component.extend({
             this.set('startPosition', startPosition);
             this.set('startPoint',{ x, y });
             this.set('dragIndex', dragIndex);
-            this.scorllElememt = scrollElement;
-            this.tmp = scrollElement.scrollTop;
+            if(scrollElement) {
+                this.scorllElememt = scrollElement;
+                this.tmp = scrollElement.scrollTop;
+            }
         },
 
         onDragStop() {
