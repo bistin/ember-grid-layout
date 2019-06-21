@@ -34,13 +34,6 @@ export default Component.extend({
         })
     },
 
-    innerLayout: computed("layoutModel.[]", "positionKey", function() {
-        if(this.positionKey) {
-            return this.layoutModel.map(d => d[this.positionKey])
-        }
-        return this.layoutModel;
-    }),
-
     cloneToLayoutObj() {
         if(this.positionKey) {
             return this.layoutModel.map(d => ({...d[this.positionKey] }));
@@ -74,18 +67,27 @@ export default Component.extend({
         );
     },
 
+    updateNewLayoutToModel(newLayout) {
+        if(this.positionKey) {
+            this.layoutModel.forEach((d, i) => {
+                setProperties(d[this.positionKey], newLayout[i]);
+            });
+        } else {
+            this.layoutModel.forEach((d, i) => {
+                setProperties(d, newLayout[i]);
+            });
+        }
+
+        const position = this.calcPosition(0, bottom(newLayout), 0, 0);
+        this.set('containerHeight', position.top);
+    },
+
     widthObserver(width) {
         if(width < this.breakpointWidth) {
             this.set('cols', 1);
             const tmpArr = this.cloneToLayoutObj();
-
             const layout2 = compact(correctBounds(tmpArr, { cols: this.cols }), this.compactType, this.cols);
-            this.innerLayout.forEach((d, i) => {
-                setProperties(d, layout2[i]);
-            });
-
-            const position = this.calcPosition(0, bottom(layout2), 0, 0);
-            this.set('containerHeight', position.top);
+            this.updateNewLayoutToModel(layout2);
         }
     },
 
@@ -148,12 +150,7 @@ export default Component.extend({
         const layout2 = compact(layout, this.compactType, this.cols);
 
         this.tmpLayout = layout2;
-        this.innerLayout.forEach((d, i) => {
-            setProperties(d, layout2[i]);
-        });
-
-        const position = this.calcPosition(0, bottom(layout2), 0, 0);
-        this.set('containerHeight', position.top);
+        this.updateNewLayoutToModel(layout2);
     },
 
     actions: {

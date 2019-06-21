@@ -18,7 +18,7 @@ Index test
 
 <GridLayout @layoutModel={{this.wrappedLayout}} @positionKey="position" @width={{this.width}} as |grid layoutModel|>
     {{#each layoutModel as |l index|}}
-        <GridItem @grid={{grid}} @pos={{l}} @index={{index}} @handle=".dragHandle" as |gd|>
+        <GridItem @grid={{grid}} @pos={{get l "position"}} @index={{index}} @handle=".dragHandle" as |gd|>
             <a class="dragHandle">handle</a>
             <button {{action gd.remove}}> X </button>
             <div key={{index}}>
