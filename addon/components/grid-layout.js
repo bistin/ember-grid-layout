@@ -171,14 +171,10 @@ export default Component.extend({
         },
 
         remove(item) {
-            // this.innerLayout.removeObject(item);
-
-            // const tmpArr = this.cloneToLayoutObj();
-            // const layout2 = compact(tmpArr, this.compactType, this.cols);
-
-            // this.innerLayout.forEach((d, i) => {
-            //     setProperties(d, layout2[i]);
-            // });
+            this.layoutModel.removeObject(item);
+            const tmpArr = this.cloneToLayoutObj();
+            const layout2 = compact(tmpArr, this.compactType, this.cols);
+            this.updateNewLayoutToModel(layout2);
         },
 
     }

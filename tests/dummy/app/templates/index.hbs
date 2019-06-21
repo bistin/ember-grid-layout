@@ -17,10 +17,10 @@ Index test
 </GridLayout> --}}
 
 <GridLayout @layoutModel={{this.wrappedLayout}} @positionKey="position" @width={{this.width}} as |grid layoutModel|>
-    {{#each layoutModel as |l index|}}
-        <GridItem @grid={{grid}} @pos={{get l "position"}} @index={{index}} @handle=".dragHandle" as |gd|>
+    {{#each layoutModel as |item index|}}
+        <GridItem @grid={{grid}} @pos={{get item "position"}} @index={{index}} @handle=".dragHandle" as |gd|>
             <a class="dragHandle">handle</a>
-            <button {{action gd.remove}}> X </button>
+            <button {{action grid.remove item}}> X </button>
             <div key={{index}}>
                 <span class="text">{{l.i}}</span>
                 w={{l.w}}, h={{l.h}}
