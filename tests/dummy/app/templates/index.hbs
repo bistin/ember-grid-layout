@@ -22,9 +22,8 @@ Index test
             <a class="dragHandle">handle</a>
             <button {{action grid.remove item}}> X </button>
             <div key={{index}}>
-                <span class="text">{{l.i}}</span>
-                w={{l.w}}, h={{l.h}}
-                x={{l.x}}, y={{l.y}}
+                <span class="text">{{item.data}}</span>
+
             </div>
         </GridItem>
     {{/each}}

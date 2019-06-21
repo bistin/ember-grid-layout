@@ -1,40 +1,29 @@
 import Controller from '@ember/controller';
 import { compact, moveElement } from "ember-grid-layout/utils";
-import { setProperties, computed } from "@ember/object";
+import { setProperties } from "@ember/object";
 
 let i = 10;
-const layout = [
+let layout = [
     {"x":0,"y":0,"w":2,"h":4,"i":"0","static":false},
     {"x":1,"y":0,"w":1,"h":4,"i":"1","static":false},
     {"x":0,"y":0,"w":1,"h":4,"i":"2","static":false},
     {"x":1,"y":0,"w":1,"h":4,"i":"3","static":false},
-    // {"x":0,"y":0,"w":1,"h":4,"i":"4","static":false},
-    // {"x":1,"y":0,"w":1,"h":4,"i":"5","static":false},
-    // {"x":0,"y":0,"w":1,"h":4,"i":"6","static":false},
-    // {"x":1,"y":0,"w":1,"h":4,"i":"7","static":false},
-    // {"x":0,"y":0,"w":1,"h":4,"i":"8","static":false},
-    // {"x":1,"y":0,"w":1,"h":4,"i":"9","static":false},
-    // {"x":0,"y":0,"w":1,"h":4,"i":"10","static":false},
-    // {"x":1,"y":0,"w":1,"h":4,"i":"11","static":false},
-    // {"x":0,"y":0,"w":1,"h":4,"i":"12","static":false},
-    // {"x":1,"y":0,"w":1,"h":4,"i":"13","static":false},
-    // {"x":0,"y":0,"w":1,"h":4,"i":"14","static":false},
-    // {"x":1,"y":0,"w":1,"h":4,"i":"15","static":false},
-    // {"x":0,"y":0,"w":1,"h":4,"i":"16","static":false},
-    // {"x":1,"y":0,"w":1,"h":4,"i":"17","static":false},
-    // {"x":0,"y":0,"w":1,"h":4,"i":"18","static":false},
-    // {"x":1,"y":0,"w":1,"h":4,"i":"19","static":false}
 ];
+
+layout = compact(
+    layout,
+    "vertical",
+    12
+);
+
+const wrappedLayout = layout.map((d, i) => ({
+    data: i,
+    position: d
+}));
 
 export default Controller.extend({
     init() {
         this._super();
-        this.set("layout",
-                 compact(
-                     layout,
-                     "vertical",
-                     12
-                 ));
         this.setProperties({
             compactType: "vertical",
             preventCollision: true,
@@ -43,11 +32,7 @@ export default Controller.extend({
         });
     },
 
-    wrappedLayout: computed('layout', function() {
-        return this.layout.map(d => ({
-            position: d
-        }));
-    }),
+    wrappedLayout: wrappedLayout,
 
     actions : {
         changeWidth() {
@@ -59,15 +44,18 @@ export default Controller.extend({
             let newX = i % 2;
             let newY = -0.1;
             const newL = {
-                "x":newX,
-                "y":newY,
-                "w":1,
-                "h":2,
-                "i":i.toString(),
-                "static":false
+                position: {
+                    "x":newX,
+                    "y":newY,
+                    "w":1,
+                    "h":2,
+                    "i":i.toString(),
+                    "static":false
+                },
+                data: i
             };
-            
-            const tmpArr = [...this.layout, newL].map(d => ({ ...d }));
+
+            const tmpArr = [...this.wrappedLayout, newL].map(d => ({ ...d.position }));
             const isUserAction = true;
             const layout = moveElement(
                 tmpArr,
@@ -85,14 +73,12 @@ export default Controller.extend({
                 'vertical',
                 this.cols );
             //let layout2 = layout;
+            newL.position = layout2[layout2.length -1];
 
-
-            this.layout.pushObject(layout2[layout2.length -1]);
-            this.layout.forEach((d, i) => {
-                setProperties(d, layout2[i]);
+            this.wrappedLayout.pushObject(newL);
+            this.wrappedLayout.forEach((d, i) => {
+                setProperties(d.position, layout2[i]);
             });
-
-
 
         }
     }
