@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import { setProperties, computed } from "@ember/object";
-import { alias } from "@ember/object/computed";
 import { htmlSafe } from '@ember/string';
 import { compact, moveElement, bottom, correctBounds } from "ember-grid-layout/utils"; 
 
@@ -13,6 +12,7 @@ export default Component.extend({
     init() {
         this._super();
         this.setProperties({
+            containerHeight: "",
             autoSize: true,
             cols: 2,
             className: "",
@@ -41,9 +41,23 @@ export default Component.extend({
         return this.layoutModel;
     }),
 
+    cloneToLayoutObj() {
+        if(this.positionKey) {
+            return this.layoutModel.map(d => ({...d[this.positionKey] }));
+        }
+        return this.layoutModel.map(d => ({ ...d }));
+    },
+
+    getPositionByIndex(index) {
+        if(this.positionKey) {
+            return this.layoutModel[index][this.positionKey];
+        }
+        return this.layoutModel[index];
+    },
+
     calcXY(top, left) {
         const { margin, cols, rowHeight, maxRows } = this;
-        const { w, h } = this.innerLayout[this.dragIndex];
+        const { w, h } = this.getPositionByIndex(this.dragIndex);
         const colWidth = this.calcColWidth();
         let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
         let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
@@ -63,12 +77,15 @@ export default Component.extend({
     widthObserver(width) {
         if(width < this.breakpointWidth) {
             this.set('cols', 1);
-            const tmpArr = [...this.innerLayout].map(d => ({ ...d }));
+            const tmpArr = this.cloneToLayoutObj();
 
             const layout2 = compact(correctBounds(tmpArr, { cols: this.cols }), this.compactType, this.cols);
             this.innerLayout.forEach((d, i) => {
                 setProperties(d, layout2[i]);
             });
+
+            const position = this.calcPosition(0, bottom(layout2), 0, 0);
+            this.set('containerHeight', position.top);
         }
     },
 
@@ -95,9 +112,9 @@ export default Component.extend({
         return out;
     },
 
-    containerStyle: computed('innerLayout.@each.{x,y,h,w}', function() {
-        const position = this.calcPosition(0, bottom(this.innerLayout), 0, 0);
-        return htmlSafe(`height:${position.top}px;`);
+    // containerHeight
+    containerStyle: computed('containerHeight', function() {
+        return htmlSafe(`height:${this.containerHeight}px;`);
     }),
 
     dragoveraction(e) {
@@ -135,11 +152,13 @@ export default Component.extend({
             setProperties(d, layout2[i]);
         });
 
+        const position = this.calcPosition(0, bottom(layout2), 0, 0);
+        this.set('containerHeight', position.top);
     },
 
     actions: {
         onDragStart(startPosition, x, y, dragIndex, scrollElement) {
-            this.tmpLayout = this.innerLayout.toArray().map(d => ({ ...d }));
+            this.tmpLayout = this.cloneToLayoutObj();
             this.set('startPosition', startPosition);
             this.set('startPoint',{ x, y });
             this.set('dragIndex', dragIndex);
@@ -155,14 +174,14 @@ export default Component.extend({
         },
 
         remove(item) {
-            this.innerLayout.removeObject(item);
+            // this.innerLayout.removeObject(item);
 
-            const tmpArr = [...this.innerLayout].map(d => ({ ...d }));
-            const layout2 = compact(tmpArr, this.compactType, this.cols);
+            // const tmpArr = this.cloneToLayoutObj();
+            // const layout2 = compact(tmpArr, this.compactType, this.cols);
 
-            this.innerLayout.forEach((d, i) => {
-                setProperties(d, layout2[i]);
-            });
+            // this.innerLayout.forEach((d, i) => {
+            //     setProperties(d, layout2[i]);
+            // });
         },
 
     }
