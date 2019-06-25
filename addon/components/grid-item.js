@@ -95,12 +95,7 @@ export default Component.extend({
         }
     },
 
-
     actions: {
-        remove() {
-            this.grid.remove(this.pos);
-        },
-
         dragStartAction(e) {
             const newPosition = { top: 0, left: 0 };
             this.set('startPoint', {

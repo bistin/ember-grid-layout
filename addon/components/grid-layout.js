@@ -1,15 +1,18 @@
 import Component from '@ember/component';
 import { setProperties, computed } from "@ember/object";
-import { alias } from "@ember/object/computed";
 import { htmlSafe } from '@ember/string';
 import { compact, moveElement, bottom, correctBounds } from "ember-grid-layout/utils"; 
 
 export default Component.extend({
     tagName: '',
     scrollElement: null,
+
+    // in case the input array is not pure position array, we provide an item key
+    positionKey: null,
     init() {
         this._super();
         this.setProperties({
+            containerHeight: "",
             autoSize: true,
             cols: 2,
             className: "",
@@ -31,10 +34,23 @@ export default Component.extend({
         })
     },
 
-    innerLayout: alias("layoutModel"),
+    cloneToLayoutObj() {
+        if(this.positionKey) {
+            return this.layoutModel.map(d => ({...d[this.positionKey] })).toArray();
+        }
+        return this.layoutModel.map(d => ({ ...d }));
+    },
+
+    getPositionByIndex(index) {
+        if(this.positionKey) {
+            return this.layoutModel[index][this.positionKey];
+        }
+        return this.layoutModel[index];
+    },
+
     calcXY(top, left) {
         const { margin, cols, rowHeight, maxRows } = this;
-        const { w, h } = this.innerLayout[this.dragIndex];
+        const { w, h } = this.getPositionByIndex(this.dragIndex);
         const colWidth = this.calcColWidth();
         let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
         let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
@@ -51,15 +67,27 @@ export default Component.extend({
         );
     },
 
+    updateNewLayoutToModel(newLayout) {
+        if(this.positionKey) {
+            this.layoutModel.forEach((d, i) => {
+                setProperties(d[this.positionKey], newLayout[i]);
+            });
+        } else {
+            this.layoutModel.forEach((d, i) => {
+                setProperties(d, newLayout[i]);
+            });
+        }
+
+        const position = this.calcPosition(0, bottom(newLayout), 0, 0);
+        this.set('containerHeight', position.top);
+    },
+
     widthObserver(width) {
         if(width < this.breakpointWidth) {
             this.set('cols', 1);
-            const tmpArr = [...this.innerLayout].map(d => ({ ...d }));
-
+            const tmpArr = this.cloneToLayoutObj();
             const layout2 = compact(correctBounds(tmpArr, { cols: this.cols }), this.compactType, this.cols);
-            this.innerLayout.forEach((d, i) => {
-                setProperties(d, layout2[i]);
-            });
+            this.updateNewLayoutToModel(layout2);
         }
     },
 
@@ -86,9 +114,9 @@ export default Component.extend({
         return out;
     },
 
-    containerStyle: computed('innerLayout.@each.{x,y,h,w}', function() {
-        const position = this.calcPosition(0, bottom(this.innerLayout), 0, 0);
-        return htmlSafe(`height:${position.top}px;`);
+    // containerHeight
+    containerStyle: computed('containerHeight', function() {
+        return htmlSafe(`height:${this.containerHeight}px;`);
     }),
 
     dragoveraction(e) {
@@ -96,7 +124,7 @@ export default Component.extend({
         const deltaY = e.clientY - this.startPoint.y;
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
-        const deltaTop = this.scorllElememt.scrollTop - this.tmp;
+        const deltaTop = (this.scorllElememt) ? this.scorllElememt.scrollTop - this.tmp : 0;
 
         const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
@@ -122,20 +150,19 @@ export default Component.extend({
         const layout2 = compact(layout, this.compactType, this.cols);
 
         this.tmpLayout = layout2;
-        this.innerLayout.forEach((d, i) => {
-            setProperties(d, layout2[i]);
-        });
-
+        this.updateNewLayoutToModel(layout2);
     },
 
     actions: {
         onDragStart(startPosition, x, y, dragIndex, scrollElement) {
-            this.tmpLayout = this.innerLayout.toArray().map(d => ({ ...d }));
+            this.tmpLayout = this.cloneToLayoutObj();
             this.set('startPosition', startPosition);
             this.set('startPoint',{ x, y });
             this.set('dragIndex', dragIndex);
-            this.scorllElememt = scrollElement;
-            this.tmp = scrollElement.scrollTop;
+            if(scrollElement) {
+                this.scorllElememt = scrollElement;
+                this.tmp = scrollElement.scrollTop;
+            }
         },
 
         onDragStop() {
@@ -144,14 +171,10 @@ export default Component.extend({
         },
 
         remove(item) {
-            this.innerLayout.removeObject(item);
-
-            const tmpArr = [...this.innerLayout].map(d => ({ ...d }));
+            this.layoutModel.removeObject(item);
+            const tmpArr = this.cloneToLayoutObj();
             const layout2 = compact(tmpArr, this.compactType, this.cols);
-
-            this.innerLayout.forEach((d, i) => {
-                setProperties(d, layout2[i]);
-            });
+            this.updateNewLayoutToModel(layout2);
         },
 
     }
