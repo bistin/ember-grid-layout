@@ -4,9 +4,10 @@
     @dragEndAction={{action "dragEndAction"}}
     @dragMoveAction={{action "dragMoveAction"}}
     @dragHandle={{@handle}}
+    
 >
 
-    <div class="grid-item" style={{styleText}}>
+    <div class="grid-item {{this.widthClass}}" style={{styleText}}>
         {{yield}}
     </div>
 </DraggableObject>
