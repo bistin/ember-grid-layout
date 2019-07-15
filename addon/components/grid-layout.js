@@ -1,16 +1,20 @@
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
-import { setProperties, computed } from "@ember/object";
+import { setProperties, action, computed } from "@ember/object";
 import { htmlSafe } from '@ember/string';
-import { compact, moveElement, bottom, correctBounds } from "ember-grid-layout/utils"; 
+import { compact, moveElement, bottom, correctBounds } from "ember-grid-layout/utils";
 
-export default Component.extend({
-    tagName: '',
-    scrollElement: null,
+@classic
+@tagName('')
+export default class GridLayoutComponent extends Component {
+    scrollElement = null;
 
     // in case the input array is not pure position array, we provide an item key
-    positionKey: null,
+    positionKey = null;
+
     init() {
-        this._super();
+        super.init();
         this.setProperties({
             containerHeight: "",
             autoSize: true,
@@ -32,21 +36,21 @@ export default Component.extend({
             compactType: "vertical",
             breakpointWidth: this.breakpointWidth || 300,
         })
-    },
+    }
 
     cloneToLayoutObj() {
         if(this.positionKey) {
             return this.layoutModel.map(d => ({...d[this.positionKey] })).toArray();
         }
         return this.layoutModel.map(d => ({ ...d }));
-    },
+    }
 
     getPositionByIndex(index) {
         if(this.positionKey) {
             return this.layoutModel[index][this.positionKey];
         }
         return this.layoutModel[index];
-    },
+    }
 
     calcXY(top, left) {
         const { margin, cols, rowHeight, maxRows } = this;
@@ -58,14 +62,14 @@ export default Component.extend({
         x = Math.max(Math.min(x, cols - w), 0);
         y = Math.max(Math.min(y, maxRows - h), 0);
         return { x, y };
-    },
+    }
 
     calcColWidth() {
         const { margin, containerPadding, width, cols } = this;
         return (
             (width - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
         );
-    },
+    }
 
     updateNewLayoutToModel(newLayout) {
         if(this.positionKey) {
@@ -80,7 +84,7 @@ export default Component.extend({
 
         const position = this.calcPosition(0, bottom(newLayout), 0, 0);
         this.set('containerHeight', position.top);
-    },
+    }
 
     widthObserver(width) {
         if(width < this.breakpointWidth) {
@@ -89,7 +93,7 @@ export default Component.extend({
             const layout2 = compact(correctBounds(tmpArr, { cols: this.cols }), this.compactType, this.cols);
             this.updateNewLayoutToModel(layout2);
         }
-    },
+    }
 
     calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this;
@@ -112,12 +116,13 @@ export default Component.extend({
         };
 
         return out;
-    },
+    }
 
     // containerHeight
-    containerStyle: computed('containerHeight', function() {
+    @computed('containerHeight')
+    get containerStyle() {
         return htmlSafe(`height:${this.containerHeight}px;`);
-    }),
+    }
 
     dragoveraction(e) {
         const deltaX = e.clientX - this.startPoint.x;
@@ -128,7 +133,7 @@ export default Component.extend({
 
         const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
-    },
+    }
 
     onDrag(x, y, index) {
         if(!this.tmpLayout) { return;}
@@ -151,35 +156,34 @@ export default Component.extend({
 
         this.tmpLayout = layout2;
         this.updateNewLayoutToModel(layout2);
-    },
-
-    actions: {
-        onDragStart(startPosition, x, y, dragIndex, scrollElement) {
-            this.tmpLayout = this.cloneToLayoutObj();
-            this.set('startPosition', startPosition);
-            this.set('startPoint',{ x, y });
-            this.set('dragIndex', dragIndex);
-            if(scrollElement) {
-                this.scorllElememt = scrollElement;
-                this.tmp = scrollElement.scrollTop;
-            }
-        },
-
-        onDragStop() {
-            this.tmpLayout = null;
-            this.tmp = null;
-        },
-
-        remove(item) {
-            this.layoutModel.removeObject(item);
-            const tmpArr = this.cloneToLayoutObj();
-            const layout2 = compact(tmpArr, this.compactType, this.cols);
-            this.updateNewLayoutToModel(layout2);
-        },
-
     }
 
-});
+    @action
+    onDragStart(startPosition, x, y, dragIndex, scrollElement) {
+        this.tmpLayout = this.cloneToLayoutObj();
+        this.set('startPosition', startPosition);
+        this.set('startPoint',{ x, y });
+        this.set('dragIndex', dragIndex);
+        if(scrollElement) {
+            this.scorllElememt = scrollElement;
+            this.tmp = scrollElement.scrollTop;
+        }
+    }
+
+    @action
+    onDragStop() {
+        this.tmpLayout = null;
+        this.tmp = null;
+    }
+
+    @action
+    remove(item) {
+        this.layoutModel.removeObject(item);
+        const tmpArr = this.cloneToLayoutObj();
+        const layout2 = compact(tmpArr, this.compactType, this.cols);
+        this.updateNewLayoutToModel(layout2);
+    }
+}
 
 
 // onLayoutChange: noop,

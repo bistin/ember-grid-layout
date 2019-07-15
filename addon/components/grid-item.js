@@ -1,5 +1,7 @@
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
+import { action, computed } from '@ember/object';
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 import { throttle } from '@ember/runloop';
 
@@ -15,23 +17,23 @@ function getScrollParent(el) {
     return returnEl;
 }
 
-export default Component.extend({
-    //layout,
-    tagName: "",
-
+@classic
+@tagName("")
+export default class GridItemComponent extends Component {
     init() {
-        this._super();
+        super.init();
         this.set('tmpY', null);
         this.dragMove = e => throttle(this, this._dragMove, e, 80, false);
         this.scrollParent = null;
-    },
+    }
 
-    styleText: computed('pos.{x,y,w,h}', 'grid.containerWidth', function() {
+    @computed('pos.{x,y,w,h}', 'grid.containerWidth')
+    get styleText() {
         if(!this.pos){ return "";}
         const { x, y, w, h } = this.pos;
         const p = this.calcPosition(x, y, w, h)
         return htmlSafe(`height:${p.height}px;width:${p.width}px;left:${p.left}px;top:${p.top}px`);
-    }),
+    }
 
     calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this.grid;
@@ -54,14 +56,14 @@ export default Component.extend({
         };
 
         return out;
-    },
+    }
 
     calcColWidth() {
         const { margin, containerPadding, containerWidth, cols } = this.grid;
         return (
             (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
         );
-    },
+    }
 
     updateScrollPosition(el, distance) {
         // is widget in view?
@@ -93,47 +95,45 @@ export default Component.extend({
                 }
             }
         }
-    },
-
-    actions: {
-        dragStartAction(e) {
-            const newPosition = { top: 0, left: 0 };
-            this.set('startPoint', {
-                x: e.clientX,
-                y: e.clientY
-            });
-
-            let node = e.target
-            const { offsetParent } = node;
-            node = node.children[0];
-            if (!offsetParent) return;
-            const parentRect = offsetParent.getBoundingClientRect();
-            const clientRect = node.getBoundingClientRect();
-            newPosition.left =
-                clientRect.left - parentRect.left + offsetParent.scrollLeft;
-            newPosition.top =
-                clientRect.top - parentRect.top + offsetParent.scrollTop;
-
-            this.set("dragging", newPosition);
-            this.scrollParent = getScrollParent(e.target.children[0]);
-            this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollParent);
-        },
-
-        dragMoveAction(e) {
-            if(!this.tmpY) {
-                this.tmpY = e.clientY;
-            }
-            const distance = e.clientY - this.tmpY;
-            this.updateScrollPosition(e.target.children[0], distance);
-            this.tmpY = e.clientY;
-        },
-
-        dragEndAction() {
-            this.grid.onDragStop();
-            this.tmpY = null;
-        }
     }
 
+    @action
+    dragStartAction(e) {
+        const newPosition = { top: 0, left: 0 };
+        this.set('startPoint', {
+            x: e.clientX,
+            y: e.clientY
+        });
 
+        let node = e.target
+        const { offsetParent } = node;
+        node = node.children[0];
+        if (!offsetParent) return;
+        const parentRect = offsetParent.getBoundingClientRect();
+        const clientRect = node.getBoundingClientRect();
+        newPosition.left =
+            clientRect.left - parentRect.left + offsetParent.scrollLeft;
+        newPosition.top =
+            clientRect.top - parentRect.top + offsetParent.scrollTop;
 
-});
+        this.set("dragging", newPosition);
+        this.scrollParent = getScrollParent(e.target.children[0]);
+        this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollParent);
+    }
+
+    @action
+    dragMoveAction(e) {
+        if(!this.tmpY) {
+            this.tmpY = e.clientY;
+        }
+        const distance = e.clientY - this.tmpY;
+        this.updateScrollPosition(e.target.children[0], distance);
+        this.tmpY = e.clientY;
+    }
+
+    @action
+    dragEndAction() {
+        this.grid.onDragStop();
+        this.tmpY = null;
+    }
+}
