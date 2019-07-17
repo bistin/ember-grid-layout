@@ -1,5 +1,9 @@
-{{update-width width (action this.widthObserver)}}
-<div class="grid-layout" style={{containerStyle}} {{on "dragover" (action this.dragoveraction)}}>
+{{!-- {{update-width width (action this.widthObserver)}} --}}
+<div 
+    class="grid-layout" 
+    style={{containerStyle}} 
+    {{did-resize this.onResize}}
+    {{on "dragover" (action this.dragoveraction)}}>
     {{yield (hash
       containerWidth=width
       margin=margin

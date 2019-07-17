@@ -52,6 +52,14 @@ export default class GridLayoutComponent extends Component {
         return this.layoutModel[index];
     }
 
+    @action
+    onResize(element) {
+        // console.log('div resized!', element);
+        const width = element.offsetWidth;
+        this.set('width', width);
+        this.widthObserver(width);
+    }
+
     calcXY(top, left) {
         const { margin, cols, rowHeight, maxRows } = this;
         const { w, h } = this.getPositionByIndex(this.dragIndex);
@@ -89,10 +97,12 @@ export default class GridLayoutComponent extends Component {
     widthObserver(width) {
         if(width < this.breakpointWidth) {
             this.set('cols', 1);
-            const tmpArr = this.cloneToLayoutObj();
-            const layout2 = compact(correctBounds(tmpArr, { cols: this.cols }), this.compactType, this.cols);
-            this.updateNewLayoutToModel(layout2);
+        } else {
+            this.set('cols', 2);
         }
+        const tmpArr = this.cloneToLayoutObj();
+        const layout2 = compact(correctBounds(tmpArr, { cols: this.cols }), this.compactType, this.cols);
+        this.updateNewLayoutToModel(layout2);
     }
 
     calcPosition(x, y, w, h) {

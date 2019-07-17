@@ -32,15 +32,15 @@ export default class GridItemComponent extends Component {
         if(!this.pos){ return "";}
         const { x, y, w, h } = this.pos;
         const p = this.calcPosition(x, y, w, h)
-        return htmlSafe(`height:${p.height}px;left:${p.left}px;top:${p.top}px`);
+        return htmlSafe(`height:${p.height}px;left:${p.left}px;width:${p.width}px;top:${p.top}px`);
     }
 
-    @computed('pos.w')
-    get widthClass() {
-        if(!this.pos){ return "";}
+    // @computed('pos.w')
+    // get widthClass() {
+    //     if(!this.pos){ return "";}
         
-        return htmlSafe(`${this.pos.w === 1 ? 'grid-width-50' : 'grid-width-100'}`);
-    }
+    //     return htmlSafe(`${this.pos.w === 1 ? 'grid-width-50' : 'grid-width-100'}`);
+    // }
 
     calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this.grid;
