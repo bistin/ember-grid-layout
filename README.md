@@ -9,7 +9,7 @@ A short introduction of this app could easily go here.
 
 You will need the following things properly installed on your computer.
 
-* Ember.js v2.18 or above
+* Ember.js v3.4 or above
 * Ember CLI v2.13 or above
 * Node.js v8 or above
 
