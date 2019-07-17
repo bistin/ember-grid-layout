@@ -2,8 +2,9 @@
 <div 
     class="grid-layout" 
     style={{containerStyle}} 
-    {{did-resize this.onResize}}
+    {{did-resize this.onResize debounce=150}}
     {{on "dragover" (action this.dragoveraction)}}>
+    
     {{yield (hash
       containerWidth=width
       margin=margin
