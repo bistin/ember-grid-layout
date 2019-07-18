@@ -8,35 +8,25 @@ import { compact, moveElement, bottom, correctBounds } from "ember-grid-layout/u
 @classic
 @tagName('')
 export default class GridLayoutComponent extends Component {
+    positionKey = null; // in case the input array is not pure position array, we provide an item key
     scrollElement = null;
-
-    // in case the input array is not pure position array, we provide an item key
-    positionKey = null;
-
-    init() {
-        super.init();
-        this.setProperties({
-            containerHeight: "",
-            autoSize: true,
-            cols: 2,
-            className: "",
-            style: {},
-            width: this.width || 800,
-            draggableHandle: "",
-            draggableCancel: "",
-            containerPadding: [10, 10],
-            rowHeight: 35,
-            maxRows: 500, // infinite vertical growth
-            margin: [10, 10],
-            isDraggable: true,
-            isResizable: true,
-            useCSSTransforms: true,
-            verticalCompact: true,
-            preventCollision: false,
-            compactType: "vertical",
-            breakpointWidth: this.breakpointWidth || 300,
-        })
-    }
+    containerHeight = "";
+    autoSize = true;
+    cols = 2;
+    width = this.width || 800;
+    draggableHandle = "";
+    draggableCancel = "";
+    containerPadding = [10, 10];
+    rowHeight = 35;
+    maxRows = 500; // infinite vertical growt
+    margin = [10, 10];
+    isDraggable = true;
+    isResizable = true;
+    useCSSTransforms = true;
+    verticalCompact = true;
+    preventCollision = false;
+    compactType = "vertical";
+    breakpointWidth = this.breakpointWidth || 300;
 
     cloneToLayoutObj() {
         if(this.positionKey) {
@@ -184,7 +174,6 @@ export default class GridLayoutComponent extends Component {
         this.updateNewLayoutToModel(layout2);
     }
 }
-
 
 // onLayoutChange: noop,
 // onDragStart: noop,
