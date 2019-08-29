@@ -23,6 +23,9 @@ module.exports = {
                 'config/**/*.js',
                 'lib/*/index.js',
                 'server/**/*.js',
+                './index.js',
+                'tests/dummy/config/environment.js',
+                'tests/dummy/config/targets.js',
             ],
             parserOptions: {
                 sourceType: 'script',
