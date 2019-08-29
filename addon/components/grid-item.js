@@ -36,7 +36,6 @@ export default class GridItemComponent extends Component {
         const p = this.calcPosition(x, y, w, h);
         return htmlSafe(`height:${p.height}px;left:${p.left}px;width:${p.width}px;top:${p.top}px`);
     }
-    
     // @computed('pos.w')
     // get widthClass() {
     //     if(!this.pos){ return "";}
