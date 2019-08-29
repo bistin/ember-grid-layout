@@ -4,7 +4,7 @@ module.exports = {
     extends: 'recommended',
     rules: {
         'block-indentation': 4,
-        'attribute-indentation':  false,
-        'no-inline-styles': false
-    }
+        'attribute-indentation': false,
+        'no-inline-styles': false,
+    },
 };
