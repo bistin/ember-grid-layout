@@ -1,40 +1,36 @@
 import Controller from '@ember/controller';
-import { compact, moveElement } from "ember-grid-layout/utils";
-import { setProperties } from "@ember/object";
+import { compact, moveElement } from 'ember-grid-layout/utils';
+import { setProperties } from '@ember/object';
 
 let i = 10;
 let layout = [
-    {"x":0,"y":0,"w":2,"h":4,"i":"0","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"1","static":false},
-    {"x":0,"y":0,"w":1,"h":4,"i":"2","static":false},
-    {"x":1,"y":0,"w":1,"h":4,"i":"3","static":false},
+    { x: 0, y: 0, w: 2, h: 4, i: '0', static: false },
+    { x: 1, y: 0, w: 1, h: 4, i: '1', static: false },
+    { x: 0, y: 0, w: 1, h: 4, i: '2', static: false },
+    { x: 1, y: 0, w: 1, h: 4, i: '3', static: false },
 ];
 
-layout = compact(
-    layout,
-    "vertical",
-    12
-);
+layout = compact(layout, 'vertical', 12);
 
 const wrappedLayout = layout.map((d, i) => ({
     data: i,
-    position: d
+    position: d,
 }));
 
 export default Controller.extend({
     init() {
         this._super();
         this.setProperties({
-            compactType: "vertical",
+            compactType: 'vertical',
             preventCollision: true,
             cols: 2,
-            width: 500
+            width: 500,
         });
     },
 
     wrappedLayout: wrappedLayout,
 
-    actions : {
+    actions: {
         changeWidth() {
             this.set('width', this.width * 0.8);
         },
@@ -45,17 +41,17 @@ export default Controller.extend({
             let newY = -0.1;
             const newL = {
                 position: {
-                    "x":newX,
-                    "y":newY,
-                    "w":1,
-                    "h":2,
-                    "i":i.toString(),
-                    "static":false
+                    x: newX,
+                    y: newY,
+                    w: 1,
+                    h: 2,
+                    i: i.toString(),
+                    static: false,
                 },
-                data: i
+                data: i,
             };
 
-            const tmpArr = [...this.wrappedLayout, newL].map(d => ({ ...d.position }));
+            const tmpArr = [...this.wrappedLayout, newL].map((d) => ({ ...d.position }));
             const isUserAction = true;
             const layout = moveElement(
                 tmpArr,
@@ -65,22 +61,17 @@ export default Controller.extend({
                 isUserAction,
                 this.preventCollision,
                 this.compactType,
-                this.cols
+                this.cols,
             );
 
-            let layout2 = compact(
-                layout,
-                'vertical',
-                this.cols );
+            let layout2 = compact(layout, 'vertical', this.cols);
             //let layout2 = layout;
-            newL.position = layout2[layout2.length -1];
+            newL.position = layout2[layout2.length - 1];
 
             this.wrappedLayout.pushObject(newL);
             this.wrappedLayout.forEach((d, i) => {
                 setProperties(d.position, layout2[i]);
             });
-
-        }
-    }
-
+        },
+    },
 });

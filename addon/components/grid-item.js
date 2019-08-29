@@ -18,27 +18,29 @@ function getScrollParent(el) {
 }
 
 @classic
-@tagName("")
+@tagName('')
 export default class GridItemComponent extends Component {
     init() {
         super.init();
         this.set('tmpY', null);
-        this.dragMove = e => throttle(this, this._dragMove, e, 80, false);
+        this.dragMove = (e) => throttle(this, this._dragMove, e, 80, false);
         this.scrollParent = null;
     }
 
     @computed('pos.{x,y,w,h}', 'grid.containerWidth')
     get styleText() {
-        if(!this.pos){ return "";}
+        if (!this.pos) {
+            return '';
+        }
         const { x, y, w, h } = this.pos;
-        const p = this.calcPosition(x, y, w, h)
+        const p = this.calcPosition(x, y, w, h);
         return htmlSafe(`height:${p.height}px;left:${p.left}px;width:${p.width}px;top:${p.top}px`);
     }
-
+    
     // @computed('pos.w')
     // get widthClass() {
     //     if(!this.pos){ return "";}
-        
+
     //     return htmlSafe(`${this.pos.w === 1 ? 'grid-width-50' : 'grid-width-100'}`);
     // }
 
@@ -52,14 +54,8 @@ export default class GridItemComponent extends Component {
             // 0 * Infinity === NaN, which causes problems with resize constraints;
             // Fix this if it occurs.
             // Note we do it here rather than later because Math.round(Infinity) causes deopt
-            width:
-            w === Infinity
-                ? w
-                : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
-            height:
-            h === Infinity
-                ? h
-                : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1])
+            width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
+            height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]),
         };
 
         return out;
@@ -67,16 +63,15 @@ export default class GridItemComponent extends Component {
 
     calcColWidth() {
         const { margin, containerPadding, containerWidth, cols } = this.grid;
-        return (
-            (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols
-        );
+        return (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
     }
 
     updateScrollPosition(el, distance) {
         // is widget in view?
         const rect = el.getBoundingClientRect();
-        const innerHeightOrClientHeight = (window.innerHeight || document.documentElement.clientHeight);
-        if ((rect.top < 30) || rect.bottom > innerHeightOrClientHeight) {
+        const innerHeightOrClientHeight =
+            window.innerHeight || document.documentElement.clientHeight;
+        if (rect.top < 30 || rect.bottom > innerHeightOrClientHeight) {
             // set scrollTop of first parent that scrolls
             // if parent is larger than el, set as low as possible
             // to get entire widget on screen
@@ -85,12 +80,13 @@ export default class GridItemComponent extends Component {
             const scrollEl = getScrollParent(el);
 
             if (scrollEl != null) {
-                if ((rect.top < 30) && distance < 0) {
+                if (rect.top < 30 && distance < 0) {
                     // moving up
                     if (el.offsetHeight > innerHeightOrClientHeight) {
                         scrollEl.scrollTop += distance;
                     } else {
-                        scrollEl.scrollTop += Math.abs(offsetDiffUp) > Math.abs(distance) ? distance : offsetDiffUp;
+                        scrollEl.scrollTop +=
+                            Math.abs(offsetDiffUp) > Math.abs(distance) ? distance : offsetDiffUp;
                     }
                 } else if (distance > 0) {
                     // moving down
@@ -109,28 +105,26 @@ export default class GridItemComponent extends Component {
         const newPosition = { top: 0, left: 0 };
         this.set('startPoint', {
             x: e.clientX,
-            y: e.clientY
+            y: e.clientY,
         });
 
-        let node = e.target
+        let node = e.target;
         const { offsetParent } = node;
         node = node.children[0];
         if (!offsetParent) return;
         const parentRect = offsetParent.getBoundingClientRect();
         const clientRect = node.getBoundingClientRect();
-        newPosition.left =
-            clientRect.left - parentRect.left + offsetParent.scrollLeft;
-        newPosition.top =
-            clientRect.top - parentRect.top + offsetParent.scrollTop;
+        newPosition.left = clientRect.left - parentRect.left + offsetParent.scrollLeft;
+        newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
 
-        this.set("dragging", newPosition);
+        this.set('dragging', newPosition);
         this.scrollParent = getScrollParent(e.target.children[0]);
         this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollParent);
     }
 
     @action
     dragMoveAction(e) {
-        if(!this.tmpY) {
+        if (!this.tmpY) {
             this.tmpY = e.clientY;
         }
         const distance = e.clientY - this.tmpY;

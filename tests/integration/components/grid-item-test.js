@@ -4,23 +4,23 @@ import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | grid-item', function(hooks) {
-  setupRenderingTest(hooks);
+    setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+    test('it renders', async function(assert) {
+        // Set any properties with this.set('myProperty', 'value');
+        // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`{{grid-item}}`);
+        await render(hbs`{{grid-item}}`);
 
-    assert.equal(this.element.textContent.trim(), '');
+        assert.equal(this.element.textContent.trim(), '');
 
-    // Template block usage:
-    await render(hbs`
+        // Template block usage:
+        await render(hbs`
       {{#grid-item}}
         template block text
       {{/grid-item}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
-  });
+        assert.equal(this.element.textContent.trim(), 'template block text');
+    });
 });
