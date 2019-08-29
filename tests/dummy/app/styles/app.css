@@ -2,9 +2,24 @@
     background: #DDD;
     border: 1px solid black; 
     /* width:100px; */
-}
+    border-radius: 10px;
 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    color: #00A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+}
 
 .grid-item.grid-placeholder {
     background: red;
 }
+
+body {
+    background-color: #3b404e;
+    justify-content: center;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
