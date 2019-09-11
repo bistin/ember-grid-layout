@@ -30,7 +30,8 @@ export default class GridLayoutComponent extends Component {
     init() {
         super.init(...arguments);
         this.width = this.width || 800;
-        this.updateNewLayoutToModel(this.layoutModel.map(d=> d[this.positionKey]));
+        this.updateNewLayoutToModel(this.layoutModel.map(
+            d => d[this.positionKey]));
     }
 
     cloneToLayoutObj() {
