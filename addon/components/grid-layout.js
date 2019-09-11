@@ -10,10 +10,9 @@ import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/u
 export default class GridLayoutComponent extends Component {
     positionKey = null; // in case the input array is not pure position array, we provide an item key
     scrollElement = null;
-    containerHeight = '';
     autoSize = true;
     cols = 2;
-    width = this.width || 800;
+    // width = this.width || 800;
     draggableHandle = '';
     draggableCancel = '';
     containerPadding = [10, 10];
@@ -27,6 +26,12 @@ export default class GridLayoutComponent extends Component {
     preventCollision = false;
     compactType = 'vertical';
     breakpointWidth = this.breakpointWidth || 300;
+
+    init() {
+        super.init(...arguments);
+        this.width = this.width || 800;
+        this.updateNewLayoutToModel(this.layoutModel.map(d=> d[this.positionKey]));
+    }
 
     cloneToLayoutObj() {
         if (this.positionKey) {
