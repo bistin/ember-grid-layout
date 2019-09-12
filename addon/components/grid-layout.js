@@ -1,7 +1,7 @@
 import classic from 'ember-classic-decorator';
 import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
-import { set, setProperties, action, computed } from '@ember/object';
+import { setProperties, action, computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
 
@@ -12,11 +12,10 @@ export default class GridLayoutComponent extends Component {
     scrollElement = null;
     autoSize = true;
     cols = 2;
-    // width = this.width || 800;
     draggableHandle = '';
     draggableCancel = '';
     containerPadding = [10, 10];
-    rowHeight = 35;
+    rowHeight = 20;
     maxRows = 500; // infinite vertical growt
     margin = [10, 10];
     isDraggable = true;
@@ -30,8 +29,7 @@ export default class GridLayoutComponent extends Component {
     init() {
         super.init(...arguments);
         this.width = this.width || 800;
-        this.updateNewLayoutToModel(this.layoutModel.map(
-            d => d[this.positionKey]));
+        this.updateNewLayoutToModel(this.layoutModel.map((d) => d[this.positionKey]));
     }
 
     cloneToLayoutObj() {
@@ -189,8 +187,8 @@ export default class GridLayoutComponent extends Component {
     }
 
     @action
-    modifyShape(item) {
-        set(item.position, 'h', item.position.h + 1);
+    modifyShape(item, position) {
+        setProperties(item.position, position);
         const tmpArr = this.cloneToLayoutObj();
         const layout2 = compact(tmpArr, this.compactType, this.cols);
         this.updateNewLayoutToModel(layout2);
