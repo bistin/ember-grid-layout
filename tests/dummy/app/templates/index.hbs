@@ -7,9 +7,10 @@ Index test
         <GridItem @grid={{grid}} @pos={{get item "position"}} @index={{index}} @handle=".dragHandle">
             <a class="dragHandle">handle</a>
             <button {{action grid.remove item}}> X </button>
+
+            <button {{action grid.modifyShape item}}> Width </button>
             <div key={{index}}>
                 <span class="text">{{item.data}}</span>
-
             </div>
         </GridItem>
     {{/each}}

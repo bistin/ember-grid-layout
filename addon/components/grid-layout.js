@@ -1,7 +1,7 @@
 import classic from 'ember-classic-decorator';
 import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
-import { setProperties, action, computed } from '@ember/object';
+import { set, setProperties, action, computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
 
@@ -183,6 +183,14 @@ export default class GridLayoutComponent extends Component {
     @action
     remove(item) {
         this.layoutModel.removeObject(item);
+        const tmpArr = this.cloneToLayoutObj();
+        const layout2 = compact(tmpArr, this.compactType, this.cols);
+        this.updateNewLayoutToModel(layout2);
+    }
+
+    @action
+    modifyShape(item) {
+        set(item.position, 'h', item.position.h + 1);
         const tmpArr = this.cloneToLayoutObj();
         const layout2 = compact(tmpArr, this.compactType, this.cols);
         this.updateNewLayoutToModel(layout2);
