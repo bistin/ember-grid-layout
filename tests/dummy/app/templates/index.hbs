@@ -8,7 +8,7 @@ Index test
             <a class="dragHandle">handle</a>
             <button {{action grid.remove item}}> X </button>
 
-            <button {{action grid.modifyShape item}}> Width </button>
+            <button {{action grid.modifyShape item (hash h=1)}}> Width </button>
             <div key={{index}}>
                 <span class="text">{{item.data}}</span>
             </div>
