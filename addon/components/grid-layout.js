@@ -4,6 +4,7 @@ import Component from '@ember/component';
 import { setProperties, action, computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
+import { throttle } from '@ember/runloop';
 
 @classic
 @tagName('')
@@ -186,12 +187,16 @@ export default class GridLayoutComponent extends Component {
         this.updateNewLayoutToModel(layout2);
     }
 
-    @action
-    modifyShape(item, position) {
-        setProperties(item.position, position);
+    _updatePosition() {
         const tmpArr = this.cloneToLayoutObj();
         const layout2 = compact(tmpArr, this.compactType, this.cols);
         this.updateNewLayoutToModel(layout2);
+    }
+
+    @action
+    modifyShape(item, position) {
+        setProperties(item.position, position);
+        throttle(this, this._updatePosition, 200);
     }
 }
 
