@@ -47,6 +47,10 @@ export default class GridLayoutComponent extends Component {
         return this.layoutModel[index];
     }
 
+    contentObserber() {
+        this._updatePosition();
+    }
+
     @action
     onResize(element) {
         // console.log('div resized!', element);
@@ -131,7 +135,6 @@ export default class GridLayoutComponent extends Component {
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
         const deltaTop = this.scorllElememt ? this.scorllElememt.scrollTop - this.tmp : 0;
-        console.log(this.scorllElememt);
         const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
     }

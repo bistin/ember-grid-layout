@@ -9,7 +9,7 @@ function getScrollParent(el) {
     let returnEl;
     if (el == null) {
         returnEl = null;
-    } else if (el.scrollHeight >= el.clientHeight) {
+    } else if (el.scrollHeight > el.clientHeight) {
         returnEl = el;
     } else {
         returnEl = getScrollParent(el.parentNode);
