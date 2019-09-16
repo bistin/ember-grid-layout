@@ -9,7 +9,7 @@ function getScrollParent(el) {
     let returnEl;
     if (el == null) {
         returnEl = null;
-    } else if (el.scrollHeight > el.clientHeight) {
+    } else if (el.scrollHeight >= el.clientHeight) {
         returnEl = el;
     } else {
         returnEl = getScrollParent(el.parentNode);
@@ -96,11 +96,6 @@ export default class GridItemComponent extends Component {
     @action
     dragStartAction(e) {
         const newPosition = { top: 0, left: 0 };
-        this.set('startPoint', {
-            x: e.clientX,
-            y: e.clientY,
-        });
-
         let node = e.target;
         const { offsetParent } = node;
         node = node.children[0];
@@ -110,7 +105,6 @@ export default class GridItemComponent extends Component {
         newPosition.left = clientRect.left - parentRect.left + offsetParent.scrollLeft;
         newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
 
-        this.set('dragging', newPosition);
         this.scrollParent = getScrollParent(e.target.children[0]);
         this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollParent);
     }

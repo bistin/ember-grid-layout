@@ -16,13 +16,13 @@ export default class GridLayoutComponent extends Component {
     draggableHandle = '';
     draggableCancel = '';
     containerPadding = [10, 10];
-    rowHeight = 20;
+    rowHeight = 40;
     maxRows = 500; // infinite vertical growt
     margin = [10, 10];
     isDraggable = true;
     isResizable = true;
-    useCSSTransforms = true;
-    verticalCompact = true;
+    // useCSSTransforms = true;
+    // verticalCompact = true;
     preventCollision = false;
     compactType = 'vertical';
     breakpointWidth = this.breakpointWidth || 300;
@@ -51,8 +51,8 @@ export default class GridLayoutComponent extends Component {
     onResize(element) {
         // console.log('div resized!', element);
         const width = element.offsetWidth;
-        this.set('width', width);
-        this.widthObserver(width);
+        // this.set('width', width);
+        // this.widthObserver(width);
     }
 
     calcXY(top, left) {
@@ -131,7 +131,7 @@ export default class GridLayoutComponent extends Component {
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
         const deltaTop = this.scorllElememt ? this.scorllElememt.scrollTop - this.tmp : 0;
-
+        console.log(this.scorllElememt);
         const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
     }
@@ -163,6 +163,7 @@ export default class GridLayoutComponent extends Component {
 
     @action
     onDragStart(startPosition, x, y, dragIndex, scrollElement) {
+        console.log('start')
         this.tmpLayout = this.cloneToLayoutObj();
         this.set('startPosition', startPosition);
         this.set('startPoint', { x, y });
