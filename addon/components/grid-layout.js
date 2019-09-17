@@ -16,13 +16,12 @@ export default class GridLayoutComponent extends Component {
     draggableHandle = '';
     draggableCancel = '';
     containerPadding = [10, 10];
-    rowHeight = 20;
+    rowHeight = 40;
     maxRows = 500; // infinite vertical growt
     margin = [10, 10];
     isDraggable = true;
     isResizable = true;
-    useCSSTransforms = true;
-    verticalCompact = true;
+
     preventCollision = false;
     compactType = 'vertical';
     breakpointWidth = this.breakpointWidth || 300;
@@ -47,12 +46,16 @@ export default class GridLayoutComponent extends Component {
         return this.layoutModel[index];
     }
 
+    contentObserber() {
+        this._updatePosition();
+    }
+
     @action
     onResize(element) {
         // console.log('div resized!', element);
         const width = element.offsetWidth;
-        this.set('width', width);
-        this.widthObserver(width);
+        // this.set('width', width);
+        // this.widthObserver(width);
     }
 
     calcXY(top, left) {
@@ -131,7 +134,6 @@ export default class GridLayoutComponent extends Component {
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
         const deltaTop = this.scorllElememt ? this.scorllElememt.scrollTop - this.tmp : 0;
-
         const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
     }
