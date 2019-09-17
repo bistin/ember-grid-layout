@@ -21,8 +21,7 @@ export default class GridLayoutComponent extends Component {
     margin = [10, 10];
     isDraggable = true;
     isResizable = true;
-    // useCSSTransforms = true;
-    // verticalCompact = true;
+
     preventCollision = false;
     compactType = 'vertical';
     breakpointWidth = this.breakpointWidth || 300;
