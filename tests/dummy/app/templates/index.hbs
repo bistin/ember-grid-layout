@@ -2,7 +2,12 @@ Index test
 
 <button {{action "add"}}>add</button> <button {{action "changeWidth"}}>width</button>
 
-<GridLayout @layoutModel={{this.wrappedLayout}} @positionKey="position" @width={{this.width}} as |grid layoutModel|>
+<GridLayout 
+    @layoutModel={{this.wrappedLayout}} 
+    @positionKey="position" 
+    @width={{this.width}} 
+    @rowHeight="20"
+    as |grid layoutModel|>
     {{#each layoutModel as |item index|}}
         <GridItem @grid={{grid}} @pos={{get item "position"}} @index={{index}} @handle=".dragHandle">
             <a class="dragHandle">handle</a>

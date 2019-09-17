@@ -16,19 +16,18 @@ export default class GridLayoutComponent extends Component {
     draggableHandle = '';
     draggableCancel = '';
     containerPadding = [10, 10];
-    rowHeight = 40;
     maxRows = 500; // infinite vertical growt
     margin = [10, 10];
     isDraggable = true;
     isResizable = true;
-
     preventCollision = false;
     compactType = 'vertical';
     breakpointWidth = this.breakpointWidth || 300;
 
     init() {
         super.init(...arguments);
-        this.width = this.width || 800;
+        this.width = Number(this.width) || 800;
+        this.rowHeight = Number(this.rowHeight) || 40;
         this._updatePosition();
     }
 
