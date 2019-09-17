@@ -13,13 +13,9 @@ export default class GridLayoutComponent extends Component {
     scrollElement = null;
     autoSize = true;
     cols = 2;
-    draggableHandle = '';
-    draggableCancel = '';
     containerPadding = [10, 10];
     maxRows = 500; // infinite vertical growt
     margin = [10, 10];
-    isDraggable = true;
-    isResizable = true;
     preventCollision = false;
     compactType = 'vertical';
     breakpointWidth = this.breakpointWidth || 300;
@@ -49,10 +45,11 @@ export default class GridLayoutComponent extends Component {
         this._updatePosition();
     }
 
+    // TODO outside event
     @action
-    onResize(element) {
+    onResize(/* element */) {
         // console.log('div resized!', element);
-        const width = element.offsetWidth;
+        // const width = element.offsetWidth;
         // this.set('width', width);
         // this.widthObserver(width);
     }
@@ -89,20 +86,21 @@ export default class GridLayoutComponent extends Component {
         this.set('containerHeight', position.top);
     }
 
-    widthObserver(width) {
-        if (width < this.breakpointWidth) {
-            this.set('cols', 1);
-        } else {
-            this.set('cols', 2);
-        }
-        const tmpArr = this.cloneToLayoutObj();
-        const layout2 = compact(
-            correctBounds(tmpArr, { cols: this.cols }),
-            this.compactType,
-            this.cols,
-        );
-        this.updateNewLayoutToModel(layout2);
-    }
+    // TODO pass from outside
+    // widthObserver(width) {
+    //     if (width < this.breakpointWidth) {
+    //         this.set('cols', 1);
+    //     } else {
+    //         this.set('cols', 2);
+    //     }
+    //     const tmpArr = this.cloneToLayoutObj();
+    //     const layout2 = compact(
+    //         correctBounds(tmpArr, { cols: this.cols }),
+    //         this.compactType,
+    //         this.cols,
+    //     );
+    //     this.updateNewLayoutToModel(layout2);
+    // }
 
     calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this;
@@ -117,7 +115,6 @@ export default class GridLayoutComponent extends Component {
             width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
             height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]),
         };
-
         return out;
     }
 
@@ -206,3 +203,8 @@ export default class GridLayoutComponent extends Component {
 // onResizeStart: noop,
 // onResize: noop,
 // onResizeStop: noop
+
+// draggableHandle = '';
+// draggableCancel = '';
+// isDraggable = true;
+// isResizable = true;

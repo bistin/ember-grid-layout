@@ -8,7 +8,7 @@ import { throttle } from '@ember/runloop';
 function getScrollParent(el) {
     let returnEl;
     if (el == null) {
-        returnEl = null;
+        return null;
     } else if (el.scrollHeight > el.clientHeight) {
         returnEl = el;
     } else {
@@ -64,7 +64,7 @@ export default class GridItemComponent extends Component {
         const rect = el.getBoundingClientRect();
         const innerHeightOrClientHeight =
             window.innerHeight || document.documentElement.clientHeight;
-        if (rect.top < 30 || rect.bottom > innerHeightOrClientHeight) {
+        if (rect.top < 100 || rect.bottom > innerHeightOrClientHeight) {
             // set scrollTop of first parent that scrolls
             // if parent is larger than el, set as low as possible
             // to get entire widget on screen

@@ -6,15 +6,15 @@
     {{on "dragover" (action this.dragoveraction)}}>
     
     {{yield (hash
-      containerWidth=width
-      margin=margin
-      rowHeight=rowHeight
-      containerPadding=containerPadding
-      cols=cols
-      maxRows=maxRows
-      onDragStart=(action "onDragStart")
-      onDragStop=(action "onDragStop")
-      remove=(action "remove")
-      modifyShape=(action "modifyShape")
+      containerWidth=this.width
+      margin=this.margin
+      rowHeight=this.rowHeight
+      containerPadding=this.containerPadding
+      cols=this.cols
+      maxRows=this.maxRows
+      onDragStart=(fn this.onDragStart)
+      onDragStop=(fn this.onDragStop)
+      remove=(fn this.remove)
+      modifyShape=(fn this.modifyShape)
       ) this.layoutModel}}
 </div>

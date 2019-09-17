@@ -6,7 +6,7 @@ Index test
     @layoutModel={{this.wrappedLayout}} 
     @positionKey="position" 
     @width={{this.width}} 
-    @rowHeight="20"
+    @rowHeight={{40}}
     as |grid layoutModel|>
     {{#each layoutModel as |item index|}}
         <GridItem @grid={{grid}} @pos={{get item "position"}} @index={{index}} @handle=".dragHandle">

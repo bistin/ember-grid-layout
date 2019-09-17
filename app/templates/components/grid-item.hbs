@@ -1,12 +1,11 @@
 <DraggableObject 
     @content={{this}} 
-    @dragStartHook={{action "dragStartAction"}}
-    @dragEndAction={{action "dragEndAction"}}
-    @dragMoveAction={{action "dragMoveAction"}}
+    @dragStartHook={{fn this.dragStartAction}}
+    @dragEndAction={{fn this.dragEndAction}}
+    @dragMoveAction={{fn this.dragMoveAction}}
     @dragHandle={{@handle}}
-    
 >
-    <div class="grid-item" style={{styleText}}>
+    <div class="grid-item" style={{this.styleText}}>
         {{yield}}
     </div>
 </DraggableObject>
