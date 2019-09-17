@@ -70,7 +70,7 @@ export default class GridItemComponent extends Component {
             // to get entire widget on screen
             const offsetDiffDown = rect.bottom - innerHeightOrClientHeight;
             const offsetDiffUp = rect.top;
-            const scrollEl = getScrollParent(el);
+            const scrollEl = getScrollParent(document.querySelector('.grid-layout').parentNode);
 
             if (scrollEl != null) {
                 if (rect.top < 30 && distance < 0) {
@@ -105,7 +105,7 @@ export default class GridItemComponent extends Component {
         newPosition.left = clientRect.left - parentRect.left + offsetParent.scrollLeft;
         newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
 
-        this.scrollParent = getScrollParent(e.target.children[0]);
+        this.scrollParent = getScrollParent(document.querySelector('.grid-layout').parentNode);
         this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollParent);
     }
 
