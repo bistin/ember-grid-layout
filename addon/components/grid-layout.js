@@ -165,7 +165,6 @@ export default class GridLayoutComponent extends Component {
 
     @action
     onDragStart(startPosition, x, y, dragIndex, scrollElement) {
-        console.log('start')
         this.tmpLayout = this.cloneToLayoutObj();
         this.set('startPosition', startPosition);
         this.set('startPoint', { x, y });
