@@ -24,7 +24,7 @@ export default class GridItemComponent extends Component {
         super.init();
         this.set('tmpY', null);
         this.dragMove = (e) => throttle(this, this._dragMove, e, 80, false);
-        this.scrollParent = null;
+        this.scrollContainer = null;
     }
 
     @computed('pos.{x,y,w,h}', 'grid.containerWidth')
@@ -35,6 +35,13 @@ export default class GridItemComponent extends Component {
         const { x, y, w, h } = this.pos;
         const p = this.calcPosition(x, y, w, h);
         return htmlSafe(`height:${p.height}px;left:${p.left}px;width:${p.width}px;top:${p.top}px`);
+    }
+
+    didInsertElement() {
+        let scrollContainer = this.scrollContainerSelector
+            ? document.querySelector(this.scrollContainerSelector)
+            : getScrollParent(document.querySelector('.grid-layout').parentNode);
+        this.set('scrollContainer', scrollContainer);
     }
 
     calcPosition(x, y, w, h) {
@@ -70,7 +77,7 @@ export default class GridItemComponent extends Component {
             // to get entire widget on screen
             const offsetDiffDown = rect.bottom - innerHeightOrClientHeight;
             const offsetDiffUp = rect.top;
-            const scrollEl = getScrollParent(document.querySelector('.grid-layout').parentNode);
+            const scrollEl = this.scrollContainer;
 
             if (scrollEl != null) {
                 if (rect.top < 30 && distance < 0) {
@@ -105,8 +112,7 @@ export default class GridItemComponent extends Component {
         newPosition.left = clientRect.left - parentRect.left + offsetParent.scrollLeft;
         newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
 
-        this.scrollParent = getScrollParent(document.querySelector('.grid-layout').parentNode);
-        this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollParent);
+        this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollContainer);
     }
 
     @action
