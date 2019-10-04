@@ -25,6 +25,7 @@ export default class GridItemComponent extends Component {
         this.set('tmpY', null);
         this.dragMove = (e) => throttle(this, this._dragMove, e, 80, false);
         this.scrollContainer = null;
+        this.set('canDrag', !this.handle);
     }
 
     @computed('pos.{x,y,w,h}', 'grid.containerWidth')
@@ -102,10 +103,11 @@ export default class GridItemComponent extends Component {
 
     @action
     dragStartAction(e) {
+        e.dataTransfer.setData('text/plain', 'handle');
         const newPosition = { top: 0, left: 0 };
         let node = e.target;
         const { offsetParent } = node;
-        node = node.children[0];
+        // node = node.children[0];
         if (!offsetParent) return;
         const parentRect = offsetParent.getBoundingClientRect();
         const clientRect = node.getBoundingClientRect();
@@ -129,5 +131,21 @@ export default class GridItemComponent extends Component {
     dragEndAction() {
         this.grid.onDragStop();
         this.tmpY = null;
+    }
+
+    @action
+    mouseOverAction(e) {
+        if (!this.handle) {
+            return;
+        }
+        this.set('canDrag', e.target.matches(this.handle));
+    }
+
+    @action
+    mouseLeaveAction() {
+        if (!this.handle) {
+            return;
+        }
+        this.set('canDrag', false);
     }
 }
