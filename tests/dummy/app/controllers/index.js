@@ -30,6 +30,12 @@ export default Controller.extend({
 
     wrappedLayout: wrappedLayout,
 
+    updatePosition(newLayout) {
+        this.wrappedLayout.forEach((d, i) => {
+            setProperties(d.position, newLayout[i]);
+        });
+    },
+
     actions: {
         changeWidth() {
             this.set('width', this.width * 0.8);

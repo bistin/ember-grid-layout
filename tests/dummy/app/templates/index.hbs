@@ -7,6 +7,7 @@ Index test
     @positionKey="position" 
     @width={{this.width}} 
     @rowHeight={{40}}
+    @updatePosition={{action this.updatePosition}}
     as |grid layoutModel|>
     {{#each layoutModel as |item index|}}
         <GridItem 
