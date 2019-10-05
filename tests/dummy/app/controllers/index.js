@@ -50,28 +50,7 @@ export default Controller.extend({
                 },
                 data: i,
             };
-
-            const tmpArr = [...this.wrappedLayout, newL].map((d) => ({ ...d.position }));
-            const isUserAction = true;
-            const layout = moveElement(
-                tmpArr,
-                newL,
-                newX,
-                newY,
-                isUserAction,
-                this.preventCollision,
-                this.compactType,
-                this.cols,
-            );
-
-            let layout2 = compact(layout, 'vertical', this.cols);
-            //let layout2 = layout;
-            newL.position = layout2[layout2.length - 1];
-
             this.wrappedLayout.pushObject(newL);
-            this.wrappedLayout.forEach((d, i) => {
-                setProperties(d.position, layout2[i]);
-            });
         },
     },
 });

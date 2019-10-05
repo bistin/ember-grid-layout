@@ -72,6 +72,7 @@ export default class GridLayoutComponent extends Component {
     }
 
     updateNewLayoutToModel(newLayout) {
+        newLayout.forEach((d) => (d.y = Math.round(d.y)));
         if (this.positionKey) {
             this.layoutModel.forEach((d, i) => {
                 setProperties(d[this.positionKey], newLayout[i]);
