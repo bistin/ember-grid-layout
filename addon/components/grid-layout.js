@@ -190,16 +190,22 @@ export default class GridLayoutComponent extends Component {
         debounce(this, this._updatePosition, 100);
     }
 
-    _updatePosition() {
-        const tmpArr = this.cloneToLayoutObj();
+    _updatePosition(tmpArr = this.cloneToLayoutObj()) {
+        //const tmpArr = this.cloneToLayoutObj();
         const layout2 = compact(tmpArr, this.compactType, this.cols);
+        //const layout3 = correctBounds(layout2, { cols: this.cols });
+        //const layout4 = compact(layout3, this.compactType, this.cols);
         this.updateNewLayoutToModel(layout2);
     }
 
     @action
     modifyShape(item, position) {
-        setProperties(item.position, position);
-        debounce(this, this._updatePosition, 100);
+        const index = this.layoutModel.indexOf(item);
+        const tmpArr = this.cloneToLayoutObj();
+        position.y = item.position.y - 0.001;
+        setProperties(tmpArr[index], position);
+        this._updatePosition(tmpArr);
+        //debounce(this, this._updatePosition, 100);
     }
 }
 

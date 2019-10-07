@@ -13,7 +13,7 @@
 
 .grid-item {
   transition: all 200ms ease;
-  transition-property: left, top;
+  transition-property: left, top, width;
   position: absolute;
 }
 .grid-item.cssTransforms {
