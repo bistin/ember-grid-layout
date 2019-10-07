@@ -180,7 +180,7 @@ export default class GridLayoutComponent extends Component {
         this.tmpLayout = null;
         this.tmp = null;
         if (this.updatePosition) {
-            this.updatePosition(this.layoutModel, false);
+            this.updatePosition(this.cloneToLayoutObj(), false);
         }
     }
 
