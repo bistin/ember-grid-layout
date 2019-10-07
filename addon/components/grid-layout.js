@@ -74,7 +74,7 @@ export default class GridLayoutComponent extends Component {
     updateNewLayoutToModel(newLayout) {
         newLayout.forEach((d) => (d.y = Math.round(d.y)));
         if (this.updatePosition) {
-            this.updatePosition(newLayout);
+            this.updatePosition(newLayout, this.tmp != null);
         } else {
             if (this.positionKey) {
                 this.layoutModel.forEach((d, i) => {
@@ -179,6 +179,9 @@ export default class GridLayoutComponent extends Component {
     onDragStop() {
         this.tmpLayout = null;
         this.tmp = null;
+        if (this.updatePosition) {
+            this.updatePosition(this.layoutModel, false);
+        }
     }
 
     @action
