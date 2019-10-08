@@ -20,7 +20,9 @@ Index test
             <a class="dragHandle">handle</a>
             <button {{action grid.remove item}}> X </button>
 
-            <button {{action grid.modifyShape item (hash w=2 x=0)}}> Width </button>
+            <button {{action grid.modifyShape item (hash
+                      w=(if (eq item.position.w 1) 2 1)
+                      x=(if (eq item.position.x 1) 0 1))}}> Width </button>
             <div key={{index}}>
                 <span class="text">{{item.data}}</span>
             </div>

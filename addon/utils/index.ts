@@ -1,5 +1,3 @@
-// @flow
-
 // const isProduction = false;
 const DEBUG = false;
 
