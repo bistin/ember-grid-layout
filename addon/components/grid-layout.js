@@ -129,6 +129,7 @@ export default class GridLayoutComponent extends Component {
     }
 
     dragoveraction(e) {
+        e.preventDefault();
         const deltaX = e.clientX - this.startPoint.x;
         const deltaY = e.clientY - this.startPoint.y;
         const left = this.startPosition.left + deltaX;
