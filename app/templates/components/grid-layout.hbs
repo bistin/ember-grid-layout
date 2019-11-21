@@ -1,8 +1,8 @@
 {{content-aware this.layoutModel.length (action this.contentObserber)}}
+{{content-aware this.width (action this.widthObserver)}}
 <div 
     class="grid-layout" 
     style={{containerStyle}} 
-    {{did-resize this.onResize debounce=150}}
     {{on "dragover" (action this.dragoveraction)}}>
     
     {{yield (hash

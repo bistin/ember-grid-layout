@@ -18,7 +18,7 @@ export default class GridLayoutComponent extends Component {
     margin = [10, 10];
     preventCollision = false;
     compactType = 'vertical';
-    breakpointWidth = this.breakpointWidth || 300;
+    breakpointWidth = this.breakpointWidth || 700;
 
     init() {
         super.init(...arguments);
@@ -45,14 +45,14 @@ export default class GridLayoutComponent extends Component {
         this._updatePosition();
     }
 
-    // TODO outside event
-    @action
-    onResize(/* element */) {
-        // console.log('div resized!', element);
-        // const width = element.offsetWidth;
-        // this.set('width', width);
-        // this.widthObserver(width);
-    }
+    // // TODO outside event
+    // @action
+    // onResize(/* element */) {
+    //     // console.log('div resized!', element);
+    //     // const width = element.offsetWidth;
+    //     // this.set('width', width);
+    //     // this.widthObserver(width);
+    // }
 
     calcXY(top, left) {
         const { margin, cols, rowHeight, maxRows } = this;
@@ -91,20 +91,33 @@ export default class GridLayoutComponent extends Component {
     }
 
     // TODO pass from outside
-    // widthObserver(width) {
-    //     if (width < this.breakpointWidth) {
-    //         this.set('cols', 1);
-    //     } else {
-    //         this.set('cols', 2);
-    //     }
-    //     const tmpArr = this.cloneToLayoutObj();
-    //     const layout2 = compact(
-    //         correctBounds(tmpArr, { cols: this.cols }),
-    //         this.compactType,
-    //         this.cols,
-    //     );
-    //     this.updateNewLayoutToModel(layout2);
-    // }
+    widthObserver() {
+        console.log('width change')
+        const width = this.width;
+        if (width < this.breakpointWidth) {
+            this.set('cols', 1);
+        } else {
+            this.set('cols', 2);
+        }
+        const tmpArr = this.cloneToLayoutObj();
+        let layout2 = compact(
+            correctBounds(tmpArr, { cols: this.cols }),
+            this.compactType,
+            this.cols,
+        );
+
+        if(this.cols === 2) {
+            layout2.forEach((pos, i) => {
+                if(i % 2 === 1) {
+                    pos.x = 1;
+                }
+            });
+            layout2 = compact(layout2, this.compactType, this.cols);
+        }
+
+        this.updateNewLayoutToModel(layout2);
+    }
+
 
     calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this;
@@ -194,9 +207,9 @@ export default class GridLayoutComponent extends Component {
     _updatePosition(tmpArr = this.cloneToLayoutObj()) {
         //const tmpArr = this.cloneToLayoutObj();
         const layout2 = compact(tmpArr, this.compactType, this.cols);
-        //const layout3 = correctBounds(layout2, { cols: this.cols });
-        //const layout4 = compact(layout3, this.compactType, this.cols);
-        this.updateNewLayoutToModel(layout2);
+        const layout3 = correctBounds(layout2, { cols: this.cols });
+        const layout4 = compact(layout3, this.compactType, this.cols);
+        this.updateNewLayoutToModel(layout4);
     }
 
     @action
