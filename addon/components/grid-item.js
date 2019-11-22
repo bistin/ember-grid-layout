@@ -86,7 +86,7 @@ export default class GridItemComponent extends Component {
 
             if (scrollEl != null) {
                 scrollEl.scrollTop +=
-                            Math.abs(offsetDiffUp) > Math.abs(distance) ? distance : offsetDiffUp;
+                            Math.abs(offsetDiffUp) > Math.abs(distance) ? (distance || -1) : offsetDiffUp;
             }
         }
 
