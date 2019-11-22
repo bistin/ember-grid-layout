@@ -67,35 +67,36 @@ export default class GridItemComponent extends Component {
         return (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
     }
 
-    updateScrollPosition(el, distance) {
+    updateScrollPosition(pointerY, distance) {
         // is widget in view?
-        const rect = el.getBoundingClientRect();
+        //const rect = el.getBoundingClientRect();
         const innerHeightOrClientHeight =
             window.innerHeight || document.documentElement.clientHeight;
-        if (rect.top < 100 || rect.bottom > innerHeightOrClientHeight) {
+        //console.log(rect, rect.top)
+        if (pointerY < 100 || pointerY > innerHeightOrClientHeight -100) {
             // set scrollTop of first parent that scrolls
             // if parent is larger than el, set as low as possible
             // to get entire widget on screen
-            const offsetDiffDown = rect.bottom - innerHeightOrClientHeight;
-            const offsetDiffUp = rect.top;
+            const offsetDiffDown = pointerY - innerHeightOrClientHeight;
+            const offsetDiffUp = pointerY;
             const scrollEl = this.scrollContainer;
 
             if (scrollEl != null) {
-                if (rect.top < 30 && distance < 0) {
-                    // moving up
-                    if (el.offsetHeight > innerHeightOrClientHeight) {
-                        scrollEl.scrollTop += distance;
-                    } else {
+                if (pointerY < 30 && distance < 0) {
+                    // // moving up
+                    // if (el.offsetHeight > innerHeightOrClientHeight) {
+                    //     scrollEl.scrollTop += distance;
+                    // } else {
                         scrollEl.scrollTop +=
                             Math.abs(offsetDiffUp) > Math.abs(distance) ? distance : offsetDiffUp;
-                    }
+                    // }
                 } else if (distance > 0) {
                     // moving down
-                    if (el.offsetHeight > innerHeightOrClientHeight) {
-                        scrollEl.scrollTop += distance;
-                    } else {
+                    // if (el.offsetHeight > innerHeightOrClientHeight) {
+                    //     scrollEl.scrollTop += distance;
+                    // } else {
                         scrollEl.scrollTop += offsetDiffDown > distance ? distance : offsetDiffDown;
-                    }
+                    // }
                 }
             }
         }
@@ -123,7 +124,7 @@ export default class GridItemComponent extends Component {
             this.tmpY = e.clientY;
         }
         const distance = e.clientY - this.tmpY;
-        this.updateScrollPosition(e.target.children[0], distance);
+        this.updateScrollPosition(e.clientY, distance);
         this.tmpY = e.clientY;
     }
 
