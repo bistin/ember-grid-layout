@@ -82,16 +82,13 @@ export default class GridItemComponent extends Component {
             // if parent is larger than el, set as low as possible
             // to get entire widget on screen
             
-            
-
             if (scrollEl != null) {
-                scrollEl.scrollTop +=
-                            Math.abs(offsetDiffUp) > Math.abs(distance) ? (distance || -1) : offsetDiffUp;
+                scrollEl.scrollTop += -10;
+                            //Math.abs(offsetDiffUp) > Math.abs(distance) ? (distance || -10) : offsetDiffUp;
             }
         }
 
         if(pointerY > innerHeightOrClientHeight -100) {
-              
                 if (distance > 0 && scrollEl != null) {
                     // moving down
                     // if (el.offsetHeight > innerHeightOrClientHeight) {
