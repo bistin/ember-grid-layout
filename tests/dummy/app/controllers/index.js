@@ -31,7 +31,7 @@ export default Controller.extend({
     wrappedLayout: wrappedLayout,
 
     updatePosition(newLayout, moving) {
-        console.log(newLayout, moving);
+        // console.log(newLayout, moving);
         this.wrappedLayout.forEach((d, i) => {
             setProperties(d.position, newLayout[i]);
         });

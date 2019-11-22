@@ -72,25 +72,27 @@ export default class GridItemComponent extends Component {
         //const rect = el.getBoundingClientRect();
         const innerHeightOrClientHeight =
             window.innerHeight || document.documentElement.clientHeight;
+        
+        const scrollEl = this.scrollContainer;
+        const offsetDiffDown = pointerY - innerHeightOrClientHeight;
+        const offsetDiffUp = pointerY;
         //console.log(rect, rect.top)
-        if (pointerY < 100 || pointerY > innerHeightOrClientHeight -100) {
+        if (pointerY < 100 ) {
             // set scrollTop of first parent that scrolls
             // if parent is larger than el, set as low as possible
             // to get entire widget on screen
-            const offsetDiffDown = pointerY - innerHeightOrClientHeight;
-            const offsetDiffUp = pointerY;
-            const scrollEl = this.scrollContainer;
+            
+            
 
             if (scrollEl != null) {
-                if (pointerY < 30 && distance < 0) {
-                    // // moving up
-                    // if (el.offsetHeight > innerHeightOrClientHeight) {
-                    //     scrollEl.scrollTop += distance;
-                    // } else {
-                        scrollEl.scrollTop +=
+                scrollEl.scrollTop +=
                             Math.abs(offsetDiffUp) > Math.abs(distance) ? distance : offsetDiffUp;
-                    // }
-                } else if (distance > 0) {
+            }
+        }
+
+        if(pointerY > innerHeightOrClientHeight -100) {
+              
+                if (distance > 0 && scrollEl != null) {
                     // moving down
                     // if (el.offsetHeight > innerHeightOrClientHeight) {
                     //     scrollEl.scrollTop += distance;
@@ -98,8 +100,8 @@ export default class GridItemComponent extends Component {
                         scrollEl.scrollTop += offsetDiffDown > distance ? distance : offsetDiffDown;
                     // }
                 }
-            }
         }
+        
     }
 
     @action
