@@ -72,17 +72,13 @@ export default class GridItemComponent extends Component {
             window.innerHeight || document.documentElement.clientHeight;
 
         const scrollEl = this.scrollContainer;
-        const offsetDiffDown = pointerY - innerHeightOrClientHeight;
-        if (pointerY < 100) {
-            if (scrollEl != null) {
-                scrollEl.scrollTop += (pointerY - 100) / 3;
-            }
+        if (!scrollEl) return;
+        if (pointerY < 100 && distance <= 0) {
+            scrollEl.scrollTop += (pointerY - 100) / 3;
         }
 
-        if (pointerY > innerHeightOrClientHeight - 100) {
-            if (distance > 0 && scrollEl != null) {
-                scrollEl.scrollTop -= offsetDiffDown / 3;
-            }
+        if (pointerY > innerHeightOrClientHeight - 100 && distance >= 0) {
+            scrollEl.scrollTop += (innerHeightOrClientHeight - pointerY) / 5;
         }
     }
 
