@@ -84,6 +84,7 @@ export default class GridLayoutComponent extends Component {
     // TODO pass from outside
     widthObserver() {
         const width = this.width;
+        const prevCols = this.cols;
         if (width < this.breakpointWidth) {
             this.set('cols', 1);
         } else {
@@ -96,7 +97,7 @@ export default class GridLayoutComponent extends Component {
             this.cols,
         );
 
-        if (this.cols === 2) {
+        if (prevCols === 1 && this.cols === 2) {
             layout2.forEach((pos, i) => {
                 if (i % 2 === 1) {
                     pos.x = 1;
