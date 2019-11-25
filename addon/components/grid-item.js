@@ -68,37 +68,22 @@ export default class GridItemComponent extends Component {
     }
 
     updateScrollPosition(pointerY, distance) {
-        // is widget in view?
-        //const rect = el.getBoundingClientRect();
         const innerHeightOrClientHeight =
             window.innerHeight || document.documentElement.clientHeight;
-        
+
         const scrollEl = this.scrollContainer;
         const offsetDiffDown = pointerY - innerHeightOrClientHeight;
-        const offsetDiffUp = pointerY;
-        //console.log(rect, rect.top)
-        if (pointerY < 100 ) {
-            // set scrollTop of first parent that scrolls
-            // if parent is larger than el, set as low as possible
-            // to get entire widget on screen
-            
+        if (pointerY < 100) {
             if (scrollEl != null) {
-                scrollEl.scrollTop += -10;
-                            //Math.abs(offsetDiffUp) > Math.abs(distance) ? (distance || -10) : offsetDiffUp;
+                scrollEl.scrollTop += (pointerY - 100) / 3;
             }
         }
 
-        if(pointerY > innerHeightOrClientHeight -100) {
-                if (distance > 0 && scrollEl != null) {
-                    // moving down
-                    // if (el.offsetHeight > innerHeightOrClientHeight) {
-                    //     scrollEl.scrollTop += distance;
-                    // } else {
-                        scrollEl.scrollTop += offsetDiffDown > distance ? distance : offsetDiffDown;
-                    // }
-                }
+        if (pointerY > innerHeightOrClientHeight - 100) {
+            if (distance > 0 && scrollEl != null) {
+                scrollEl.scrollTop -= offsetDiffDown / 3;
+            }
         }
-        
     }
 
     @action
