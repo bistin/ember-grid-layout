@@ -141,6 +141,11 @@ export default class GridLayoutComponent extends Component {
         this.onDrag(pos.x, pos.y, this.dragIndex);
     }
 
+    dropaction(e) {
+        e.preventDefault();
+    }
+
+
     onDrag(x, y, index) {
         if (!this.tmpLayout) {
             return;

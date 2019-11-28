@@ -3,7 +3,9 @@
 <div 
     class="grid-layout" 
     style={{containerStyle}} 
-    {{on "dragover" (action this.dragoveraction)}}>
+    {{on "dragover" (action this.dragoveraction)}}
+    {{on "drop" (action this.dropaction)}}
+    >
     
     {{yield (hash
       containerWidth=this.width

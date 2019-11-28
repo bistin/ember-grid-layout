@@ -85,6 +85,7 @@ export default class GridItemComponent extends Component {
     @action
     dragStartAction(e) {
         e.dataTransfer.setData('text/plain', 'handle');
+        //e.dataTransfer.dropEffect = "move"
         const newPosition = { top: 0, left: 0 };
         let node = e.target;
         const { offsetParent } = node;
