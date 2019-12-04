@@ -7,8 +7,7 @@ Index test
     @positionKey="position" 
     @width={{this.width}} 
     @rowHeight={{40}}
-    @updatePosition={{action this.updatePosition}}
-    as |grid layoutModel|>
+    @updatePosition={{action this.updatePosition}} as |grid layoutModel|>
     {{#each layoutModel as |item index|}}
         <GridItem 
             @grid={{grid}}
@@ -20,11 +19,14 @@ Index test
             <a class="dragHandle">handle</a>
             <button {{action grid.remove item}}> X </button>
 
-            <button {{action grid.modifyShape item (hash
-                      w=(if (eq item.position.w 1) 2 1)
-                      x=(if (eq item.position.x 1) 0 1))}}
-            >
-            Width 
+            <button 
+                {{action grid.modifyShape item 
+                    (hash
+                        w=(if (eq item.position.w 1) 2 1)
+                        x=(if (eq item.position.x 1) 0 1)
+                    )
+                }}>
+                Width 
             </button>
             <div key={{index}}>
                 <span class="text">{{item.data}}</span>
