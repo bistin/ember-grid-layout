@@ -18,7 +18,7 @@ export default class GridLayoutComponent extends Component {
     margin = [10, 10];
     preventCollision = false;
     compactType = 'vertical';
-    breakpointWidth = this.breakpointWidth || 700;
+    breakpointWidth = this.breakpointWidth;
 
     init() {
         super.init(...arguments);
@@ -83,6 +83,9 @@ export default class GridLayoutComponent extends Component {
 
     // TODO pass from outside
     widthObserver() {
+        if(!this.breakpointWidth) {
+            return;
+        }
         const width = this.width;
         const prevCols = this.cols;
         if (width < this.breakpointWidth) {
