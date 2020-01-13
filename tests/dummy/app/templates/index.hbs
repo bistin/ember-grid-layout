@@ -2,31 +2,32 @@ Index test
 
 <button {{action "add"}}>add</button> <button {{action "changeWidth"}}>width</button>
 
-<GridLayout 
-    @layoutModel={{this.wrappedLayout}} 
-    @positionKey="position" 
-    @width={{this.width}} 
+<GridLayout
+    @layoutModel={{this.wrappedLayout}}
+    @positionKey="position"
+    @width={{this.width}}
     @rowHeight={{40}}
     @updatePosition={{action this.updatePosition}} as |grid layoutModel|>
     {{#each layoutModel as |item index|}}
-        <GridItem 
+        <GridItem
             @grid={{grid}}
             @pos={{get item "position"}}
-            @index={{index}} 
-            @handle=".dragHandle" 
+            @index={{index}}
+            @handle= {{array ".dragHandle" ".dragHandle2"}}
             @scrollContainerSelector="html">
-            
-            <a class="dragHandle">handle</a>
+
+            <div class="dragHandle">handle</div>
+            <div class="dragHandle2">handle2</div>
             <button {{action grid.remove item}}> X </button>
 
-            <button 
-                {{action grid.modifyShape item 
+            <button
+                {{action grid.modifyShape item
                     (hash
                         w=(if (eq item.position.w 1) 2 1)
                         x=(if (eq item.position.x 1) 0 1)
                     )
                 }}>
-                Width 
+                Width
             </button>
             <div key={{index}}>
                 <span class="text">{{item.data}}</span>

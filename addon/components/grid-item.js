@@ -120,7 +120,10 @@ export default class GridItemComponent extends Component {
         if (!this.handle) {
             return;
         }
-        this.set('canDrag', e.target.matches(this.handle));
+        const canDrag = Array.isArray(this.handle)
+            ? this.handle.some(handle => e.target.matches(handle))
+            : e.target.matches(this.handle);
+        this.set('canDrag', canDrag);
     }
 
     @action
