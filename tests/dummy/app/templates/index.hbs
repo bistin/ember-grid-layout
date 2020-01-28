@@ -1,13 +1,14 @@
 Index test
 
-<button {{action "add"}}>add</button> <button {{action "changeWidth"}}>width</button>
+<button type="button" {{on "click" this.add}}>add</button> 
+<button type="button" {{on "click" this.changeWidth}}>width</button>
 
 <GridLayout
     @layoutModel={{this.wrappedLayout}}
     @positionKey="position"
     @width={{this.width}}
     @rowHeight={{40}}
-    @updatePosition={{action this.updatePosition}} as |grid layoutModel|>
+    @updatePosition={{fn this.updatePosition}} as |grid layoutModel|>
     {{#each layoutModel as |item index|}}
         <GridItem
             @grid={{grid}}
@@ -18,15 +19,15 @@ Index test
 
             <div class="dragHandle">handle</div>
             <div class="dragHandle2">handle2</div>
-            <button {{action grid.remove item}}> X </button>
+            <button type="button" {{on "click" (fn grid.remove item)}}> X </button>
 
-            <button
-                {{action grid.modifyShape item
+            <button type="button"
+                {{on "click" (fn grid.modifyShape item
                     (hash
                         w=(if (eq item.position.w 1) 2 1)
                         x=(if (eq item.position.x 1) 0 1)
                     )
-                }}>
+                )}}>
                 Width
             </button>
             <div key={{index}}>
