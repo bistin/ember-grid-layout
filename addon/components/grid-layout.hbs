@@ -1,10 +1,10 @@
-{{content-aware this.layoutModel.length (action this.contentObserber)}}
-{{content-aware this.width (action this.widthObserver)}}
 <div 
     class="grid-layout" 
-    style={{containerStyle}} 
-    {{on "dragover" (action this.dragoveraction)}}
-    {{on "drop" (action this.dropaction)}}
+    style={{this.containerStyle}} 
+    {{on "dragover" this.dragoveraction}}
+    {{on "drop"  this.dropaction}}
+    {{did-update this.widthObserver this.width}}
+    {{did-update this.contentObserber this.layoutModel.length}}
     >
     
     {{yield (hash
