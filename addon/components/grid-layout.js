@@ -134,10 +134,8 @@ export default class GridLayoutComponent extends Component {
         return out;
     }
 
-    // containerHeight
-    @computed('containerHeight')
-    get containerStyle() {
-        return htmlSafe(`height:${this.containerHeight}px;`);
+    updateHeight(element, [containerHeight]){
+        element.style.height = `${containerHeight}px`;
     }
 
     @action

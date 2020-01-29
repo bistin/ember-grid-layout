@@ -1,8 +1,9 @@
 <div 
     class="grid-layout" 
-    style={{this.containerStyle}} {{!-- use modifier here--}}
     {{on "dragover" this.dragoveraction}}
     {{on "drop"  this.dropaction}}
+    {{did-insert this.updateHeight this.containerHeight}}
+    {{did-update this.updateHeight this.containerHeight}}
     {{did-update this.widthObserver this.width}}
     {{did-update this.contentObserber this.layoutModel.length}}
     >
