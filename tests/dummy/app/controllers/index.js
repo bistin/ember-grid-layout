@@ -17,27 +17,26 @@ const wrappedLayout = layout.map((d, i) => ({
     position: d,
 }));
 
-export default Controller.extend({
+export default class IndexController extends Controller {
+    compactType = 'vertical';
+    preventCollision = true;
+    cols = 2;
+    width = 500;
+    wrappedLayout = wrappedLayout;
+
     init() {
-        this._super();
-        this.setProperties({
-            compactType: 'vertical',
-            preventCollision: true,
-            cols: 2,
-            width: 500,
-        });
-    },
+        super.init(...arguments);
+    }
 
-    wrappedLayout: wrappedLayout,
-
-    updatePosition: action(function(newLayout, moving) {
-        // console.log(newLayout, moving);
+    @action
+    updatePosition(newLayout, moving) {
         this.wrappedLayout.forEach((d, i) => {
             setProperties(d.position, newLayout[i]);
         });
-    }),
+    }
 
-    add: action(function() {
+    @action
+    add() {
         i = i + 1;
         let newX = i % 2;
         let newY = -0.1;
@@ -53,9 +52,10 @@ export default Controller.extend({
             data: i,
         };
         this.wrappedLayout.pushObject(newL);
-    }),
+    }
 
-    changeWidth: action(function() {
+    @action
+    changeWidth() {
         this.set('width', this.width * 0.8);
-    }),
-});
+    }
+}
