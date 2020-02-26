@@ -3,3 +3,5 @@
 2019-07-15T13:21:07.020Z [info] [addon/components/grid-item.js]: SUCCESS
 2019-07-15T13:21:07.074Z [info] [addon/components/grid-layout.js]: SUCCESS
 2019-07-15T13:21:07.131Z [warn] [addon/utils/index.ts]: SKIPPED Could not find runtime data NO_RUNTIME_DATA
+2020-01-28T16:23:52.112Z [warn] WARNING: {{content-aware}} was not converted as it has positional parameters which can't be automatically converted. Source: app/templates/components/grid-layout.hbs
+2020-01-28T16:23:52.113Z [warn] WARNING: {{content-aware}} was not converted as it has positional parameters which can't be automatically converted. Source: app/templates/components/grid-layout.hbs

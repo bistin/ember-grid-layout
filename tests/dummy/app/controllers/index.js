@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { compact, moveElement } from 'ember-grid-layout/utils';
-import { setProperties } from '@ember/object';
+import { setProperties, action } from '@ember/object';
 
 let i = 10;
 let layout = [
@@ -17,47 +17,45 @@ const wrappedLayout = layout.map((d, i) => ({
     position: d,
 }));
 
-export default Controller.extend({
+export default class IndexController extends Controller {
+    compactType = 'vertical';
+    preventCollision = true;
+    cols = 2;
+    width = 500;
+    wrappedLayout = wrappedLayout;
+
     init() {
-        this._super();
-        this.setProperties({
-            compactType: 'vertical',
-            preventCollision: true,
-            cols: 2,
-            width: 500,
-        });
-    },
+        super.init(...arguments);
+    }
 
-    wrappedLayout: wrappedLayout,
-
+    @action
     updatePosition(newLayout, moving) {
-        // console.log(newLayout, moving);
         this.wrappedLayout.forEach((d, i) => {
             setProperties(d.position, newLayout[i]);
         });
-    },
+    }
 
-    actions: {
-        changeWidth() {
-            this.set('width', this.width * 0.8);
-        },
+    @action
+    add() {
+        i = i + 1;
+        let newX = i % 2;
+        let newY = -0.1;
+        const newL = {
+            position: {
+                x: newX,
+                y: newY,
+                w: 1,
+                h: 2,
+                i: i.toString(),
+                static: false,
+            },
+            data: i,
+        };
+        this.wrappedLayout.pushObject(newL);
+    }
 
-        add() {
-            i = i + 1;
-            let newX = i % 2;
-            let newY = -0.1;
-            const newL = {
-                position: {
-                    x: newX,
-                    y: newY,
-                    w: 1,
-                    h: 2,
-                    i: i.toString(),
-                    static: false,
-                },
-                data: i,
-            };
-            this.wrappedLayout.pushObject(newL);
-        },
-    },
-});
+    @action
+    changeWidth() {
+        this.set('width', this.width * 0.8);
+    }
+}
