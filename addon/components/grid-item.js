@@ -97,10 +97,13 @@ export default class GridItemComponent extends Component {
         newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
 
         this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollContainer);
+        return false;
     }
 
     @action
     dragMoveAction(e) {
+        //console.log(e.target)
+        e.target.style.display = "none" 
         if (!this.tmpY) {
             this.tmpY = e.clientY;
         }
@@ -110,9 +113,10 @@ export default class GridItemComponent extends Component {
     }
 
     @action
-    dragEndAction() {
+    dragEndAction(e) {
         this.grid.onDragStop();
         this.tmpY = null;
+        e.target.style.display = "";
     }
 
     @action
