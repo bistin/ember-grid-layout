@@ -1,12 +1,13 @@
 {{!-- template-lint-disable  --}}
 <div
     draggable={{this.canDrag}}
+    {{position this.itemPosition}}
     {{on "dragstart" this.dragStartAction}}
     {{on "drag" this.dragMoveAction}}
     {{on "dragend" this.dragEndAction}}
     {{on "mouseover" this.mouseOverAction}}
     {{on "mouseleave" this.mouseLeaveAction}}
-    class="grid-item" style={{this.styleText}}>
+    class="grid-item" >
     {{yield}}
 </div>
 
