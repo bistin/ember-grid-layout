@@ -29,13 +29,12 @@ export default class GridItemComponent extends Component {
     }
 
     @computed('pos.{x,y,w,h}', 'grid.containerWidth')
-    get styleText() {
+    get itemPosition() {
         if (!this.pos) {
             return '';
         }
         const { x, y, w, h } = this.pos;
-        const p = this.calcPosition(x, y, w, h);
-        return htmlSafe(`height:${p.height}px;left:${p.left}px;width:${p.width}px;top:${p.top}px`);
+        return this.calcPosition(x, y, w, h);
     }
 
     didInsertElement() {
@@ -46,8 +45,8 @@ export default class GridItemComponent extends Component {
     }
 
     calcPosition(x, y, w, h) {
-        const { margin, containerPadding, rowHeight } = this.grid;
-        const colWidth = this.calcColWidth();
+        const { margin, containerPadding, rowHeight, containerWidth, cols } = this.grid;
+        const colWidth = (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
 
         const out = {
             left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
@@ -60,11 +59,6 @@ export default class GridItemComponent extends Component {
         };
 
         return out;
-    }
-
-    calcColWidth() {
-        const { margin, containerPadding, containerWidth, cols } = this.grid;
-        return (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
     }
 
     updateScrollPosition(pointerY, distance) {
