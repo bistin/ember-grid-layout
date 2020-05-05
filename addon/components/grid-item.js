@@ -97,7 +97,7 @@ export default class GridItemComponent extends Component {
     @action
     dragMoveAction(e) {
         //console.log(e.target)
-        e.target.style.display = "none" 
+        e.target.style.display = 'none';
         if (!this.tmpY) {
             this.tmpY = e.clientY;
         }
@@ -110,7 +110,7 @@ export default class GridItemComponent extends Component {
     dragEndAction(e) {
         this.grid.onDragStop();
         this.tmpY = null;
-        e.target.style.display = "";
+        e.target.style.display = '';
     }
 
     @action
@@ -119,7 +119,7 @@ export default class GridItemComponent extends Component {
             return;
         }
         const canDrag = Array.isArray(this.handle)
-            ? this.handle.some(handle => e.target.matches(handle))
+            ? this.handle.some((handle) => e.target.matches(handle))
             : e.target.matches(this.handle);
         this.set('canDrag', canDrag);
     }
