@@ -3,12 +3,7 @@ import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
 import { setProperties, action, computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
-import {
-    compact,
-    moveElement,
-    bottom,
-    correctBounds
-} from 'ember-grid-layout/utils';
+import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
 import { debounce } from '@ember/runloop';
 
 @classic
@@ -90,7 +85,7 @@ export default class GridLayoutComponent extends Component {
     // TODO pass from outside
     @action
     widthObserver() {
-        if(!this.breakpointWidth) {
+        if (!this.breakpointWidth) {
             return;
         }
         const width = this.width;
@@ -134,7 +129,7 @@ export default class GridLayoutComponent extends Component {
         return out;
     }
 
-    updateHeight(element, [containerHeight]){
+    updateHeight(element, [containerHeight]) {
         element.style.height = `${containerHeight}px`;
     }
 
@@ -154,7 +149,6 @@ export default class GridLayoutComponent extends Component {
     dropaction(e) {
         e.preventDefault();
     }
-
 
     onDrag(x, y, index) {
         if (!this.tmpLayout) {
