@@ -18,6 +18,7 @@ pages:
     script:
         - yarn
         - yarn build
+        - mv dist public
     artifacts:
         paths:
-            - dist
+            - public
