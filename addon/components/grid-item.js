@@ -17,9 +17,23 @@ function getScrollParent(el) {
     return returnEl;
 }
 
+/**
+  A component served as grid layout container.
+  ```hbs
+    <GridItem
+        @grid={{grid}}
+        @pos={{get item "position"}}
+        @index={{index}}
+        @handle= {{array ".dragHandle" ".dragHandle2"}}
+        @scrollContainerSelector="html">
+    </GridItem>
+  ```
+  @class GridItem
+  @public
+*/
 @classic
 @tagName('')
-export default class GridItemComponent extends Component {
+export default class GridItem extends Component {
     init() {
         super.init();
         this.set('tmpY', null);
