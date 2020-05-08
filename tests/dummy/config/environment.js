@@ -4,7 +4,7 @@ module.exports = function (environment) {
     let ENV = {
         modulePrefix: 'dummy',
         environment,
-        rootURL: '/ember-grid-layout',
+        rootURL: environment === 'production' ? '/ember-grid-layout' : '/',
         locationType: 'auto',
         EmberENV: {
             FEATURES: {

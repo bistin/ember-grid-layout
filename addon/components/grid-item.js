@@ -1,7 +1,7 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
 import { action, computed } from '@ember/object';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { htmlSafe } from '@ember/string';
 import { throttle } from '@ember/runloop';
 
 function getScrollParent(el) {
@@ -30,35 +30,27 @@ function getScrollParent(el) {
   @class GridItem
   @public
 */
-@classic
-@tagName('')
 export default class GridItem extends Component {
-    init() {
-        super.init();
-        this.set('tmpY', null);
-        this.dragMove = (e) => throttle(this, this._dragMove, e, 80, false);
-        this.scrollContainer = null;
-        this.set('canDrag', !this.handle);
+    scrollContainer = null;
+    tmpY = null;
+    @tracked canDrag = !this.handle;
+
+    constructor() {
+        super(...arguments);
+        this.dragMove = (e) => throttle(this, this._dragMove, e, 80, false);        
     }
 
-    @computed('pos.{x,y,w,h}', 'grid.containerWidth')
+    @computed('args.pos.{x,y,w,h}', 'grid.containerWidth')
     get itemPosition() {
-        if (!this.pos) {
+        if (!this.args.pos) {
             return '';
         }
-        const { x, y, w, h } = this.pos;
+        const { x, y, w, h } = this.args.pos;
         return this.calcPosition(x, y, w, h);
     }
 
-    didInsertElement() {
-        let scrollContainer = this.scrollContainerSelector
-            ? document.querySelector(this.scrollContainerSelector)
-            : getScrollParent(document.querySelector('.grid-layout').parentNode);
-        this.set('scrollContainer', scrollContainer);
-    }
-
     calcPosition(x, y, w, h) {
-        const { margin, containerPadding, rowHeight, containerWidth, cols } = this.grid;
+        const { margin, containerPadding, rowHeight, containerWidth, cols } = this.args.grid;
         const colWidth = (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
 
         const out = {
@@ -72,6 +64,14 @@ export default class GridItem extends Component {
         };
 
         return out;
+    }
+
+    @action
+    insertAction() {
+        let scrollContainer = this.scrollContainerSelector
+            ? document.querySelector(this.scrollContainerSelector)
+            : getScrollParent(document.querySelector('.grid-layout').parentNode);
+        this.scrollContainer = scrollContainer;
     }
 
     updateScrollPosition(pointerY, distance) {
@@ -103,13 +103,12 @@ export default class GridItem extends Component {
         newPosition.left = clientRect.left - parentRect.left + offsetParent.scrollLeft;
         newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
 
-        this.grid.onDragStart(newPosition, e.clientX, e.clientY, this.index, this.scrollContainer);
+        this.args.grid.onDragStart(newPosition, e.clientX, e.clientY, this.args.index, this.scrollContainer);
         return false;
     }
 
     @action
     dragMoveAction(e) {
-        //console.log(e.target)
         e.target.style.display = 'none';
         if (!this.tmpY) {
             this.tmpY = e.clientY;
@@ -121,7 +120,7 @@ export default class GridItem extends Component {
 
     @action
     dragEndAction(e) {
-        this.grid.onDragStop();
+        this.args.grid.onDragStop();
         this.tmpY = null;
         e.target.style.display = '';
     }
@@ -134,7 +133,7 @@ export default class GridItem extends Component {
         const canDrag = Array.isArray(this.handle)
             ? this.handle.some((handle) => e.target.matches(handle))
             : e.target.matches(this.handle);
-        this.set('canDrag', canDrag);
+        this.canDrag = canDrag;
     }
 
     @action
@@ -142,6 +141,6 @@ export default class GridItem extends Component {
         if (!this.handle) {
             return;
         }
-        this.set('canDrag', false);
+        this.canDrag = false;
     }
 }
