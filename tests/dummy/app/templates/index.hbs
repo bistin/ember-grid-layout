@@ -2,26 +2,23 @@
 
 <div style="max-width: 40rem; margin: 0 auto; padding: 0 1.5rem">
     <DocsDemo as |demo|>
-    <demo.example @name="my-demo.hbs">
-    <GridLayout @layoutModel={{this.wrappedLayout}} @positionKey="position" @width={{this.width}} @rowHeight={{10}}
-        @updatePosition={{fn this.updatePosition}} as |grid layoutModel|>
-        {{#each layoutModel as |item index|}}
-        <GridItem @grid={{grid}} @pos={{get item "position"}} @index={{index}}
-            @handle={{array ".dragHandle" ".dragHandle2"}} @scrollContainerSelector="html">
-            <div class="dragHandle">Drag Me</div>
-        </GridItem>
-        {{/each}}
-    </GridLayout>
-
-    <p>Make sure to read up on the DocsDemo component before building out this page.</p>
-    </demo.example>
-</DocsDemo>
+        <demo.example @name="my-demo.hbs">
+            <GridLayout @layoutModel={{this.wrappedLayout}} @positionKey="position" @width={{this.width}} @rowHeight={{10}}
+                @updatePosition={{fn this.updatePosition}} as |grid layoutModel|>
+                {{#each layoutModel as |item index|}}
+                    <GridItem @grid={{grid}} @pos={{get item "position"}} @index={{index}}
+                        @handle={{array ".dragHandle" ".dragHandle2"}} @scrollContainerSelector="html">
+                        <div class="dragHandle">Drag Me</div>
+                    </GridItem>
+                {{/each}}
+            </GridLayout>
+            <p>Make sure to read up on the DocsDemo component before building out this page.</p>
+        </demo.example>
+    </DocsDemo>
 </div>
 
-
-
-<!-- 
-<button type="button" {{on "click" this.add}}>add</button> 
+<!--
+<button type="button" {{on "click" this.add}}>add</button>
 <button type="button" {{on "click" this.changeWidth}}>width</button>
 
 <GridLayout
