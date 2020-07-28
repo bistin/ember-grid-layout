@@ -1,5 +1,6 @@
 import AddonDocsRouter, { docsRoute } from 'ember-cli-addon-docs/router';
-import config from './config/environment';
+import config from 'dummy/config/environment';
+import EmberRouter from '@ember/routing/router';
 
 const Router = AddonDocsRouter.extend({
   location: config.locationType,
