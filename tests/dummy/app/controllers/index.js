@@ -21,7 +21,7 @@ export default class IndexController extends Controller {
     compactType = 'vertical';
     preventCollision = true;
     cols = 2;
-    width = 500;
+    width = 555;
     wrappedLayout = wrappedLayout;
 
     init() {

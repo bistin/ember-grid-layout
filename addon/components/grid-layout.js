@@ -6,24 +6,106 @@ import { htmlSafe } from '@ember/string';
 import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
 import { debounce } from '@ember/runloop';
 
+/**
+  A component served as grid layout container.
+  ```hbs
+  <GridLayout
+    @layoutModel={{this.wrappedLayout}}
+    @positionKey="position"
+    @width={{this.width}}
+    @rowHeight={{40}}
+    @updatePosition={{fn this.updatePosition}} as |grid layoutModel|>
+    {{#each layoutModel as |item index|}}
+        <GridItem
+            @grid={{grid}}
+            @pos={{get item "position"}}
+            @index={{index}}
+            @handle= {{array ".dragHandle" ".dragHandle2"}}
+            @scrollContainerSelector="html">
+        </GridItem>
+    {{/each}}
+</GridLayout> -->
+  ```
+  @class GridLayout
+  @yield {grid} grid pass to GridItem 
+  @yield {layoutModel} layoutModel
+  @public
+*/
 @classic
 @tagName('')
-export default class GridLayoutComponent extends Component {
-    positionKey = null; // in case the input array is not pure position array, we provide an item key
+export default class GridLayout extends Component {  
     scrollElement = null;
-    autoSize = true;
-    cols = 2;
+    
+    /**
+        padding, default [10, 10]
+        @argument containerPadding
+        @type {[number, number]?}
+    */
     containerPadding = [10, 10];
     maxRows = 500; // infinite vertical growt
+
+    /**
+        margin, default [10, 10]
+        @argument margin
+        @type {[number, number]?}
+    */
     margin = [10, 10];
     preventCollision = false;
+    
+    /**
+        compactType: default to vertical
+        @argument cols
+        @type {'vertical'|'horizontal'?}
+    */
     compactType = 'vertical';
     breakpointWidth = this.breakpointWidth;
 
+
+    /**
+        columns, default to 2
+        @argument cols
+        @type {number?} 
+    */
+    cols = 2;
+
+    /**
+        array of layout object
+        @argument layoutModel
+        @type {layoutModel}
+    */
+    layoutModel = null; // in case the input array is not pure position array, we provide an item key
+
+    /**
+        object key of postion in layoutObject  
+        @argument positionKey
+        @type {string?}
+    */
+    positionKey = null; // in case the input array is not pure position array, we provide an item key
+
+    /**
+        layout width
+        @argument width
+        @type {number}
+    */
+    width = this.width ? Number(this.width) : 800;
+
+    /**
+        height basic unit
+        @argument rowHeight
+        @type {number}
+    */
+    rowHeight =  this.rowHeight ? Number(this.rowHeight) : 40;
+
+    /**
+        function that received new layout, if not privided, system will use temp function 
+        @argument updatePosition
+        @type {function?(newPostion: layoutModel, isProgress :boolean)}
+    */
+    updatePosition = null
+
+
     init() {
         super.init(...arguments);
-        this.width = Number(this.width) || 800;
-        this.rowHeight = Number(this.rowHeight) || 40;
         this._updatePosition();
     }
 
