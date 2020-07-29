@@ -33,9 +33,8 @@ import { debounce } from '@ember/runloop';
 */
 @classic
 @tagName('')
-export default class GridLayout extends Component {  
+export default class GridLayout extends Component {
     scrollElement = null;
-    
     /**
         padding, default [10, 10]
         @argument containerPadding
@@ -51,7 +50,6 @@ export default class GridLayout extends Component {
     */
     margin = [10, 10];
     preventCollision = false;
-    
     /**
         compactType: default to vertical
         @argument cols

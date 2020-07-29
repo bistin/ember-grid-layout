@@ -3,10 +3,11 @@
     {{on "dragover" this.dragoveraction}}
     {{on "drop"  this.dropaction}}
     {{did-insert this.updateHeight this.containerHeight}}
+    {{did-insert this.widthObserver this.width}}
     {{did-update this.updateHeight this.containerHeight}}
     {{did-update this.widthObserver this.width}}
     {{did-update this.contentObserber this.layoutModel.length}}
-    >
+>
     {{yield (hash
       containerWidth=this.width
       margin=this.margin
