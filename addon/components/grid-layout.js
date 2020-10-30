@@ -1,9 +1,8 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import Component from '@ember/component';
 import { setProperties, action } from '@ember/object';
 import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
 import { debounce } from '@ember/runloop';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 /**
   A component served as grid layout container.
@@ -30,8 +29,7 @@ import { debounce } from '@ember/runloop';
   @yield {layoutModel} layoutModel
   @public
 */
-@classic
-@tagName('')
+
 export default class GridLayout extends Component {
     scrollElement = null;
     /**
@@ -55,7 +53,7 @@ export default class GridLayout extends Component {
         @type {'vertical'|'horizontal'?}
     */
     compactType = 'vertical';
-    breakpointWidth = this.breakpointWidth;
+    breakpointWidth = this.args.breakpointWidth || null;
 
 
     /**
@@ -70,28 +68,28 @@ export default class GridLayout extends Component {
         @argument layoutModel
         @type {layoutModel}
     */
-    layoutModel = null; // in case the input array is not pure position array, we provide an item key
+    layoutModel = this.args.layoutModel ; // in case the input array is not pure position array, we provide an item key
 
     /**
         object key of postion in layoutObject  
         @argument positionKey
         @type {string?}
     */
-    positionKey = null; // in case the input array is not pure position array, we provide an item key
+    positionKey = this.args.positionKey || null; // in case the input array is not pure position array, we provide an item key
 
     /**
         layout width
         @argument width
         @type {number}
     */
-    width = this.width ? Number(this.width) : 800;
+    width = this.args.width ? Number(this.args.width) : 800;
 
     /**
         height basic unit
         @argument rowHeight
         @type {number}
     */
-    rowHeight =  this.rowHeight ? Number(this.rowHeight) : 40;
+    rowHeight =  this.args.rowHeight ? Number(this.args.rowHeight) : 40;
 
     /**
         function that received new layout, if not privided, system will use temp function 
@@ -101,8 +99,10 @@ export default class GridLayout extends Component {
     updatePosition = null
 
 
-    init() {
-        super.init(...arguments);
+    @tracked containerHeight = 0;
+
+    constructor() {
+        super(...arguments);
         this._updatePosition();
     }
 
@@ -158,7 +158,7 @@ export default class GridLayout extends Component {
             }
         }
         const position = this.calcPosition(0, bottom(newLayout), 0, 0);
-        this.set('containerHeight', position.top);
+        this.containerHeight = position.top;
     }
 
     // TODO pass from outside
@@ -193,7 +193,10 @@ export default class GridLayout extends Component {
     }
 
     calcPosition(x, y, w, h) {
+        
         const { margin, containerPadding, rowHeight } = this;
+        console.log(margin, containerPadding, rowHeight)
+        
         const colWidth = this.calcColWidth();
 
         const out = {
@@ -254,12 +257,16 @@ export default class GridLayout extends Component {
         this.updateNewLayoutToModel(layout2);
     }
 
+    startPosition = null;
+    startPoint = null;
+    dragIndex = null;
+
     @action
     onDragStart(startPosition, x, y, dragIndex, scrollElement) {
         this.tmpLayout = this.cloneToLayoutObj();
-        this.set('startPosition', startPosition);
-        this.set('startPoint', { x, y });
-        this.set('dragIndex', dragIndex);
+        this.startPosition = startPosition;
+        this.startPoint = { x, y };
+        this.dragIndex = dragIndex;
         if (scrollElement) {
             this.scorllElememt = scrollElement;
             this.tmp = scrollElement.scrollTop;
