@@ -1,10 +1,9 @@
 import { action, computed } from '@ember/object';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { htmlSafe } from '@ember/string';
-import { throttle } from '@ember/runloop';
+import { IPos } from '../utils';
 
-function getScrollParent(el) {
+function getScrollParent(el: HTMLElement|null): HTMLElement|null {
     let returnEl;
     if (el == null) {
         return null;
@@ -15,6 +14,13 @@ function getScrollParent(el) {
     }
     return returnEl;
 }
+
+interface Args {
+    handle: string;
+    pos: IPos;
+    scrollContainerSelector: string;
+  }
+
 
 /**
   A component served as grid layout container.
@@ -30,15 +36,13 @@ function getScrollParent(el) {
   @class GridItem
   @public
 */
-export default class GridItem extends Component {
-    scrollContainer = null;
-    tmpY = null;
-    @tracked canDrag = !this.handle;
+export default class GridItem extends Component<Args> {
+    scrollContainer: HTMLElement|null = null;
+    handle: string | null = null;
+    tmpY: number | null = null;
+    @tracked canDrag = !this.args.handle;
 
-    constructor() {
-        super(...arguments);
-        this.dragMove = (e) => throttle(this, this._dragMove, e, 80, false);        
-    }
+    
 
     @computed('args.pos.{x,y,w,h}', 'grid.containerWidth')
     get itemPosition() {
@@ -49,7 +53,7 @@ export default class GridItem extends Component {
         return this.calcPosition(x, y, w, h);
     }
 
-    calcPosition(x, y, w, h) {
+    calcPosition(x: number, y: number, w: number, h: number) {
         const { margin, containerPadding, rowHeight, containerWidth, cols } = this.args.grid;
         const colWidth = (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
 
@@ -68,13 +72,13 @@ export default class GridItem extends Component {
 
     @action
     insertAction() {
-        let scrollContainer = this.scrollContainerSelector
-            ? document.querySelector(this.scrollContainerSelector)
-            : getScrollParent(document.querySelector('.grid-layout').parentNode);
+        let scrollContainer = this.args.scrollContainerSelector
+            ? document.querySelector(this.args.scrollContainerSelector)
+            : getScrollParent(document.querySelector('.grid-layout')?.parentNode);
         this.scrollContainer = scrollContainer;
     }
 
-    updateScrollPosition(pointerY, distance) {
+    updateScrollPosition(pointerY: number, distance: number) {
         const innerHeightOrClientHeight =
             window.innerHeight || document.documentElement.clientHeight;
 
@@ -90,8 +94,8 @@ export default class GridItem extends Component {
     }
 
     @action
-    dragStartAction(e) {
-        e.dataTransfer.setData('text/plain', 'handle');
+    dragStartAction(e: DragEvent) {
+        e.dataTransfer && e.dataTransfer.setData('text/plain', 'handle');
         //e.dataTransfer.dropEffect = "move"
         const newPosition = { top: 0, left: 0 };
         let node = e.target;
@@ -108,8 +112,10 @@ export default class GridItem extends Component {
     }
 
     @action
-    dragMoveAction(e) {
-        e.target.style.display = 'none';
+    dragMoveAction(e: DragEvent) {
+        if(e.target) {
+            e.target.style.display = 'none';
+        }
         if (!this.tmpY) {
             this.tmpY = e.clientY;
         }
@@ -119,14 +125,17 @@ export default class GridItem extends Component {
     }
 
     @action
-    dragEndAction(e) {
+    dragEndAction(e: DragEvent) {
+        
         this.args.grid.onDragStop();
         this.tmpY = null;
-        e.target.style.display = '';
+        if(e.target) {
+            e.target.style.display = '';
+        }
     }
 
     @action
-    mouseOverAction(e) {
+    mouseOverAction(e: MouseEvent) {
         if (!this.handle) {
             return;
         }

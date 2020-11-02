@@ -20,6 +20,13 @@ export type LayoutItem = {
 };
 export type Layout = LayoutItem[];
 
+export type IPos = {
+    w: number;
+    h: number;
+    x: number;
+    y: number;
+}
+
 export type Position = {
     left: number;
     top: number;

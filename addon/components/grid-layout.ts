@@ -22,7 +22,7 @@ import { tracked } from '@glimmer/tracking';
             @scrollContainerSelector="html">
         </GridItem>
     {{/each}}
-</GridLayout> -->
+</GridLayout> 
   ```
   @class GridLayout
   @yield {grid} grid pass to GridItem 
