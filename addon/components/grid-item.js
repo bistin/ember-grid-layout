@@ -2,7 +2,6 @@ import classic from 'ember-classic-decorator';
 import { tagName } from '@ember-decorators/component';
 import { action, computed } from '@ember/object';
 import Component from '@ember/component';
-import { htmlSafe } from '@ember/string';
 import { throttle } from '@ember/runloop';
 
 function getScrollParent(el) {

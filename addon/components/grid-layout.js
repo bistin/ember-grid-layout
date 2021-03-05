@@ -1,8 +1,7 @@
 import classic from 'ember-classic-decorator';
 import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
-import { setProperties, action, computed } from '@ember/object';
-import { htmlSafe } from '@ember/string';
+import { setProperties, action } from '@ember/object';
 import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
 import { debounce } from '@ember/runloop';
 
