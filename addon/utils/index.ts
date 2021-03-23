@@ -34,6 +34,12 @@ export type Position = {
     height: number;
 };
 
+
+export type LPPosition = {
+    left: number;
+    top: number;
+};
+
 /**
  * Return the bottom coordinate of the layout.
  *

@@ -1,5 +1,5 @@
 import { setProperties, action } from '@ember/object';
-import { compact, moveElement, bottom, correctBounds, Layout } from 'ember-grid-layout/utils';
+import { compact, moveElement, bottom, correctBounds, Layout, LayoutItem, LPPosition } from 'ember-grid-layout/utils';
 import { debounce } from '@ember/runloop';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -11,6 +11,7 @@ interface Args {
     positionKey?: string| null;
     width: number;
     rowHeight: number;
+    updatePosition: Function;
   }
 
 /**
@@ -40,7 +41,7 @@ interface Args {
 */
 
 export default class GridLayout extends Component<Args> {
-    scrollElement = null;
+    scrollElement: HTMLElement | null = null;
     /**
         padding, default [10, 10]
         @argument containerPadding
@@ -61,7 +62,7 @@ export default class GridLayout extends Component<Args> {
         @argument cols
         @type {'vertical'|'horizontal'?}
     */
-    compactType = 'vertical';
+    compactType: 'vertical'|'horizontal' = 'vertical';
     breakpointWidth = this.args.breakpointWidth || null;
 
 
@@ -70,7 +71,7 @@ export default class GridLayout extends Component<Args> {
         @argument cols
         @type {number?} 
     */
-    cols = 2;
+    cols: number = 2;
 
     /**
         array of layout object
@@ -105,10 +106,12 @@ export default class GridLayout extends Component<Args> {
         @argument updatePosition
         @type {function?(newPostion: layoutModel, isProgress :boolean)}
     */
-    updatePosition = null
+    updatePosition = this.args.updatePosition || null;
 
 
     @tracked containerHeight = 0;
+    tmp: number| null = null;
+    tmpLayout: Layout|null = null;
 
     constructor() {
         super(...arguments);
@@ -134,9 +137,10 @@ export default class GridLayout extends Component<Args> {
         this._updatePosition();
     }
 
-    calcXY(top, left) {
-        const { margin, cols, rowHeight, maxRows } = this;
-        const { w, h } = this.getPositionByIndex(this.dragIndex);
+    calcXY(top: number, left:number) {
+        const { margin, cols, rowHeight, maxRows, dragIndex } = this;
+        // if (! dragIndex) { return; }
+        const { w, h } = this.getPositionByIndex(dragIndex);
         const colWidth = this.calcColWidth();
         let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
         let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
@@ -156,9 +160,10 @@ export default class GridLayout extends Component<Args> {
         if (this.updatePosition) {
             this.updatePosition(newLayout, this.tmp != null);
         } else {
-            if (this.positionKey) {
+            const {positionKey} = this;
+            if (positionKey) {
                 this.layoutModel.forEach((d, i) => {
-                    setProperties(d[this.positionKey], newLayout[i]);
+                    setProperties(d[positionKey], newLayout[i]);
                 });
             } else {
                 this.layoutModel.forEach((d, i) => {
@@ -179,9 +184,9 @@ export default class GridLayout extends Component<Args> {
         const width = this.width;
         const prevCols = this.cols;
         if (width < this.breakpointWidth) {
-            this.set('cols', 1);
+            this.cols = 1;
         } else {
-            this.set('cols', 2);
+            this.cols = 2;
         }
         const tmpArr = this.cloneToLayoutObj();
         let layout2 = compact(
@@ -201,7 +206,7 @@ export default class GridLayout extends Component<Args> {
         this.updateNewLayoutToModel(layout2);
     }
 
-    calcPosition(x, y, w, h) {
+    calcPosition(x: number, y: number, w: number, h: number) {
         
         const { margin, containerPadding, rowHeight } = this;
         console.log(margin, containerPadding, rowHeight)
@@ -220,28 +225,29 @@ export default class GridLayout extends Component<Args> {
         return out;
     }
 
-    updateHeight(element, [containerHeight]) {
+    updateHeight(element: HTMLElement, [containerHeight]: [number]) {
         element.style.height = `${containerHeight}px`;
     }
 
     @action
-    dragoveraction(e) {
+    dragoveraction(e: DragEvent) {
         e.preventDefault();
+        if(!this.startPoint || !this.startPosition || !this.tmp || !this.dragIndex){ return }
         const deltaX = e.clientX - this.startPoint.x;
         const deltaY = e.clientY - this.startPoint.y;
         const left = this.startPosition.left + deltaX;
         const top = this.startPosition.top + deltaY;
-        const deltaTop = this.scorllElememt ? this.scorllElememt.scrollTop - this.tmp : 0;
+        const deltaTop = this.scrollElement ? this.scrollElement.scrollTop - this.tmp : 0;
         const pos = this.calcXY(top + deltaTop, left);
         this.onDrag(pos.x, pos.y, this.dragIndex);
     }
 
     @action
-    dropaction(e) {
+    dropaction(e: DragEvent) {
         e.preventDefault();
     }
 
-    onDrag(x, y, index) {
+    onDrag(x: number, y: number, index: number) {
         if (!this.tmpLayout) {
             return;
         }
@@ -266,18 +272,18 @@ export default class GridLayout extends Component<Args> {
         this.updateNewLayoutToModel(layout2);
     }
 
-    startPosition = null;
-    startPoint = null;
-    dragIndex = null;
+    startPosition: LPPosition| null = null;
+    startPoint: {x:number, y:number} | null = null;
+    dragIndex: number| null = null;
 
     @action
-    onDragStart(startPosition, x, y, dragIndex, scrollElement) {
+    onDragStart(startPosition: LPPosition, x: number, y: number, dragIndex: number, scrollElement: HTMLElement) {
         this.tmpLayout = this.cloneToLayoutObj();
         this.startPosition = startPosition;
         this.startPoint = { x, y };
         this.dragIndex = dragIndex;
         if (scrollElement) {
-            this.scorllElememt = scrollElement;
+            this.scrollElement = scrollElement;
             this.tmp = scrollElement.scrollTop;
         }
     }
@@ -292,7 +298,7 @@ export default class GridLayout extends Component<Args> {
     }
 
     @action
-    remove(item) {
+    remove(item: LayoutItem) {
         this.layoutModel.removeObject(item);
         debounce(this, this._updatePosition, 100);
     }
@@ -306,9 +312,10 @@ export default class GridLayout extends Component<Args> {
     }
 
     @action
-    modifyShape(item, position) {
+    modifyShape(item: LayoutItem, position) {
         const index = this.layoutModel.indexOf(item);
         const tmpArr = this.cloneToLayoutObj();
+        console.log(item);
         position.y = item.position.y - 0.001;
         setProperties(tmpArr[index], position);
         this._updatePosition(tmpArr);
