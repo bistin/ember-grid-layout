@@ -237,7 +237,7 @@ export default class GridLayout extends Component<Args> {
     @action
     dragoveraction(e: DragEvent) {
         e.preventDefault();
-        if (!this.startPoint || !this.startPosition || this.tmp  === null || this.dragIndex === null) {
+        if (this.startPoint === null || this.startPosition === null || this.tmp  === null || this.dragIndex === null) {
             return;
         }
         const deltaX = e.clientX - this.startPoint.x;
