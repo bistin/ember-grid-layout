@@ -50,7 +50,7 @@ interface Args {
 */
 export default class GridItem extends Component<Args> {
     scrollContainer: HTMLElement|null = null;
-    handle: string | null = null;
+    handle: string | null = this.args.handle;
     tmpY: number | null = null;
     @tracked canDrag = !this.args.handle;
 
@@ -120,7 +120,7 @@ export default class GridItem extends Component<Args> {
         const clientRect = node?.getBoundingClientRect();
         newPosition.left = clientRect.left - parentRect.left + offsetParent.scrollLeft;
         newPosition.top = clientRect.top - parentRect.top + offsetParent.scrollTop;
-        debugger
+        console.log('drag start')
         this.args.grid.onDragStart(newPosition, e.clientX, e.clientY, this.args.index, this.scrollContainer);
         return false;
     }
@@ -146,7 +146,11 @@ export default class GridItem extends Component<Args> {
         this.args.grid.onDragStop();
         this.tmpY = null;
         if(e.target) {
-            (e.target as HTMLElement).style.display = '';
+            //(e.target as HTMLElement).style.display = '';
+            const style = (e.target as HTMLElement).style;
+            if(style){
+                style.display = '';
+            }
         }
     }
 
