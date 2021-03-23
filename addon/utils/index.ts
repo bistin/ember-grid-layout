@@ -34,7 +34,6 @@ export type Position = {
     height: number;
 };
 
-
 export type LPPosition = {
     left: number;
     top: number;

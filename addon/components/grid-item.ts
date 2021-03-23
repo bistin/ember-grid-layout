@@ -34,7 +34,6 @@ interface Args {
     };
   }
 
-
 /**
   A component served as grid layout container.
   ```hbs
