@@ -1,8 +1,17 @@
 import { setProperties, action } from '@ember/object';
-import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
+import { compact, moveElement, bottom, correctBounds, Layout } from 'ember-grid-layout/utils';
 import { debounce } from '@ember/runloop';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+
+
+interface Args {
+    breakpointWidth?: number | null;
+    layoutModel: Layout;
+    positionKey?: string| null;
+    width: number;
+    rowHeight: number;
+  }
 
 /**
   A component served as grid layout container.
@@ -30,7 +39,7 @@ import { tracked } from '@glimmer/tracking';
   @public
 */
 
-export default class GridLayout extends Component {
+export default class GridLayout extends Component<Args> {
     scrollElement = null;
     /**
         padding, default [10, 10]
@@ -113,7 +122,7 @@ export default class GridLayout extends Component {
         return this.layoutModel.map((d) => ({ ...d }));
     }
 
-    getPositionByIndex(index) {
+    getPositionByIndex(index: number) {
         if (this.positionKey) {
             return this.layoutModel[index][this.positionKey];
         }
@@ -142,7 +151,7 @@ export default class GridLayout extends Component {
         return (width - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
     }
 
-    updateNewLayoutToModel(newLayout) {
+    updateNewLayoutToModel(newLayout: Layout) {
         newLayout.forEach((d) => (d.y = Math.round(d.y)));
         if (this.updatePosition) {
             this.updatePosition(newLayout, this.tmp != null);
