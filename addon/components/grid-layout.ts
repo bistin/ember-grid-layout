@@ -7,7 +7,6 @@ import {
     Layout,
     LayoutItem,
     LPPosition,
-    IPos,
 } from 'ember-grid-layout/utils';
 import { debounce } from '@ember/runloop';
 import Component from '@glimmer/component';
@@ -15,8 +14,8 @@ import { tracked } from '@glimmer/tracking';
 
 interface Args {
     breakpointWidth?: number | null;
-    layoutModel: Layout;
-    positionKey?: keyof LayoutItem | null;
+    layoutModel: any[];
+    positionKey?: string | null;
     width: number;
     rowHeight: number;
     updatePosition: Function;
@@ -92,7 +91,7 @@ export default class GridLayout extends Component<Args> {
         @argument positionKey
         @type {string?}
     */
-    positionKey: keyof LayoutItem | null = this.args.positionKey || null; // in case the input array is not pure position array, we provide an item key
+    positionKey: string | null = this.args.positionKey || null; // in case the input array is not pure position array, we provide an item key
 
     /**
         layout width
@@ -124,19 +123,24 @@ export default class GridLayout extends Component<Args> {
         this._updatePosition();
     }
 
-    cloneToLayoutObj() {
-        const {positionKey} = this;
-        if (positionKey) {
-            return this.layoutModel.map((d) => ({ ...d[positionKey] })).toArray();
+    cloneToLayoutObj(): Layout {       
+        const res = this.layoutModel.map((item) => ({ ...this.getPositionFromItem(item)}));
+        if('toArray' in res) {
+            return res.toArray();
         }
-        return this.layoutModel.map((d) => ({ ...d }));
+        return res;
     }
 
-    getPositionByIndex(index: number) {
-        if (this.positionKey) {
-            return this.layoutModel[index][this.positionKey];
+    getPositionByIndex(index: number) : LayoutItem {
+        return this.getPositionFromItem(this.layoutModel[index]);
+    }
+
+    getPositionFromItem(item: any) : LayoutItem {
+        if(this.positionKey) {
+            return item[this.positionKey];
+        } else {
+            return item;
         }
-        return this.layoutModel[index];
     }
 
     @action
@@ -166,15 +170,10 @@ export default class GridLayout extends Component<Args> {
         if (this.updatePosition) {
             this.updatePosition(newLayout, this.tmp != null);
         } else {
-            const { positionKey } = this;
-            if (positionKey) {
-                this.layoutModel.forEach((d, i) => {
-                    setProperties(d[positionKey], newLayout[i]);
-                });
-            } else {
-                this.layoutModel.forEach((d, i) => {
-                    setProperties(d, newLayout[i]);
-                });
+            console.warn("should provide updatePosition function!")
+            for (let index = 0; index < this.layoutModel.length; index++) {
+                const element = this.getPositionByIndex(index);
+                setProperties(element, newLayout[index]);
             }
         }
         const position = this.calcPosition(0, bottom(newLayout), 0, 0);
@@ -214,8 +213,6 @@ export default class GridLayout extends Component<Args> {
 
     calcPosition(x: number, y: number, w: number, h: number) {
         const { margin, containerPadding, rowHeight } = this;
-        console.log(margin, containerPadding, rowHeight);
-
         const colWidth = this.calcColWidth();
 
         const out = {
@@ -325,11 +322,10 @@ export default class GridLayout extends Component<Args> {
     }
 
     @action
-    modifyShape(item: LayoutItem, position: Partial<IPos>) {
+    modifyShape(item: LayoutItem, position: Partial<LayoutItem>) {
         const index = this.layoutModel.indexOf(item);
         const tmpArr = this.cloneToLayoutObj();
-        console.log(item);
-        position.y = item.position.y - 0.001;
+        position.y = this.getPositionFromItem(item).y - 0.001;
         setProperties(tmpArr[index], position);
         this._updatePosition(tmpArr);
         //debounce(this, this._updatePosition, 100);
