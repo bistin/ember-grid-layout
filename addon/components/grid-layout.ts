@@ -18,7 +18,7 @@ interface Args {
     positionKey?: string | null;
     width: number;
     rowHeight: number;
-    updatePosition: Function;
+    updatePosition?: Function;
 }
 
 /**
@@ -112,7 +112,7 @@ export default class GridLayout extends Component<Args> {
         @argument updatePosition
         @type {function?(newPostion: layoutModel, isProgress :boolean)}
     */
-    updatePosition = this.args.updatePosition || null;
+    updatePosition = this.args.updatePosition || this._defaultUpdatePosition;
 
     @tracked containerHeight = 0;
     tmp: number | null = null;
@@ -165,17 +165,19 @@ export default class GridLayout extends Component<Args> {
         return (width - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
     }
 
+    _defaultUpdatePosition(newLayout: Layout, isProgress: boolean) {
+        if(!isProgress) {
+            console.warn("should provide updatePosition function!")
+        }
+        for (let index = 0; index < this.layoutModel.length; index++) {
+            const element = this.getPositionByIndex(index);
+            setProperties(element, newLayout[index]);
+        }
+    }
+
     updateNewLayoutToModel(newLayout: Layout) {
         newLayout.forEach((d) => (d.y = Math.round(d.y)));
-        if (this.updatePosition) {
-            this.updatePosition(newLayout, this.tmp != null);
-        } else {
-            console.warn("should provide updatePosition function!")
-            for (let index = 0; index < this.layoutModel.length; index++) {
-                const element = this.getPositionByIndex(index);
-                setProperties(element, newLayout[index]);
-            }
-        }
+        this.updatePosition(newLayout, this.tmp != null);
         const position = this.calcPosition(0, bottom(newLayout), 0, 0);
         this.containerHeight = position.top;
     }
@@ -302,9 +304,7 @@ export default class GridLayout extends Component<Args> {
     onDragStop() {
         this.tmpLayout = null;
         this.tmp = null;
-        if (this.updatePosition) {
-            this.updatePosition(this.cloneToLayoutObj(), false);
-        }
+        this.updatePosition(this.cloneToLayoutObj(), false);
     }
 
     @action
