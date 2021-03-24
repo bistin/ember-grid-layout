@@ -120,7 +120,7 @@ export default class GridLayout extends Component<Args> {
 
     constructor(owner: any, args: Args) {
         super(owner, args);
-        this._updatePosition();
+        this._compactLayoutToPosition();
     }
 
     cloneToLayoutObj(): Layout {       
@@ -145,7 +145,7 @@ export default class GridLayout extends Component<Args> {
 
     @action
     contentObserber() {
-        this._updatePosition();
+        this._compactLayoutToPosition();
     }
 
     calcXY(top: number, left: number) {
@@ -310,10 +310,10 @@ export default class GridLayout extends Component<Args> {
     @action
     remove(item: LayoutItem) {
         this.layoutModel.removeObject(item);
-        debounce(this, this._updatePosition, 100);
+        debounce(this, this._compactLayoutToPosition, 100);
     }
 
-    _updatePosition(tmpArr = this.cloneToLayoutObj()) {
+    _compactLayoutToPosition(tmpArr = this.cloneToLayoutObj()) {
         //const tmpArr = this.cloneToLayoutObj();
         const layout2 = compact(tmpArr, this.compactType, this.cols);
         const layout3 = correctBounds(layout2, { cols: this.cols });
@@ -322,12 +322,12 @@ export default class GridLayout extends Component<Args> {
     }
 
     @action
-    modifyShape(item: LayoutItem, position: Partial<LayoutItem>) {
+    modifyShape(item: any, position: Partial<LayoutItem>) {
         const index = this.layoutModel.indexOf(item);
         const tmpArr = this.cloneToLayoutObj();
         position.y = this.getPositionFromItem(item).y - 0.001;
         setProperties(tmpArr[index], position);
-        this._updatePosition(tmpArr);
+        this._compactLayoutToPosition(tmpArr);
         //debounce(this, this._updatePosition, 100);
     }
 }
