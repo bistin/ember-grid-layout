@@ -135,7 +135,7 @@ export default class GridLayout extends Component<Args> {
         return this.getPositionFromItem(this.layoutModel[index]);
     }
 
-    getPositionFromItem(item: any) : LayoutItem {
+    getPositionFromItem(item: LayoutItem | any) : LayoutItem {
         if(this.positionKey) {
             return item[this.positionKey];
         } else {
@@ -322,10 +322,11 @@ export default class GridLayout extends Component<Args> {
     }
 
     @action
-    modifyShape(item: any, position: Partial<LayoutItem>) {
+    modifyShape(item: any, position: LayoutItem) {
         const index = this.layoutModel.indexOf(item);
         const tmpArr = this.cloneToLayoutObj();
-        position.y = this.getPositionFromItem(item).y - 0.001;
+        const itemPosition = this.getPositionFromItem(item);
+        position.y = itemPosition.y - 0.001;
         setProperties(tmpArr[index], position);
         this._compactLayoutToPosition(tmpArr);
         //debounce(this, this._updatePosition, 100);

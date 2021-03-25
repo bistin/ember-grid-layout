@@ -15,6 +15,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:ember/recommended',
     'plugin:prettier/recommended',
+    "@typescript-eslint/parser"
   ],
   env: {
     browser: true,
