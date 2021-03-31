@@ -123,11 +123,11 @@ export default class GridLayout extends Component<Args> {
         this._compactLayoutToPosition();
     }
 
-    cloneToLayoutObj(): Layout {       
+    cloneToLayoutObj(): Layout {
         const res = this.layoutModel.map((item) => ({ ...this.getPositionFromItem(item)}));
-        if('toArray' in res) {
-            return res.toArray();
-        }
+        // if('toArray' in res) {
+        //     return res.toArray();
+        // }
         return res;
     }
 
@@ -309,7 +309,12 @@ export default class GridLayout extends Component<Args> {
 
     @action
     remove(item: LayoutItem) {
-        this.layoutModel.removeObject(item);
+
+        const index = this.layoutModel.indexOf(item);
+        if(index !== -1) {
+            this.layoutModel.splice(index, 1);
+        }
+        // this.layoutModel.removeObject(item);
         debounce(this, this._compactLayoutToPosition, 100);
     }
 
