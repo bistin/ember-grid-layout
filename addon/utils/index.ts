@@ -45,7 +45,7 @@ export type LPPosition = {
  * @param  {Array} layout Layout array.
  * @return {Number}       Bottom coordinate.
  */
-export function bottom(layout: Layout) {
+export function bottom(layout: Layout): number {
     let max = 0,
         bottomY;
     for (let i = 0, len = layout.length; i < len; i++) {
@@ -55,14 +55,14 @@ export function bottom(layout: Layout) {
     return max;
 }
 
-export function cloneLayout(layout: Layout): Layout {
-    return layout.map((layoutItem) => ({ ...layoutItem }));
-    // const newLayout = Array(layout.length);
-    // for (let i = 0, len = layout.length; i < len; i++) {
-    //     newLayout[i] = cloneLayoutItem(layout[i]);
-    // }
-    // return newLayout;
-}
+// export function cloneLayout(layout: Layout): Layout {
+//     return layout.map((layoutItem) => ({ ...layoutItem }));
+//     // const newLayout = Array(layout.length);
+//     // for (let i = 0, len = layout.length; i < len; i++) {
+//     //     newLayout[i] = cloneLayoutItem(layout[i]);
+//     // }
+//     // return newLayout;
+// }
 
 // Fast path to cloning, since this is monomorphic
 export function cloneLayoutItem(layoutItem: LayoutItem): LayoutItem {
@@ -83,7 +83,7 @@ export function cloneLayoutItem(layoutItem: LayoutItem): LayoutItem {
 /**
  * Given two layoutitems, check if they collide.
  */
-export function collides(l1: LayoutItem, l2: LayoutItem) {
+export function collides(l1: LayoutItem, l2: LayoutItem): boolean {
     if (l1.i === l2.i) return false; // same element
     if (l1.x + l1.w <= l2.x) return false; // l1 is left of l2
     if (l1.x >= l2.x + l2.w) return false; // l1 is right of l2
@@ -219,7 +219,7 @@ export function compactItem(
  * @param  {Array} layout Layout array.
  * @param  {Number} bounds Number of columns.
  */
-export function correctBounds(layout: Layout, bounds: { cols: number }) {
+export function correctBounds(layout: Layout, bounds: { cols: number }): Layout {
     const collidesWith = getStatics(layout);
     for (let i = 0, len = layout.length; i < len; i++) {
         const l = layout[i];
@@ -271,7 +271,7 @@ export function getFirstCollision(layout: Layout, layoutItem: LayoutItem): Layou
     return;
 }
 
-export function getAllCollisions(layout: Layout, layoutItem: LayoutItem) {
+export function getAllCollisions(layout: Layout, layoutItem: LayoutItem): Layout {
     return layout.filter((l) => collides(l, layoutItem));
 }
 
@@ -614,19 +614,19 @@ function log(...args: any) {
 
 export const noop = () => {};
 
-export function addItemToLayout(
-    layout: Layout,
-    newItem: LayoutItem,
-    compactType: CompactType,
-    cols: number,
-): Layout {
-    const tmpArr = [...layout].map((d) => ({ ...d }));
-    tmpArr.forEach((d) => {
-        if (d.y === newItem.y && d.x === newItem.x) {
-            d.y = 0.1;
-        }
-    });
-    tmpArr.push(newItem);
-    const layout2 = compact(tmpArr, compactType, cols);
-    return layout2.map((d, i) => ({ ...tmpArr[i], ...d }));
-}
+// export function addItemToLayout(
+//     layout: Layout,
+//     newItem: LayoutItem,
+//     compactType: CompactType,
+//     cols: number,
+// ): Layout {
+//     const tmpArr = [...layout].map((d) => ({ ...d }));
+//     tmpArr.forEach((d) => {
+//         if (d.y === newItem.y && d.x === newItem.x) {
+//             d.y = 0.1;
+//         }
+//     });
+//     tmpArr.push(newItem);
+//     const layout2 = compact(tmpArr, compactType, cols);
+//     return layout2.map((d, i) => ({ ...tmpArr[i], ...d }));
+// }
