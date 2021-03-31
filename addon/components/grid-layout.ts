@@ -82,9 +82,9 @@ export default class GridLayout extends Component<Args> {
     /**
         array of layout object
         @argument layoutModel
-        @type {layoutModel}
+        @type {layout}
     */
-    layoutModel = this.args.layoutModel; // in case the input array is not pure position array, we provide an item key
+    layoutModel: Layout = this.args.layoutModel; // in case the input array is not pure position array, we provide an item key
 
     /**
         object key of postion in layoutObject  
@@ -98,14 +98,14 @@ export default class GridLayout extends Component<Args> {
         @argument width
         @type {number}
     */
-    width = this.args.width ? Number(this.args.width) : 800;
+    width: number = this.args.width ? Number(this.args.width) : 800;
 
     /**
         height basic unit
         @argument rowHeight
         @type {number}
     */
-    rowHeight = this.args.rowHeight ? Number(this.args.rowHeight) : 40;
+    rowHeight: number = this.args.rowHeight ? Number(this.args.rowHeight) : 40;
 
     /**
         function that received new layout, if not privided, system will use temp function 

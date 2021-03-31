@@ -445,34 +445,34 @@ export function moveElementAwayFromCollision(
  * @param  {Number} num Any number
  * @return {String}     That number as a percentage.
  */
-export function perc(num: number): string {
-    return (num * 100).toString() + '%';
-}
+// export function perc(num: number): string {
+//     return (num * 100).toString() + '%';
+// }
 
-export function setTransform({ top, left, width, height }: Position) {
-    // Replace unitless items with px
-    const translate = `translate(${left}px,${top}px)`;
-    return {
-        transform: translate,
-        WebkitTransform: translate,
-        MozTransform: translate,
-        msTransform: translate,
-        OTransform: translate,
-        width: `${width}px`,
-        height: `${height}px`,
-        position: 'absolute',
-    };
-}
+// export function setTransform({ top, left, width, height }: Position) {
+//     // Replace unitless items with px
+//     const translate = `translate(${left}px,${top}px)`;
+//     return {
+//         transform: translate,
+//         WebkitTransform: translate,
+//         MozTransform: translate,
+//         msTransform: translate,
+//         OTransform: translate,
+//         width: `${width}px`,
+//         height: `${height}px`,
+//         position: 'absolute',
+//     };
+// }
 
-export function setTopLeft({ top, left, width, height }: Position) {
-    return {
-        top: `${top}px`,
-        left: `${left}px`,
-        width: `${width}px`,
-        height: `${height}px`,
-        position: 'absolute',
-    };
-}
+// export function setTopLeft({ top, left, width, height }: Position) {
+//     return {
+//         top: `${top}px`,
+//         left: `${left}px`,
+//         width: `${width}px`,
+//         height: `${height}px`,
+//         position: 'absolute',
+//     };
+// }
 
 /**
  * Get layout items sorted from top left to right and down.
@@ -480,12 +480,12 @@ export function setTopLeft({ top, left, width, height }: Position) {
  * @return {Array} Array of layout objects.
  * @return {Array}        Layout, sorted static items first.
  */
-export function sortLayoutItems(layout: Layout, compactType: CompactType) {
+export function sortLayoutItems(layout: Layout, compactType: CompactType): Layout {
     if (compactType === 'horizontal') return sortLayoutItemsByColRow(layout);
     else return sortLayoutItemsByRowCol(layout);
 }
 
-export function sortLayoutItemsByRowCol(layout: Layout) {
+export function sortLayoutItemsByRowCol(layout: Layout): Layout {
     return [...layout].sort(function (a, b) {
         if (a.y > b.y || (a.y === b.y && a.x > b.x)) {
             return 1;
@@ -572,7 +572,7 @@ export function sortLayoutItemsByColRow(layout: Layout) {
  * @param  {String} [contextName] Context name for errors.
  * @throw  {Error}                Validation error.
  */
-export function validateLayout(layout: Layout, contextName = 'Layout') {
+export function validateLayout(layout: Layout, contextName = 'Layout'): void {
     const subProps: ('x' | 'y' | 'w' | 'h')[] = ['x', 'y', 'w', 'h'];
     if (!Array.isArray(layout)) throw new Error(contextName + ' must be an array!');
     for (let i = 0, len = layout.length; i < len; i++) {
