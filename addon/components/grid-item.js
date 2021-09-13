@@ -58,7 +58,7 @@ export default class GridItem extends Component {
         const { margin, containerPadding, rowHeight, containerWidth, cols } = this.args.grid;
         const colWidth = (containerWidth - margin[0] * (cols - 1) - containerPadding[0] * 2) / cols;
 
-        const out = {
+        return {
             left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
             top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
             // 0 * Infinity === NaN, which causes problems with resize constraints;
@@ -67,8 +67,6 @@ export default class GridItem extends Component {
             width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
             height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]),
         };
-
-        return out;
     }
 
     updateScrollPosition(pointerY, distance) {

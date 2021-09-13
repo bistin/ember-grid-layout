@@ -1,6 +1,5 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { setProperties, action } from '@ember/object';
 import { compact, moveElement, bottom, correctBounds } from 'ember-grid-layout/utils';
 import { debounce } from '@ember/runloop';
@@ -30,8 +29,6 @@ import { debounce } from '@ember/runloop';
   @yield {layoutModel} layoutModel
   @public
 */
-@classic
-@tagName('')
 export default class GridLayout extends Component {
     scrollElement = null;
     /**
@@ -39,70 +36,64 @@ export default class GridLayout extends Component {
         @argument containerPadding
         @type {[number, number]?}
     */
-    containerPadding = [10, 10];
-    maxRows = 500; // infinite vertical growt
+    containerPadding = this.args.containerPadding || [10, 10];
+    maxRows = this.args.maxRows || 500; // infinite vertical growt
 
     /**
         margin, default [10, 10]
         @argument margin
         @type {[number, number]?}
     */
-    margin = [10, 10];
+    margin = this.args.margin || [10, 10];
     preventCollision = false;
     /**
         compactType: default to vertical
         @argument cols
         @type {'vertical'|'horizontal'?}
     */
-    compactType = 'vertical';
-    breakpointWidth = this.breakpointWidth;
-
+    compactType = this.args.compactType || 'vertical';
+    breakpointWidth = this.args.breakpointWidth;
 
     /**
         columns, default to 2
         @argument cols
         @type {number?} 
     */
-    cols = 2;
+    cols = this.args.cols || 2;
 
     /**
         array of layout object
         @argument layoutModel
         @type {layoutModel}
     */
-    layoutModel = null; // in case the input array is not pure position array, we provide an item key
+    layoutModel = this.args.layoutModel; // in case the input array is not pure position array, we provide an item key
 
     /**
         object key of postion in layoutObject  
         @argument positionKey
         @type {string?}
     */
-    positionKey = null; // in case the input array is not pure position array, we provide an item key
+    positionKey = this.args.positionKey || null; // in case the input array is not pure position array, we provide an item key
 
     /**
         layout width
         @argument width
         @type {number}
     */
-    width = this.width ? Number(this.width) : 800;
+    width = this.args.width ? Number(this.args.width) : 800;
 
     /**
         height basic unit
         @argument rowHeight
         @type {number}
     */
-    rowHeight =  this.rowHeight ? Number(this.rowHeight) : 40;
+    rowHeight = this.args.rowHeight ? Number(this.args.rowHeight) : 40;
 
-    /**
-        function that received new layout, if not privided, system will use temp function 
-        @argument updatePosition
-        @type {function?(newPostion: layoutModel, isProgress :boolean)}
-    */
-    updatePosition = null
+    dragIndex = null;
+    @tracked containerHeight = 0;
 
-
-    init() {
-        super.init(...arguments);
+    constructor() {
+        super(...arguments);
         this._updatePosition();
     }
 
@@ -144,8 +135,8 @@ export default class GridLayout extends Component {
 
     updateNewLayoutToModel(newLayout) {
         newLayout.forEach((d) => (d.y = Math.round(d.y)));
-        if (this.updatePosition) {
-            this.updatePosition(newLayout, this.tmp != null);
+        if (this.args.updatePosition) {
+            this.args.updatePosition(newLayout, this.tmp != null);
         } else {
             if (this.positionKey) {
                 this.layoutModel.forEach((d, i) => {
@@ -158,7 +149,7 @@ export default class GridLayout extends Component {
             }
         }
         const position = this.calcPosition(0, bottom(newLayout), 0, 0);
-        this.set('containerHeight', position.top);
+        this.containerHeight = position.top;
     }
 
     // TODO pass from outside
@@ -170,9 +161,9 @@ export default class GridLayout extends Component {
         const width = this.width;
         const prevCols = this.cols;
         if (width < this.breakpointWidth) {
-            this.set('cols', 1);
+            this.cols = 1;
         } else {
-            this.set('cols', 2);
+            this.cols = 2;
         }
         const tmpArr = this.cloneToLayoutObj();
         let layout2 = compact(
@@ -249,7 +240,6 @@ export default class GridLayout extends Component {
         );
 
         const layout2 = compact(layout, this.compactType, this.cols);
-
         this.tmpLayout = layout2;
         this.updateNewLayoutToModel(layout2);
     }
@@ -257,9 +247,9 @@ export default class GridLayout extends Component {
     @action
     onDragStart(startPosition, x, y, dragIndex, scrollElement) {
         this.tmpLayout = this.cloneToLayoutObj();
-        this.set('startPosition', startPosition);
-        this.set('startPoint', { x, y });
-        this.set('dragIndex', dragIndex);
+        this.startPosition = startPosition;
+        this.startPoint = { x, y };
+        this.dragIndex = dragIndex;
         if (scrollElement) {
             this.scorllElememt = scrollElement;
             this.tmp = scrollElement.scrollTop;
@@ -270,8 +260,8 @@ export default class GridLayout extends Component {
     onDragStop() {
         this.tmpLayout = null;
         this.tmp = null;
-        if (this.updatePosition) {
-            this.updatePosition(this.cloneToLayoutObj(), false);
+        if (this.args.updatePosition) {
+            this.args.updatePosition(this.cloneToLayoutObj(), false);
         }
     }
 
@@ -296,6 +286,5 @@ export default class GridLayout extends Component {
         position.y = item.position.y - 0.001;
         setProperties(tmpArr[index], position);
         this._updatePosition(tmpArr);
-        //debounce(this, this._updatePosition, 100);
     }
 }
