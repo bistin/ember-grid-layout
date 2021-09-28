@@ -66,7 +66,9 @@ export default class GridLayout extends Component {
         @argument layoutModel
         @type {layoutModel}
     */
-    layoutModel = this.args.layoutModel; // in case the input array is not pure position array, we provide an item key
+    get layoutModel() {
+        return this.args.layoutModel; // in case the input array is not pure position array, we provide an item key
+    }
 
     /**
         object key of postion in layoutObject  
@@ -80,7 +82,9 @@ export default class GridLayout extends Component {
         @argument width
         @type {number}
     */
-    width = this.args.width ? Number(this.args.width) : 800;
+    get width() {
+        return this.args.width ? Number(this.args.width) : 800;
+    }
 
     /**
         height basic unit
