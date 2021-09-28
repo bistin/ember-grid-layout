@@ -52,14 +52,13 @@ export default class GridLayout extends Component {
         @type {'vertical'|'horizontal'?}
     */
     compactType = this.args.compactType || 'vertical';
-    breakpointWidth = this.args.breakpointWidth;
 
     /**
         columns, default to 2
         @argument cols
         @type {number?} 
     */
-    cols = this.args.cols || 2;
+    @tracked cols = this.args.cols || 2;
 
     /**
         array of layout object
@@ -159,12 +158,12 @@ export default class GridLayout extends Component {
     // TODO pass from outside
     @action
     widthObserver() {
-        if (!this.breakpointWidth) {
+        if (!this.args.breakpointWidth) {
             return;
         }
         const width = this.width;
         const prevCols = this.cols;
-        if (width < this.breakpointWidth) {
+        if (width < this.args.breakpointWidth) {
             this.cols = 1;
         } else {
             this.cols = 2;
@@ -190,7 +189,6 @@ export default class GridLayout extends Component {
     calcPosition(x, y, w, h) {
         const { margin, containerPadding, rowHeight } = this;
         const colWidth = this.calcColWidth();
-
         const out = {
             left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
             top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
