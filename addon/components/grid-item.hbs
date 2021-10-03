@@ -1,6 +1,7 @@
 {{!-- template-lint-disable  --}}
 <div
     draggable={{this.canDrag}}
+    {{did-insert this.insertAction}}
     {{position this.itemPosition}}
     {{on "dragstart" this.dragStartAction}}
     {{on "drag" this.dragMoveAction}}
