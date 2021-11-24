@@ -162,20 +162,22 @@ export default class GridLayout extends Component {
             return;
         }
         const width = this.width;
-        const prevCols = this.cols;
         if (width < this.args.breakpointWidth) {
             this.cols = 1;
         } else {
             this.cols = 2;
         }
+    }
+
+    @action
+    colsObserver() {
         const tmpArr = this.cloneToLayoutObj();
         let layout2 = compact(
             correctBounds(tmpArr, { cols: this.cols }),
             this.compactType,
             this.cols,
         );
-
-        if (prevCols === 1 && this.cols === 2) {
+        if (this.cols === 2) {
             layout2.forEach((pos, i) => {
                 if (i % 2 === 1) {
                     pos.x = 1;
