@@ -30,6 +30,7 @@ import { debounce } from '@ember/runloop';
   @public
 */
 export default class GridLayout extends Component {
+    
     scrollElement = null;
     /**
         padding, default [10, 10]
@@ -59,6 +60,7 @@ export default class GridLayout extends Component {
         @type {number?} 
     */
     @tracked cols = this.args.cols || 2;
+    prevCols = this.args.cols || 2;
 
     /**
         array of layout object
@@ -171,13 +173,17 @@ export default class GridLayout extends Component {
 
     @action
     colsObserver() {
+        if (this.prevCols === this.cols) {
+            return;
+        }
+
         const tmpArr = this.cloneToLayoutObj();
         let layout2 = compact(
             correctBounds(tmpArr, { cols: this.cols }),
             this.compactType,
             this.cols,
         );
-        if (this.cols === 2) {
+        if (this.prevCols === 1 && this.cols === 2) {
             layout2.forEach((pos, i) => {
                 if (i % 2 === 1) {
                     pos.x = 1;
@@ -185,6 +191,7 @@ export default class GridLayout extends Component {
             });
             layout2 = compact(layout2, this.compactType, this.cols);
         }
+        this.prevCols = this.cols;
         this.updateNewLayoutToModel(layout2);
     }
 
