@@ -7,13 +7,13 @@ import { debounce } from '@ember/runloop';
 /**
   A component served as grid layout container.
   ```hbs
-  <GridLayout
-    @layoutModel={{this.wrappedLayout}}
-    @positionKey="position"
-    @width={{this.width}}
-    @rowHeight={{40}}
-    @updatePosition={{fn this.updatePosition}} as |grid layoutModel|>
-    {{#each layoutModel as |item index|}}
+    <GridLayout
+      @layoutModel={{this.wrappedLayout}}
+      @positionKey="position"
+      @width={{this.width}}
+      @rowHeight={{40}}
+      @updatePosition={{fn this.updatePosition}} as |grid layoutModel|>
+      {{#each layoutModel as |item index|}}
         <GridItem
             @grid={{grid}}
             @pos={{get item "position"}}
@@ -21,8 +21,8 @@ import { debounce } from '@ember/runloop';
             @handle= {{array ".dragHandle" ".dragHandle2"}}
             @scrollContainerSelector="html">
         </GridItem>
-    {{/each}}
-</GridLayout> -->
+      {{/each}}
+    </GridLayout> 
   ```
   @class GridLayout
   @yield {grid} grid pass to GridItem 
@@ -30,7 +30,6 @@ import { debounce } from '@ember/runloop';
   @public
 */
 export default class GridLayout extends Component {
-    
     scrollElement = null;
     /**
         padding, default [10, 10]
