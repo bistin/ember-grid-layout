@@ -36,10 +36,11 @@ export type Position = {
 export function bottom(layout: Layout) {
     let max = 0,
         bottomY;
-    for (let i = 0, len = layout.length; i < len; i++) {
-        bottomY = layout[i].y + layout[i].h;
+
+    layout.forEach((layoutObj) => {
+        bottomY = layoutObj.y + layoutObj.h;
         if (bottomY > max) max = bottomY;
-    }
+    })
     return max;
 }
 
@@ -96,9 +97,8 @@ export function compact(layout: Layout, compactType: CompactType, cols: number):
     const sorted = sortLayoutItems(layout, compactType);
     // Holding for new items.
     const out = Array(layout.length);
-
-    for (let i = 0, len = sorted.length; i < len; i++) {
-        let l = cloneLayoutItem(sorted[i]);
+    sorted.forEach((item) => {
+        let l = cloneLayoutItem(item);
 
         // Don't move static elements
         if (!l.static) {
@@ -110,12 +110,11 @@ export function compact(layout: Layout, compactType: CompactType, cols: number):
         }
 
         // Add to output array to make sure they still come out in the right order.
-        out[layout.indexOf(sorted[i])] = l;
+        out[layout.indexOf(item)] = l;
 
         // Clear moved flag, if it exists.
         l.moved = false;
-    }
-
+    })
     return out;
 }
 
@@ -140,6 +139,9 @@ function resolveCompactionCollision(
     // Go through each item we collide with.
     for (let i = itemIndex + 1; i < layout.length; i++) {
         const otherItem = layout[i];
+        if(!otherItem) {
+            continue;
+        }
         // Ignore static items
         if (otherItem.static) continue;
 
@@ -147,7 +149,7 @@ function resolveCompactionCollision(
         // We can do this b/c it's a sorted layout
         if (otherItem.y > item.y + item.h) break;
 
-        if (collides(item, otherItem)) {
+        if (collides(item, otherItem) && sizeProp) {
             resolveCompactionCollision(layout, otherItem, moveToCoord + item[sizeProp], axis);
         }
     }
@@ -211,6 +213,9 @@ export function correctBounds(layout: Layout, bounds: { cols: number }) {
     const collidesWith = getStatics(layout);
     for (let i = 0, len = layout.length; i < len; i++) {
         const l = layout[i];
+        if(!l) {
+            continue;
+        }
         // Overflows right
         if (l.x + l.w > bounds.cols) l.x = bounds.cols - l.w;
         // Overflows left
@@ -239,7 +244,7 @@ export function correctBounds(layout: Layout, bounds: { cols: number }) {
  */
 export function getLayoutItem(layout: Layout, id: string): LayoutItem | undefined {
     for (let i = 0, len = layout.length; i < len; i++) {
-        if (layout[i].i === id) return layout[i];
+        if (layout[i]?.i === id) return layout[i];
     }
     return;
 }
@@ -254,7 +259,8 @@ export function getLayoutItem(layout: Layout, id: string): LayoutItem | undefine
  */
 export function getFirstCollision(layout: Layout, layoutItem: LayoutItem): LayoutItem | undefined {
     for (let i = 0, len = layout.length; i < len; i++) {
-        if (collides(layout[i], layoutItem)) return layout[i];
+        const layoutObj = layout[i];
+        if(layoutObj && collides(layoutObj, layoutItem)) return layout[i];
     }
     return;
 }
@@ -328,14 +334,15 @@ export function moveElement(
     }
 
     // Move each item that collides away from this element.
-    for (let i = 0, len = collisions.length; i < len; i++) {
-        const collision = collisions[i];
+    collisions.forEach((collision) => {
+    //for (let i = 0, len = collisions.length; i < len; i++) {
+      //  const collision = collisions[i];
         log(
             `Resolving collision between ${l.i} at [${l.x},${l.y}] and ${collision.i} at [${collision.x},${collision.y}]`,
         );
 
         // Short circuit so we can't infinite loop
-        if (collision.moved) continue;
+        if (collision.moved) return;
 
         // Don't move static items - we have to move *this* element away
         if (collision.static) {
@@ -357,7 +364,7 @@ export function moveElement(
                 cols,
             );
         }
-    }
+    });
 
     return layout;
 }
@@ -565,19 +572,22 @@ export function validateLayout(layout: Layout, contextName = 'Layout') {
     if (!Array.isArray(layout)) throw new Error(contextName + ' must be an array!');
     for (let i = 0, len = layout.length; i < len; i++) {
         const item = layout[i];
-        for (let j = 0; j < subProps.length; j++) {
-            if (typeof item[subProps[j]] !== 'number') {
+        if(!item) {
+            continue;
+        }
+        subProps.forEach(subProp => {
+            if (typeof item[subProp] !== 'number') {
                 throw new Error(
                     'ReactGridLayout: ' +
                         contextName +
                         '[' +
                         i +
                         '].' +
-                        subProps[j] +
+                        subProp +
                         ' must be a number!',
                 );
             }
-        }
+        })
         if (item.i && typeof item.i !== 'string') {
             throw new Error('ReactGridLayout: ' + contextName + '[' + i + '].i must be a string!');
         }
