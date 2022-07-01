@@ -259,11 +259,8 @@ export function getLayoutItem(layout: Layout, id: string): LayoutItem | undefine
  */
 export function getFirstCollision(layout: Layout, layoutItem: LayoutItem): LayoutItem | undefined {
     for (let i = 0, len = layout.length; i < len; i++) {
-        if (!layout[i]) {
-            continue;
-        }
-        if(collides(layout[i], layoutItem)) return layout[i];
-        
+        const layoutObj = layout[i];
+        if(layoutObj && collides(layoutObj, layoutItem)) return layout[i];
     }
     return;
 }
@@ -337,14 +334,15 @@ export function moveElement(
     }
 
     // Move each item that collides away from this element.
-    for (let i = 0, len = collisions.length; i < len; i++) {
-        const collision = collisions[i];
+    collisions.forEach((collision) => {
+    //for (let i = 0, len = collisions.length; i < len; i++) {
+      //  const collision = collisions[i];
         log(
             `Resolving collision between ${l.i} at [${l.x},${l.y}] and ${collision.i} at [${collision.x},${collision.y}]`,
         );
 
         // Short circuit so we can't infinite loop
-        if (collision.moved) continue;
+        if (collision.moved) return;
 
         // Don't move static items - we have to move *this* element away
         if (collision.static) {
@@ -366,7 +364,7 @@ export function moveElement(
                 cols,
             );
         }
-    }
+    });
 
     return layout;
 }
@@ -577,19 +575,19 @@ export function validateLayout(layout: Layout, contextName = 'Layout') {
         if(!item) {
             continue;
         }
-        for (let j = 0; j < subProps.length; j++) {
-            if (typeof item[subProps[j]] !== 'number') {
+        subProps.forEach(subProp => {
+            if (typeof item[subProp] !== 'number') {
                 throw new Error(
                     'ReactGridLayout: ' +
                         contextName +
                         '[' +
                         i +
                         '].' +
-                        subProps[j] +
+                        subProp +
                         ' must be a number!',
                 );
             }
-        }
+        })
         if (item.i && typeof item.i !== 'string') {
             throw new Error('ReactGridLayout: ' + contextName + '[' + i + '].i must be a string!');
         }
