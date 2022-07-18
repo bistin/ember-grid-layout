@@ -1,0 +1,127 @@
+.grid-layout {
+    position: relative;
+    transition: height 200ms ease;
+}
+
+.grid-width-50 {
+    width: 50%;
+}
+
+.grid-width-100 {
+    width: 100%;
+}
+
+.grid-item {
+    transition: all 200ms ease;
+    transition-property: left, top, width;
+    position: absolute;
+    transform: translate3d(0, 0, 0);
+}
+.grid-item.cssTransforms {
+    transition-property: transform;
+}
+.grid-item.resizing {
+    z-index: 1;
+    will-change: width, height;
+}
+
+.grid-item.draggable-dragging {
+    transition: none;
+    z-index: 3;
+    will-change: transform;
+}
+
+.grid-item.grid-placeholder {
+    opacity: 0.2;
+    transition-duration: 100ms;
+    z-index: 2;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.grid-item > .resizable-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+}
+
+.grid-item > .resizable-handle::after {
+    content: '';
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    width: 5px;
+    height: 5px;
+    border-right: 2px solid rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+.grid-layout {
+    position: relative;
+    transition: height 200ms ease;
+}
+
+.grid-width-50 {
+    width: 50%;
+}
+
+.grid-width-100 {
+    width: 100%;
+}
+
+.grid-item {
+    transition: all 200ms ease;
+    transition-property: left, top, width;
+    position: absolute;
+    transform: translate3d(0, 0, 0);
+}
+.grid-item.cssTransforms {
+    transition-property: transform;
+}
+.grid-item.resizing {
+    z-index: 1;
+    will-change: width, height;
+}
+
+.grid-item.draggable-dragging {
+    transition: none;
+    z-index: 3;
+    will-change: transform;
+}
+
+.grid-item.grid-placeholder {
+    opacity: 0.2;
+    transition-duration: 100ms;
+    z-index: 2;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.grid-item > .resizable-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+}
+
+.grid-item > .resizable-handle::after {
+    content: '';
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    width: 5px;
+    height: 5px;
+    border-right: 2px solid rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+}
