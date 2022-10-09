@@ -1,6 +1,6 @@
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 
 function getScrollParent(el) {
     let returnEl;
@@ -35,7 +35,7 @@ export default class GridItem extends Component {
     handle = this.args.handle;
     @tracked canDrag = !this.args.handle;
 
-    @computed('args.pos.{x,y,w,h}', 'args.grid.containerWidth')
+    @cached
     get itemPosition() {
         if (!this.args.pos) {
             return '';
