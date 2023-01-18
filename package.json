@@ -1,4 +1,8 @@
 {
   "private": true,
-  "workspaces": ["addon", "docs"]
+  "workspaces": [
+    "addon",
+    "docs"
+  ],
+  "dependencies": {}
 }

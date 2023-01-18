@@ -103,7 +103,7 @@ export default class GridLayout extends Component {
 
     cloneToLayoutObj() {
         if (this.positionKey) {
-            return this.layoutModel.map((d) => ({ ...d[this.positionKey] })).toArray();
+            return this.layoutModel.map((d) => ({ ...d[this.positionKey] }));//.toArray();
         }
         return this.layoutModel.map((d) => ({ ...d }));
     }

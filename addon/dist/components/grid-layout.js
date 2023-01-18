@@ -131,7 +131,7 @@ let GridLayout = (_class = class GridLayout extends Component {
 
   cloneToLayoutObj() {
     if (this.positionKey) {
-      return this.layoutModel.map(d => _objectSpread({}, d[this.positionKey])).toArray();
+      return this.layoutModel.map(d => _objectSpread({}, d[this.positionKey])); //.toArray();
     }
 
     return this.layoutModel.map(d => _objectSpread({}, d));
