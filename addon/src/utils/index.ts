@@ -30,7 +30,7 @@ export type Position = {
 /**
  * Return the bottom coordinate of the layout.
  *
- * @param  {Array} layout Layout array.
+ * @param  {Array} Layout Layout array.
  * @return {Number}       Bottom coordinate.
  */
 export function bottom(layout: Layout) {

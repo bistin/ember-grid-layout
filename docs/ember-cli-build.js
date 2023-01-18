@@ -7,7 +7,10 @@ module.exports = function (defaults) {
     // Add options here
     'ember-cli-addon-docs': {
       documentingAddonAt: '../addon',
-  },
+    },
+    emberData: {
+      compatWith: '4.7',
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated

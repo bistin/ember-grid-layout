@@ -14,8 +14,8 @@
     "test": "tests"
   },
   "dependencies": {
-    "@embroider/addon-shim": "^1.8.3",
-    "ember-modifier": "^3.2.7"
+    "@embroider/addon-shim": "^1.8.4",
+    "ember-modifier": "^4.0.0"
   },
   "engines": {
     "node": "12.* || 14.* || >= 16"
