@@ -1,6 +1,8 @@
 import Controller from '@ember/controller';
-import { compact, moveElement } from 'ember-grid-layout/utils';
-import { setProperties, action } from '@ember/object';
+import { compact } from 'ember-grid-layout/utils';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import { next } from '@ember/runloop';
 import 'ember-grid-layout/styles/grid-layout.css';
 
 let i = 10;
@@ -13,26 +15,30 @@ let layout = [
 
 layout = compact(layout, 'vertical', 12);
 
-const wrappedLayout = layout.map((d, i) => ({
-    data: i,
-    position: d,
-}));
+class Layout {
+    @tracked position;
+    data = null;
+    constructor(position, data) {
+        this.data = data;
+        this.position = position;
+    }
+}
+
+const wrappedLayout = layout.map((d, i) => new Layout(d, i));
 
 export default class IndexController extends Controller {
     compactType = 'vertical';
     preventCollision = true;
     cols = 2;
-    width = 555;
+    @tracked width = 555;
     wrappedLayout = wrappedLayout;
-
-    init() {
-        super.init(...arguments);
-    }
 
     @action
     updatePosition(newLayout, moving) {
-        this.wrappedLayout.forEach((d, i) => {
-            setProperties(d.position, newLayout[i]);
+        next(this, function () {
+            this.wrappedLayout.forEach((d, i) => {
+                d.position = newLayout[i];
+            });
         });
     }
 
@@ -57,6 +63,6 @@ export default class IndexController extends Controller {
 
     @action
     changeWidth() {
-        this.set('width', this.width * 0.8);
+        this.width = this.width * 0.8;
     }
 }
