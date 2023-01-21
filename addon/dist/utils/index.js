@@ -7,7 +7,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 /**
  * Return the bottom coordinate of the layout.
  *
- * @param  {Array} Layout Layout array.
+ * @param  {Array} layout Layout array.
  * @return {Number}       Bottom coordinate.
  */
 function bottom(layout) {
@@ -515,5 +515,29 @@ function addItemToLayout(layout, newItem, compactType, cols) {
   const layout2 = compact(tmpArr, compactType, cols);
   return layout2.map((d, i) => _objectSpread(_objectSpread({}, tmpArr[i]), d));
 }
+var index = {
+  addItemToLayout,
+  bottom,
+  cloneLayout,
+  cloneLayoutItem,
+  collides,
+  compact,
+  compactItem,
+  correctBounds,
+  getAllCollisions,
+  getFirstCollision,
+  getLayoutItem,
+  getStatics,
+  moveElement,
+  moveElementAwayFromCollision,
+  noop,
+  perc,
+  setTopLeft,
+  setTransform,
+  sortLayoutItems,
+  sortLayoutItemsByColRow,
+  sortLayoutItemsByRowCol,
+  validateLayout
+};
 
-export { addItemToLayout, bottom, cloneLayout, cloneLayoutItem, collides, compact, compactItem, correctBounds, getAllCollisions, getFirstCollision, getLayoutItem, getStatics, moveElement, moveElementAwayFromCollision, noop, perc, setTopLeft, setTransform, sortLayoutItems, sortLayoutItemsByColRow, sortLayoutItemsByRowCol, validateLayout };
+export { addItemToLayout, bottom, cloneLayout, cloneLayoutItem, collides, compact, compactItem, correctBounds, index as default, getAllCollisions, getFirstCollision, getLayoutItem, getStatics, moveElement, moveElementAwayFromCollision, noop, perc, setTopLeft, setTransform, sortLayoutItems, sortLayoutItemsByColRow, sortLayoutItemsByRowCol, validateLayout };

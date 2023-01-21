@@ -30,7 +30,7 @@ export type Position = {
 /**
  * Return the bottom coordinate of the layout.
  *
- * @param  {Array} Layout Layout array.
+ * @param  {Array} layout Layout array.
  * @return {Number}       Bottom coordinate.
  */
 export function bottom(layout: Layout) {
@@ -618,3 +618,5 @@ export function addItemToLayout(
     const layout2 = compact(tmpArr, compactType, cols);
     return layout2.map((d, i) => ({ ...tmpArr[i], ...d }));
 }
+
+export default { addItemToLayout, bottom, cloneLayout, cloneLayoutItem, collides, compact, compactItem, correctBounds, getAllCollisions, getFirstCollision, getLayoutItem, getStatics, moveElement, moveElementAwayFromCollision, noop, perc, setTopLeft, setTransform, sortLayoutItems, sortLayoutItemsByColRow, sortLayoutItemsByRowCol, validateLayout };

@@ -24,7 +24,7 @@ type Position = {
 /**
  * Return the bottom coordinate of the layout.
  *
- * @param  {Array} Layout Layout array.
+ * @param  {Array} layout Layout array.
  * @return {Number}       Bottom coordinate.
  */
 declare function bottom(layout: Layout): number;
@@ -155,4 +155,28 @@ declare function sortLayoutItemsByColRow(layout: Layout): LayoutItem[];
 declare function validateLayout(layout: Layout, contextName?: string): void;
 declare const noop: () => void;
 declare function addItemToLayout(layout: Layout, newItem: LayoutItem, compactType: CompactType, cols: number): Layout;
-export { CompactType, LayoutItem, Layout, Position, bottom, cloneLayout, cloneLayoutItem, collides, compact, compactItem, correctBounds, getLayoutItem, getFirstCollision, getAllCollisions, getStatics, moveElement, moveElementAwayFromCollision, perc, setTransform, setTopLeft, sortLayoutItems, sortLayoutItemsByRowCol, sortLayoutItemsByColRow, validateLayout, noop, addItemToLayout };
+declare const _default: {
+    addItemToLayout: typeof addItemToLayout;
+    bottom: typeof bottom;
+    cloneLayout: typeof cloneLayout;
+    cloneLayoutItem: typeof cloneLayoutItem;
+    collides: typeof collides;
+    compact: typeof compact;
+    compactItem: typeof compactItem;
+    correctBounds: typeof correctBounds;
+    getAllCollisions: typeof getAllCollisions;
+    getFirstCollision: typeof getFirstCollision;
+    getLayoutItem: typeof getLayoutItem;
+    getStatics: typeof getStatics;
+    moveElement: typeof moveElement;
+    moveElementAwayFromCollision: typeof moveElementAwayFromCollision;
+    noop: () => void;
+    perc: typeof perc;
+    setTopLeft: typeof setTopLeft;
+    setTransform: typeof setTransform;
+    sortLayoutItems: typeof sortLayoutItems;
+    sortLayoutItemsByColRow: typeof sortLayoutItemsByColRow;
+    sortLayoutItemsByRowCol: typeof sortLayoutItemsByRowCol;
+    validateLayout: typeof validateLayout;
+};
+export { _default as default, CompactType, LayoutItem, Layout, Position, bottom, cloneLayout, cloneLayoutItem, collides, compact, compactItem, correctBounds, getLayoutItem, getFirstCollision, getAllCollisions, getStatics, moveElement, moveElementAwayFromCollision, perc, setTransform, setTopLeft, sortLayoutItems, sortLayoutItemsByRowCol, sortLayoutItemsByColRow, validateLayout, noop, addItemToLayout };
