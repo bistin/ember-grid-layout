@@ -22,10 +22,10 @@ import { debounce } from '@ember/runloop';
             @scrollContainerSelector="html">
         </GridItem>
       {{/each}}
-    </GridLayout> 
+    </GridLayout>
   ```
   @class GridLayout
-  @yield {grid} grid pass to GridItem 
+  @yield {grid} grid pass to GridItem
   @yield {layoutModel} layoutModel
   @public
 */
@@ -56,7 +56,7 @@ export default class GridLayout extends Component {
     /**
         columns, default to 2
         @argument cols
-        @type {number?} 
+        @type {number?}
     */
     @tracked cols = this.args.cols || 2;
     prevCols = this.args.cols || 2;
@@ -71,7 +71,7 @@ export default class GridLayout extends Component {
     }
 
     /**
-        object key of postion in layoutObject  
+        object key of postion in layoutObject
         @argument positionKey
         @type {string?}
     */
@@ -103,7 +103,7 @@ export default class GridLayout extends Component {
 
     cloneToLayoutObj() {
         if (this.positionKey) {
-            return this.layoutModel.map((d) => ({ ...d[this.positionKey] })).toArray();
+            return this.layoutModel.map((d) => ({ ...d[this.positionKey] }));
         }
         return this.layoutModel.map((d) => ({ ...d }));
     }

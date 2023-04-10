@@ -33,10 +33,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
             @scrollContainerSelector="html">
         </GridItem>
       {{/each}}
-    </GridLayout> 
+    </GridLayout>
   ```
   @class GridLayout
-  @yield {grid} grid pass to GridItem 
+  @yield {grid} grid pass to GridItem
   @yield {layoutModel} layoutModel
   @public
 */
@@ -64,7 +64,7 @@ let GridLayout = (_class = class GridLayout extends Component {
   /**
       columns, default to 2
       @argument cols
-      @type {number?} 
+      @type {number?}
   */
 
   /**
@@ -76,7 +76,7 @@ let GridLayout = (_class = class GridLayout extends Component {
     return this.args.layoutModel; // in case the input array is not pure position array, we provide an item key
   }
   /**
-      object key of postion in layoutObject  
+      object key of postion in layoutObject
       @argument positionKey
       @type {string?}
   */
@@ -131,7 +131,7 @@ let GridLayout = (_class = class GridLayout extends Component {
 
   cloneToLayoutObj() {
     if (this.positionKey) {
-      return this.layoutModel.map(d => _objectSpread({}, d[this.positionKey])).toArray();
+      return this.layoutModel.map(d => _objectSpread({}, d[this.positionKey]));
     }
 
     return this.layoutModel.map(d => _objectSpread({}, d));
