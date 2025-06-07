@@ -2,13 +2,13 @@ import { _ as _applyDecoratedDescriptor, a as _initializerDefineProperty } from 
 import { _ as _defineProperty } from '../defineProperty-f419f636.js';
 import { setComponentTemplate } from '@ember/component';
 import { hbs } from 'ember-cli-htmlbars';
-import { computed, action } from '@ember/object';
+import { action } from '@ember/object';
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 
 var TEMPLATE = hbs("{{!-- template-lint-disable  --}}\n<div\n    draggable={{this.canDrag}}\n    {{did-insert this.insertAction}}\n    {{position this.itemPosition}}\n    {{on \"dragstart\" this.dragStartAction}}\n    {{on \"drag\" this.dragMoveAction}}\n    {{on \"dragend\" this.dragEndAction}}\n    {{on \"mouseover\" this.mouseOverAction}}\n    {{on \"mouseleave\" this.mouseLeaveAction}}\n    class=\"grid-item\" >\n    {{yield}}\n</div>\n\n\n");
 
-var _dec, _class, _descriptor;
+var _class, _descriptor;
 
 function getScrollParent(el) {
   let returnEl;
@@ -39,7 +39,7 @@ function getScrollParent(el) {
 */
 
 
-let GridItem = (_dec = computed('args.pos.{x,y,w,h}', 'args.grid.containerWidth'), (_class = class GridItem extends Component {
+let GridItem = (_class = class GridItem extends Component {
   constructor(...args) {
     super(...args);
 
@@ -172,7 +172,7 @@ let GridItem = (_dec = computed('args.pos.{x,y,w,h}', 'args.grid.containerWidth'
   initializer: function () {
     return !this.args.handle;
   }
-}), _applyDecoratedDescriptor(_class.prototype, "itemPosition", [_dec], Object.getOwnPropertyDescriptor(_class.prototype, "itemPosition"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "insertAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "insertAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "dragStartAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "dragStartAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "dragMoveAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "dragMoveAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "dragEndAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "dragEndAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "mouseOverAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "mouseOverAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "mouseLeaveAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "mouseLeaveAction"), _class.prototype)), _class));
+}), _applyDecoratedDescriptor(_class.prototype, "itemPosition", [cached], Object.getOwnPropertyDescriptor(_class.prototype, "itemPosition"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "insertAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "insertAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "dragStartAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "dragStartAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "dragMoveAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "dragMoveAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "dragEndAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "dragEndAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "mouseOverAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "mouseOverAction"), _class.prototype), _applyDecoratedDescriptor(_class.prototype, "mouseLeaveAction", [action], Object.getOwnPropertyDescriptor(_class.prototype, "mouseLeaveAction"), _class.prototype)), _class);
 setComponentTemplate(TEMPLATE, GridItem);
 
 export { GridItem as default };
