@@ -1,5 +1,5 @@
 //import babel from '@rollup/plugin-babel';
-import typescript from 'rollup-plugin-ts';
+import typescript from '@rollup/plugin-typescript';
 import { Addon } from '@embroider/addon-dev/rollup';
 
 const addon = new Addon({
@@ -43,9 +43,9 @@ export default {
         // }),
 
         typescript({
-            transpiler: 'babel',
-            browserslist: false,
-            transpileOnly: false,
+            tsconfig: './tsconfig.json',
+            declaration: true,
+            declarationDir: './dist',
         }),
 
         // Follow the V2 Addon rules about dependencies. Your code can import from
